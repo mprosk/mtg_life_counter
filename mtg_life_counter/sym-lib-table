@@ -1,0 +1,3 @@
+(sym_lib_table
+  (lib (name mtg_life_counter)(type Legacy)(uri ${KIPRJMOD}/mtg_life_counter.lib)(options "")(descr ""))
+)
