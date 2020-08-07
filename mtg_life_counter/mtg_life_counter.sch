@@ -1592,21 +1592,9 @@ F 3 "" H 10650 6350 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	10650 6250 10850 6250
+	10650 6250 10750 6250
 Wire Wire Line
 	10650 6250 10650 6350
-Connection ~ 10650 6250
-$Comp
-L Interface_Expansion:TPIC6595 U4
-U 1 1 61791AA4
-P 10550 5550
-F 0 "U4" H 10850 6150 50  0000 C CNN
-F 1 "TPIC6595" H 10750 4850 50  0000 C CNN
-F 2 "Package_DIP:DIP-20_W7.62mm" H 11200 4900 50  0001 C CNN
-F 3 "http://www.ti.com/lit/ds/symlink/tpic6595.pdf" H 10550 5500 50  0001 C CNN
-	1    10550 5550
-	-1   0    0    -1  
-$EndComp
 Wire Wire Line
 	11050 5150 11150 5150
 Wire Wire Line
@@ -2030,21 +2018,9 @@ F 3 "" H 10650 3200 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	10650 3100 10850 3100
+	10650 3100 10750 3100
 Wire Wire Line
 	10650 3100 10650 3200
-Connection ~ 10650 3100
-$Comp
-L Interface_Expansion:TPIC6595 U2
-U 1 1 5F96845D
-P 10550 2400
-F 0 "U2" H 10850 3000 50  0000 C CNN
-F 1 "TPIC6595" H 10750 1700 50  0000 C CNN
-F 2 "Package_DIP:DIP-20_W7.62mm" H 11200 1750 50  0001 C CNN
-F 3 "http://www.ti.com/lit/ds/symlink/tpic6595.pdf" H 10550 2350 50  0001 C CNN
-	1    10550 2400
-	-1   0    0    -1  
-$EndComp
 Wire Wire Line
 	11700 2000 11050 2000
 Wire Wire Line
@@ -2161,4 +2137,34 @@ Text Label 11150 3900 2    50   ~ 0
 SER_CASCADE_3
 Text Label 2650 7150 0    50   ~ 0
 OFF
+$Comp
+L mtg_life_counter:TPIC6595 U4
+U 1 1 60554267
+P 10550 5550
+F 0 "U4" H 10850 6150 50  0000 C CNN
+F 1 "TPIC6595" H 10750 4850 50  0000 C CNN
+F 2 "Package_DIP:DIP-20_W7.62mm" H 11200 4900 50  0001 C CNN
+F 3 "http://www.ti.com/lit/ds/symlink/tpic6595.pdf" H 10550 5500 50  0001 C CNN
+	1    10550 5550
+	-1   0    0    -1  
+$EndComp
+Connection ~ 10650 6250
+$Comp
+L mtg_life_counter:TPIC6595 U2
+U 1 1 6055710C
+P 10550 2400
+F 0 "U2" H 10850 3000 50  0000 C CNN
+F 1 "TPIC6595" H 10750 1700 50  0000 C CNN
+F 2 "Package_DIP:DIP-20_W7.62mm" H 11200 1750 50  0001 C CNN
+F 3 "http://www.ti.com/lit/ds/symlink/tpic6595.pdf" H 10550 2350 50  0001 C CNN
+	1    10550 2400
+	-1   0    0    -1  
+$EndComp
+Connection ~ 10650 3100
+Wire Wire Line
+	10750 3100 10850 3100
+Connection ~ 10750 3100
+Wire Wire Line
+	10750 6250 10850 6250
+Connection ~ 10750 6250
 $EndSCHEMATC

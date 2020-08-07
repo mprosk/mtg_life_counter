@@ -12,4 +12,10 @@ K switch sp4t ON-ON-ON-ON
 F ~
 $ENDCMP
 #
+$CMP TPIC6595
+D Power Logic 8-bit Shift Register, DIP-8/SOIC-8
+K shift register 8bit
+F http://www.ti.com/lit/ds/symlink/tpic6595.pdf
+$ENDCMP
+#
 #End Doc Library
