@@ -9,6 +9,8 @@ Four player life counter for Magic: The Gathering
   - Green, red, yellow, blue, white, black
 - Command Damage tracking
   - Ease of input/selection
+  - Slide switch or rotary switch?
+  - direction of selection
 - First player selection
   - Useful?
   - PRNG trust
