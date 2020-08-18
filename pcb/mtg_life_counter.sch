@@ -1,5 +1,4 @@
 EESchema Schematic File Version 4
-LIBS:mtg_life_counter-cache
 EELAYER 30 0
 EELAYER END
 $Descr USLedger 17000 11000
@@ -15,7 +14,7 @@ Comment3 ""
 Comment4 ""
 $EndDescr
 $Comp
-L MCU_Module:Arduino_Nano_v3.x A1
+L mtg_life_counter-rescue:Arduino_Nano_v3.x-MCU_Module A1
 U 1 1 5F28B68A
 P 2450 8550
 F 0 "A1" H 2100 9500 50  0000 C CNN
@@ -1191,9 +1190,9 @@ NoConn ~ 2950 7950
 NoConn ~ 2950 8050
 Text Label 3450 9050 2    50   ~ 0
 SEL_0
-Text Label 3450 9150 2    50   ~ 0
+Text Label 3450 8550 2    50   ~ 0
 SEL_1
-Text Label 3450 9250 2    50   ~ 0
+Text Label 1450 8950 0    50   ~ 0
 SEL_2
 Text Label 3450 8950 2    50   ~ 0
 BTN_RB
@@ -1370,8 +1369,6 @@ NoConn ~ 1950 8450
 Wire Wire Line
 	2950 9050 3450 9050
 Wire Wire Line
-	2950 9150 3450 9150
-Wire Wire Line
 	2950 9250 3450 9250
 Wire Wire Line
 	2950 8950 3450 8950
@@ -1379,8 +1376,7 @@ Wire Wire Line
 	2950 8850 3450 8850
 Wire Wire Line
 	2950 8750 3450 8750
-NoConn ~ 1950 8950
-Text Label 3450 8550 2    50   ~ 0
+Text Label 3450 9250 2    50   ~ 0
 RNG_WIRE
 Wire Wire Line
 	2950 8550 3450 8550
@@ -1805,7 +1801,6 @@ Wire Wire Line
 Text Label 1450 7250 0    50   ~ 0
 INT_0
 NoConn ~ 1950 9150
-NoConn ~ 2950 8550
 NoConn ~ 1950 8250
 $Comp
 L Mechanical:MountingHole_Pad H1
@@ -2167,4 +2162,8 @@ Connection ~ 10750 3100
 Wire Wire Line
 	10750 6250 10850 6250
 Connection ~ 10750 6250
+NoConn ~ 2950 9250
+NoConn ~ 2950 9150
+Wire Wire Line
+	1450 8950 1950 8950
 $EndSCHEMATC
