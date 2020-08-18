@@ -79,4 +79,6 @@ static const uint8_t directions[4] = {
   B00011000,  // Lower Left
 };
 
+static const uint8_t hyphen = B00000010;
+
 #endif

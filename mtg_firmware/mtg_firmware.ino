@@ -1,6 +1,7 @@
 /* INCLUDES */
 #include <avr/sleep.h>
 #include "config.h"
+#include "display.h"
 #include "switches.h"
 #include "sevenseg.h"
 
@@ -32,11 +33,21 @@ typedef struct LifeCounter
   uint8_t commander_dmg[PLAYER_COUNT - 1];    // Commander Damage (0..21)
 } LifeCounter;
 
+////////////////////////////////////////////////////////////////////////////////
+// LOCAL CONSTANTS
+////////////////////////////////////////////////////////////////////////////////
+static const uint8_t STARTING_LIFE[2] = {20, 40};
+static const uint8_t PLAYER_POSITION[PLAYER_COUNT][PLAYER_COUNT -1] = {
+  {0, 1, 2},
+  {0, 1, 2},
+  {0, 1, 2},
+  {0, 1, 2},
+};
 
 ////////////////////////////////////////////////////////////////////////////////
 // LOCAL VARIABLES
 ////////////////////////////////////////////////////////////////////////////////
-static const uint8_t STARTING_LIFE[2] = {20, 40};
+//extern volatile uint8_t display_buffer[MATRIX_DEPTH][MATRIX_WIDTH];
 static LifeCounter life_counters[PLAYER_COUNT];
 static SwitchState switch_states[2];
 static uint8_t sw = 0;
@@ -57,7 +68,7 @@ void setup() {
 
   // Initialize 7-Segment Display Driver
   Serial.print("Initializing 7-seg... ");
-  // TODO: 7-set init
+  display_init();
   Serial.println("DONE");
 
   // Initialize Switch Sensing
@@ -85,9 +96,12 @@ int main() {
     if (digitalRead(POWER_SWITCH_PIN) == 0)
     {
       Serial.println("Going to sleep");
+      Serial.flush();
+      display_disable();
       counter_sleep();
       Serial.println("Woke up");
       counter_reset();
+      display_enable();
     }
 
     // Read switch states
@@ -111,7 +125,6 @@ int main() {
  */
 void counter_sleep(void)
 {
-  // display_disbale();
   sleep_enable();
   attachInterrupt(digitalPinToInterrupt(POWER_SWITCH_PIN), counter_wakeup, RISING);
   set_sleep_mode(SLEEP_MODE_PWR_DOWN);
