@@ -29,13 +29,21 @@ void switches_update(SwitchState * state_ptr)
   for (uint8_t i = 0; i < 8; i++)
   {
     // Update the select bus
-    digitalWrite(MUX_SELECT_0, i & 0x01);
-    digitalWrite(MUX_SELECT_1, i & 0x02);
-    digitalWrite(MUX_SELECT_2, i & 0x04);
+    digitalWrite(MUX_SELECT_0, i & (1 << 0));
+    digitalWrite(MUX_SELECT_1, i & (1 << 1));
+    digitalWrite(MUX_SELECT_2, i & (1 << 2));
+    delay(1);
 
     // Read button state
-    state_ptr->button_state |= (digitalRead(BUTTON_RB_PIN) << i);
-
+    if (digitalRead(BUTTON_RB_PIN))
+    {
+      state_ptr->button_state |= (1 << i);
+    }
+    else
+    {
+      state_ptr->button_state &= ~(1 << i);
+    }
+    
     // Read rotary switch state
     sw_1_2 |= (digitalRead(SWITCH_RB1_PIN) << i);
     sw_3_4 |= (digitalRead(SWITCH_RB2_PIN) << i);
@@ -77,6 +85,7 @@ void switches_print(SwitchState *state_ptr)
     Serial.print((state_ptr->button_state & (1 << i)) >> i);
     Serial.print(" ");
   }
+  Serial.print("| ");
   for (uint8_t i = 0; i < PLAYER_COUNT; i++)
   {
     Serial.print(state_ptr->rotary_position[i], HEX);

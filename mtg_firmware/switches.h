@@ -11,8 +11,8 @@
 #define SWITCH_RB2_PIN    (A2)
 #define BUTTON_RB_PIN     (A4)
 #define MUX_SELECT_0      (A5)
-#define MUX_SELECT_1      (A6)
-#define MUX_SELECT_2      (A7)
+#define MUX_SELECT_1      (A0)
+#define MUX_SELECT_2      (10)
 
 ////////////////////////////////////////////////////////////////////////////////
 // PUBLIC TYPES
