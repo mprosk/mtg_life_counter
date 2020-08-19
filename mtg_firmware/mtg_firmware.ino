@@ -3,7 +3,7 @@
 #include "config.h"
 #include "display.h"
 #include "switches.h"
-#include "sevenseg.h"
+#include "animations.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // DEFINES
@@ -17,15 +17,16 @@
 #define DEBUG_PIN         (4)
 /* CONFIG */
 //#define CPU_SLEEP_ENABLE
+#define ANIMATION_SPEED_MS  (50)
 
 ////////////////////////////////////////////////////////////////////////////////
 // LOCAL TYPES
 ////////////////////////////////////////////////////////////////////////////////
-typedef struct LifeCounter
+typedef struct LifeCounter_t
 {
-  int16_t life_total;                         // Life Total (-999...9999)
-  uint8_t commander_dmg[PLAYER_COUNT - 1];    // Commander Damage (0..21)
-} LifeCounter;
+  int16_t life;                           // Life Total (-999...9999)
+  uint8_t commander[PLAYER_COUNT - 1];    // Commander Damage (0..21)
+} LifeCounter_t;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -33,9 +34,11 @@ typedef struct LifeCounter
 ////////////////////////////////////////////////////////////////////////////////
 void counter_sleep(void);
 void counter_wakeup(void);
-void counter_reset(LifeCounter *counter);
+void counter_reset(LifeCounter_t *counter);
 void counter_reset_all(void);
-void switch_test(void);
+void update_display(void);
+void set_buffer(uint8_t * buf, int16_t x);
+void animate_roll(uint8_t animation, uint8_t reset);
 
 ////////////////////////////////////////////////////////////////////////////////
 // LOCAL CONSTANTS
@@ -47,13 +50,14 @@ static const uint8_t PLAYER_POSITION[PLAYER_COUNT][PLAYER_COUNT -1] = {
   {2, 1, 3},
   {0, 1, 2},
 };
+static const uint8_t BUTTON_PLAYER_MAPPING[] = {2, 2, 3, 3, 0, 0, 1, 1};
+static const int8_t BUTTON_INCREMENT_MAPPING[] = {1, -1, -1, 1, -1, 1, -1, 1};
 
 ////////////////////////////////////////////////////////////////////////////////
 // LOCAL VARIABLES
 ////////////////////////////////////////////////////////////////////////////////
-extern volatile uint8_t display_buffer[MATRIX_DEPTH][MATRIX_WIDTH];
-static LifeCounter life_counters[PLAYER_COUNT];
-static SwitchState switch_states[2];
+static LifeCounter_t counters[PLAYER_COUNT];
+static SwitchState switch_state[2];
 static uint8_t sw = 0;
 static uint8_t sw_last = 1;
 
@@ -78,7 +82,7 @@ void setup() {
   // Initialize Switch Sensing
   Serial.print("Initializing switch sensing... ");
   switches_init();
-  switches_update(&switch_states[sw_last]);
+  switches_update(&switch_state[sw_last]);
   Serial.println("DONE");
 
   // Reset counters
@@ -90,6 +94,8 @@ void setup() {
   attachInterrupt(digitalPinToInterrupt(POWER_SWITCH_PIN), counter_sleep, LOW);
   
   Serial.println("Initialization complete");
+  Serial.println(DISPLAY_MAX);
+  Serial.println(DISPLAY_MAX);
 }
 
 void loop() {
@@ -97,31 +103,32 @@ void loop() {
   static uint8_t reset_state_last = 1;
   static uint8_t roll_state = 1;
   static uint8_t roll_state_last = 1;
+  static uint8_t roll_animation = 0;
+  uint8_t mode_state = 0;
+  uint8_t mode_state_last = digitalRead(MODE_SWITCH_PIN);
   
+  update_display();
+  display_enable();
+    
   // MAIN LOOP
   while(1)
   {
-    
-    // Check for power off state
-    if (digitalRead(POWER_SWITCH_PIN) == 0)
-    {
-      
-      counter_sleep();
-      
-    }
 
-
-    // Check for reset button activation
+    // Check for reset button activation or mode switch change
     reset_state = digitalRead(RESET_BTN_PIN);
-    if ((reset_state == 0) && reset_state_last)
+    mode_state = digitalRead(MODE_SWITCH_PIN);
+    if (
+      ((reset_state == 0) && reset_state_last) 
+      | (mode_state != mode_state_last))
     {
       counter_reset_all();
+      update_display();
       Serial.print("Counter reset. Mode ");
-      Serial.println(life_counters[0].life_total);
+      Serial.println(counters[0].life);
     }
     reset_state_last = reset_state;
-
-
+    mode_state_last = mode_state;
+    
     // Check for roll button activation
     roll_state = digitalRead(ROLL_BTN_PIN);
     if ((roll_state == 0) && roll_state_last)
@@ -129,32 +136,48 @@ void loop() {
       // Button pressed
       Serial.println("Roll started");
       uint8_t roll_counter = 0;
+      animate_roll(NULL, 1);  // Reset the animation
       do
       {
         // Button held
         roll_counter++;
         digitalWrite(DEBUG_PIN, roll_counter == 0);
         roll_state = digitalRead(ROLL_BTN_PIN);
+        animate_roll(roll_animation, 0);
       }
       while(roll_state == 0);
 
       // Button released
       Serial.print("Result: ");
       Serial.println(roll_counter % PLAYER_COUNT);
+      roll_animation = (roll_animation + 1) % ANIMATION_COUNT;
+      update_display();
     }
     roll_state_last = roll_state;
 
 
     // Read switch states
-    switches_update(&switch_states[sw]);
+    switches_update(&switch_state[sw]);
 
 
     // Check for differences
-    if (switches_changed(&switch_states[0], &switch_states[1]))
+    uint8_t changes = switch_state[sw].button_state ^ switch_state[sw_last].button_state;
+    //if (switches_changed(&switch_state[0], &switch_state[1]))
+    if (changes)
     {
-      switches_print(&switch_states[sw]); 
+      for (uint8_t i = 0; i < BUTTON_COUNT; i++)
+      {
+        uint8_t mask = (1 << i);
+        if ((switch_state[sw].button_state & mask) && (changes & mask))
+        {
+          counters[BUTTON_PLAYER_MAPPING[i]].life += BUTTON_INCREMENT_MAPPING[i];
+        }
+      }
+      update_display();
+      switches_print(&switch_state[sw]);
     }
-
+    
+    
     
     // Update internal switch states
     sw ^= 1;
@@ -165,6 +188,71 @@ void loop() {
 ////////////////////////////////////////////////////////////////////////////////
 // FUNCTIONS
 ////////////////////////////////////////////////////////////////////////////////
+
+/*
+ * Updates the display buffer with the counter data
+ */
+void update_display(void)
+{
+  for (uint8_t i = 0; i < PLAYER_COUNT; i++)
+  {
+    display_set_int(i, counters[i].life);
+  }
+}
+
+/*
+ * Resets the given counter
+ */
+void counter_reset(LifeCounter_t *counter)
+{
+  counter->life = STARTING_LIFE[digitalRead(MODE_SWITCH_PIN)];
+  for (uint8_t i = 0; i < PLAYER_COUNT - 1; i++)
+  {
+    counter->commander[i] = 0;
+  }
+}
+
+/*
+ * Resets all the life counters
+ */
+void counter_reset_all(void)
+{
+  for (uint8_t i = 0; i < PLAYER_COUNT; i++)
+  {
+    counter_reset(&counters[i]);
+  }
+}
+
+/*
+ * Updates the roll animation
+ */
+void animate_roll(uint8_t animation, uint8_t reset)
+{
+  static uint8_t x = 0;
+  static uint32_t inc_time = 0;
+
+  if (reset)
+  {
+    inc_time = 0;
+    return;
+  }
+  
+  if (millis() >= inc_time)
+  {
+    inc_time = millis() + ANIMATION_SPEED_MS;
+    
+    // Update display buffer
+    for (uint8_t i = 0; i < PLAYER_COUNT; i++)
+    {
+      for (uint8_t j = 0; j < DISPLAY_WIDTH; j++)
+      {
+        display_set_digit(i, j, ANIMATIONS[animation][(x + j) % ANIMATION_LENGTH[animation]]);
+      }
+    }
+    // increment
+    x = (x+1) % ANIMATION_LENGTH[animation];
+  }
+}
 
 /*
  * Attatches a wake-up interrupt to the power switch and puts the Arduino to sleep
@@ -182,7 +270,7 @@ void counter_sleep(void)
 #else
   while(digitalRead(POWER_SWITCH_PIN) == 0)
   {
-    delay(10);
+    delay(100);
   }
   counter_wakeup();
 #endif
@@ -201,43 +289,4 @@ void counter_wakeup(void)
   counter_reset_all();
   display_enable();
   attachInterrupt(digitalPinToInterrupt(POWER_SWITCH_PIN), counter_sleep, LOW);
-}
-
-/*
- * Resets the given counter
- */
-void counter_reset(LifeCounter *counter)
-{
-  counter->life_total = STARTING_LIFE[digitalRead(MODE_SWITCH_PIN)];
-  for (uint8_t i = 0; i < PLAYER_COUNT - 1; i++)
-  {
-    counter->commander_dmg[i] = 0;
-  }
-}
-
-/*
- * Resets all the life counters
- */
-void counter_reset_all(void)
-{
-  for (uint8_t i = 0; i < PLAYER_COUNT; i++)
-  {
-    counter_reset(&life_counters[i]);
-  }
-}
-
-void switch_test(void)
-{ 
-  switches_update(&switch_states[sw]);
-  switches_print(&switch_states[sw]);
-  
-  while (1){
-    switches_update(&switch_states[sw]);
-    if (switches_changed(&switch_states[0], &switch_states[1]))
-    {
-      switches_print(&switch_states[sw]); 
-    }
-    sw ^= 1;
-    sw_last ^= 1;
-  }
 }

@@ -32,7 +32,7 @@ void switches_update(SwitchState * state_ptr)
     digitalWrite(MUX_SELECT_0, i & (1 << 0));
     digitalWrite(MUX_SELECT_1, i & (1 << 1));
     digitalWrite(MUX_SELECT_2, i & (1 << 2));
-    delay(1);
+//    delay(1);
 
     // Read button state
     if (digitalRead(BUTTON_RB_PIN))
