@@ -14,10 +14,13 @@
 #define ROLL_BTN_PIN      (6)
 #define RESET_BTN_PIN     (7)
 #define RNG_PIN           (A0)
-#define DEBUG_PIN         (4)
+#define DEBUG_PIN1        (4)
+#define DEBUG_PIN2        (5)
+
 /* CONFIG */
 //#define CPU_SLEEP_ENABLE
 #define ANIMATION_SPEED_MS  (50)
+#define COMMANDER_DMG_MAX (21)
 
 ////////////////////////////////////////////////////////////////////////////////
 // LOCAL TYPES
@@ -45,9 +48,9 @@ void animate_roll(uint8_t animation, uint8_t reset);
 ////////////////////////////////////////////////////////////////////////////////
 static const uint8_t STARTING_LIFE[2] = {20, 40};
 static const uint8_t PLAYER_POSITION[PLAYER_COUNT][PLAYER_COUNT -1] = {
-  {2, 1, 3},
+  {1, 0, 3},
   {0, 1, 2},
-  {2, 1, 3},
+  {1, 0, 3},
   {0, 1, 2},
 };
 static const uint8_t BUTTON_PLAYER_MAPPING[] = {2, 2, 3, 3, 0, 0, 1, 1};
@@ -58,8 +61,8 @@ static const int8_t BUTTON_INCREMENT_MAPPING[] = {1, -1, -1, 1, -1, 1, -1, 1};
 ////////////////////////////////////////////////////////////////////////////////
 static LifeCounter_t counters[PLAYER_COUNT];
 static SwitchState switch_state[2];
-static uint8_t sw = 0;
-static uint8_t sw_last = 1;
+static uint8_t roll_hold = 0;
+static uint32_t roll_timeout = 0;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -67,29 +70,25 @@ static uint8_t sw_last = 1;
 void setup() {
   Serial.begin(115200);
   Serial.println("Online"); Serial.flush();
+  
   // Initialize Top-Level
   pinMode(POWER_SWITCH_PIN, INPUT);
   pinMode(MODE_SWITCH_PIN, INPUT_PULLUP);
   pinMode(ROLL_BTN_PIN, INPUT_PULLUP);
   pinMode(RESET_BTN_PIN, INPUT_PULLUP);
-  pinMode(DEBUG_PIN, OUTPUT);  
+  pinMode(DEBUG_PIN1, OUTPUT);
+  pinMode(DEBUG_PIN2, OUTPUT);
 
   // Initialize 7-Segment Display Driver
-  Serial.print("Initializing 7-seg... "); Serial.flush();
+  Serial.print("Initializing display.. "); Serial.flush();
   display_init();
   Serial.println("DONE");
 
   // Initialize Switch Sensing
   Serial.print("Initializing switch sensing... ");
   switches_init();
-  switches_update(&switch_state[sw_last]);
   Serial.println("DONE");
-
-  // Reset counters
-  Serial.print("Resetting counters... ");
-  counter_reset_all();
-  Serial.println("DONE");
-
+  
   // Attach power switch interrupt
   attachInterrupt(digitalPinToInterrupt(POWER_SWITCH_PIN), counter_sleep, LOW);
   
@@ -104,7 +103,12 @@ void loop() {
  
   uint8_t mode_state = 0;
   uint8_t mode_state_last = digitalRead(MODE_SWITCH_PIN);
-  
+
+  uint8_t sw = 0;
+  uint8_t sw_last = 1;
+  switches_update(&switch_state[sw_last]);
+
+  counter_reset_all();
   update_display();
   display_enable();
     
@@ -127,9 +131,8 @@ void loop() {
     reset_state_last = reset_state;
     mode_state_last = mode_state;
     
-    // Check for roll button activation
+    // Handle roll button activation
     roll();
-
 
     // Read switch states
     switches_update(&switch_state[sw]);
@@ -144,7 +147,18 @@ void loop() {
       {
         uint8_t mask = (1 << i);
 
-        // Check if both
+        // Check if both buttons in that player group are held
+        if (i % 2 == 1)
+        {
+          uint8_t mask2 = (1 << i-1);
+          if ((switch_state[sw].button_state & mask) &&
+                (switch_state[sw].button_state & mask2))
+          {
+            counter_reset(&counters[BUTTON_PLAYER_MAPPING[i]]);
+            update_display();
+            continue;
+          }
+        }
         
         // Check if this button was pressed
         if ((switch_state[sw].button_state & mask) && (changes & mask))
@@ -184,13 +198,15 @@ void roll(void)
     {
       // Button held
       roll_counter++;
-      digitalWrite(DEBUG_PIN, roll_counter == 0);
+      digitalWrite(DEBUG_PIN1, roll_counter == 0);
       roll_state = digitalRead(ROLL_BTN_PIN);
       animate_roll(1);
     }
     while(roll_state == 0);
 
     // Button released
+    roll_hold = 1;
+    roll_timeout = millis() + 
     Serial.print("Result: ");
     Serial.println(roll_counter % PLAYER_COUNT);
     update_display();
@@ -238,7 +254,7 @@ void counter_reset_all(void)
  */
 void animate_roll(uint8_t animate)
 {
-  static uint8_t animation = ANIMATION_COUNT;
+  static uint8_t animation = ANIMATION_COUNT - 1;
   static uint8_t x = 0;
   static uint32_t inc_time = 0;
 
