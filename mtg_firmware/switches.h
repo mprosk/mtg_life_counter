@@ -20,7 +20,7 @@
 typedef struct SwitchState
 {
   uint8_t button_state;         // Bitfield of push button states
-  uint8_t rotary_position[PLAYER_COUNT];
+  int8_t rotary_position[PLAYER_COUNT];
 } SwitchState;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -28,7 +28,6 @@ typedef struct SwitchState
 ////////////////////////////////////////////////////////////////////////////////
 void switches_init(void);
 void switches_update(SwitchState * state_ptr);
-uint8_t switches_rotary_changed(SwitchState * state_a, SwitchState * state_b);
 void switches_print(SwitchState *state_ptr);
 
 

@@ -1,6 +1,11 @@
 #include "switches.h"
 
 ////////////////////////////////////////////////////////////////////////////////
+// PRIVATE FUNCTIONS DECLARATIONS
+////////////////////////////////////////////////////////////////////////////////
+int8_t switches_decode_rotary(uint8_t switch_state);
+
+////////////////////////////////////////////////////////////////////////////////
 // PUBLIC FUNCTIONS
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -50,26 +55,13 @@ void switches_update(SwitchState * state_ptr)
   }
 
   // Decode the rotary switch positions
-  state_ptr->rotary_position[0] = (sw_1_2 & 0x0F);
-  state_ptr->rotary_position[1] = (sw_1_2 & 0xF0) >> 4;
-  state_ptr->rotary_position[2] = (sw_3_4 & 0x0F);
-  state_ptr->rotary_position[3] = (sw_3_4 & 0xF0) >> 4;
+  state_ptr->rotary_position[0] = switches_decode_rotary(sw_1_2 & 0x0F);
+  state_ptr->rotary_position[1] = switches_decode_rotary((sw_1_2 & 0xF0) >> 4);
+  state_ptr->rotary_position[2] = switches_decode_rotary(sw_3_4 & 0x0F);
+  state_ptr->rotary_position[3] = switches_decode_rotary((sw_3_4 & 0xF0) >> 4);
 }
 
-/*
- * Returns 1 if the rotray switch settings between two given SwitchStates are different
- */
-uint8_t switches_rotary_changed(SwitchState * state_a, SwitchState * state_b)
-{
-  for (uint8_t i = 0; i < PLAYER_COUNT; i++)
-  {
-    if (state_a->rotary_position[i] != state_b->rotary_position[i])
-    {
-      return 1;
-    }
-  }
-  return 0;
-}
+
 
 /*
  * Prints the state position to the screen
@@ -88,4 +80,20 @@ void switches_print(SwitchState *state_ptr)
     Serial.print(" ");
   }
   Serial.println();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// PRIVATE FUNCTIONS
+////////////////////////////////////////////////////////////////////////////////
+
+int8_t switches_decode_rotary(uint8_t rotary_state)
+{
+  for (uint8_t i = 0; i < PLAYER_COUNT; i++)
+  {
+    if (rotary_state == (1 << i))
+    {
+      return PLAYER_COUNT - i - 1;
+    }
+  }
+  return -1;
 }
