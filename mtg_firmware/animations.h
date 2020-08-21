@@ -12,13 +12,6 @@
 
 #define ANIMATION_COUNT		(8)
 
-static const uint8_t DIRECTION[4] = {
-  B10000100,  // Upper Left
-  B11000000,  // Upper Right
-  B00110000,  // Lower Right
-  B00011000,  // Lower Left
-};
-
 ////////////////////////////////////////////////////////////////////////////////
 
 static const uint8_t TWO_SEG_SPIN[] = {

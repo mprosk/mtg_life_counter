@@ -110,14 +110,22 @@ void display_set_string(uint8_t player, uint8_t* text)
 }
 
 /*
- * Fills an entire player display with the given pattern
+ * Fills an entire player display with the given raw pattern
  */
-void display_fill(uint8_t player, uint8_t fill_char)
+void display_fill_raw(uint8_t player, uint8_t fill_char)
 {
   for (uint8_t i = 0; i < DISPLAY_WIDTH; i++)
   {
     display_buffer[player][i] = fill_char;
   }
+}
+
+/*
+ * Fills an entire player display with the given character
+ */
+void display_fill(uint8_t player, uint8_t fill_char)
+{
+  display_fill_raw(player, SEG[fill_char]);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

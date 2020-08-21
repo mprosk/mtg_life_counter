@@ -21,6 +21,7 @@
 //#define CPU_SLEEP_ENABLE
 #define ANIMATION_SPEED_MS  (50)
 #define COMMANDER_DMG_MAX (21)
+#define ROLL_RESULT_DURATION_MS   (2000)
 
 ////////////////////////////////////////////////////////////////////////////////
 // LOCAL TYPES
@@ -28,8 +29,9 @@
 typedef struct LifeCounter_t
 {
   int16_t life;                           // Life Total (-999...9999)
-  uint8_t commander[PLAYER_COUNT - 1];    // Commander Damage (0..21)
+  uint8_t commander[PLAYER_COUNT];    // Commander Damage (0..21)
   uint8_t display_mode;
+  int16_t delta;
   uint32_t timeout;
 } LifeCounter_t;
 
@@ -49,22 +51,33 @@ void animate_roll(uint8_t animation, uint8_t reset);
 // LOCAL CONSTANTS
 ////////////////////////////////////////////////////////////////////////////////
 static const uint8_t STARTING_LIFE[2] = {20, 40};
-static const uint8_t PLAYER_POSITION[PLAYER_COUNT][PLAYER_COUNT - 1] = {
-  {1, 0, 3},
-  {0, 1, 2},
-  {1, 0, 3},
-  {0, 1, 2},
-};
 static const uint8_t BUTTON_PLAYER_MAPPING[] = {2, 2, 3, 3, 0, 0, 1, 1};
 static const int8_t BUTTON_INCREMENT_MAPPING[] = {1, -1, -1, 1, -1, 1, -1, 1};
+static const uint8_t DIRECTION[4] = {
+  B10000100,  // 0: Upper Left
+  B11000000,  // 1: Upper Right
+  B00110000,  // 2: Lower Right
+  B00011000,  // 3: Lower Left
+};
+static const uint8_t PLAYER_MAP[PLAYER_COUNT][PLAYER_COUNT] = {
+  {2, 3, 0, 1},
+  {2, 3, 0, 1},
+  {0, 1, 2, 3},
+  {0, 1, 2, 3},
+};
+static const uint8_t ROLL_TEXT[][PLAYER_COUNT] = {
+  "PLAY", " GO ", " YOU", " YES", "GLHF"
+};
+static const uint8_t DEATH_TEXT[][PLAYER_COUNT] = {
+  "OUCH", " OOF", " GG ", " RIP", "DEAD", "DIED", "  F ", "SRRY", " BYE", "BOOP", " DED", "LOSE"
+};
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // LOCAL VARIABLES
 ////////////////////////////////////////////////////////////////////////////////
 static LifeCounter_t counters[PLAYER_COUNT];
 static SwitchState switch_state[2];
-static uint8_t roll_hold = 0;
-static uint32_t roll_timeout = 0;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -136,7 +149,7 @@ void loop() {
     mode_state_last = mode_state;
     
     // Handle roll button activation
-    roll();
+    uint8_t roll_state = roll();
 
     // Read switch states
     switches_update(&switch_state[sw]);
@@ -146,7 +159,7 @@ void loop() {
 
     // Process button changes
     uint8_t changes = switch_state[sw].button_state ^ switch_state[sw_last].button_state;
-    if (changes)
+    if (changes && !roll_state)
     {
       for (uint8_t i = 0; i < BUTTON_COUNT; i++)
       {
@@ -197,10 +210,12 @@ void loop() {
 // FUNCTIONS
 ////////////////////////////////////////////////////////////////////////////////
 
-void roll(void)
+uint8_t roll(void)
 {
   static uint8_t roll_state = 0;
   static uint8_t roll_state_last = digitalRead(ROLL_BTN_PIN);
+  static uint32_t roll_timeout = 0;
+  static uint8_t roll_hold = 0;
   
   roll_state = digitalRead(ROLL_BTN_PIN);
   if ((roll_state == 0) && roll_state_last)
@@ -220,13 +235,36 @@ void roll(void)
     while(roll_state == 0);
 
     // Button released
+    uint8_t roll_result = roll_counter % PLAYER_COUNT;
     roll_hold = 1;
-    roll_timeout = millis() + 
+    roll_timeout = millis() + ROLL_RESULT_DURATION_MS;   // THIS IS NOT ROLLOVER RESISTANT
+    // Generate roll result display
+    for (uint8_t i = 0; i < PLAYER_COUNT; i++)
+    {
+      if (i == roll_result)
+      {
+        display_set_string(roll_result, "PLAY");  
+      }
+      else
+      {
+        display_fill_raw(i, DIRECTION[PLAYER_MAP[i][roll_result]]);
+      }
+    }
     Serial.print("Result: ");
-    Serial.println(roll_counter % PLAYER_COUNT);
-    update_display();
+    Serial.println(roll_result);
   }
   roll_state_last = roll_state;
+
+  if (roll_hold)
+  {
+    if (millis() >= roll_timeout)
+    {
+      roll_hold = 0;
+      update_display();
+    }
+  }
+\
+  return roll_hold;
 }
 
 /*
@@ -246,7 +284,7 @@ void update_display(void)
 void counter_reset(LifeCounter_t *counter)
 {
   counter->life = STARTING_LIFE[digitalRead(MODE_SWITCH_PIN)];
-  for (uint8_t i = 0; i < PLAYER_COUNT - 1; i++)
+  for (uint8_t i = 0; i < PLAYER_COUNT; i++)
   {
     counter->commander[i] = 0;
   }
@@ -282,7 +320,7 @@ void animate_roll(uint8_t animate)
   
   if (millis() >= inc_time)
   {
-    inc_time = millis() + ANIMATION_SPEED_MS;
+    inc_time = millis() + ANIMATION_SPEED_MS;   // THIS IS NOT ROLLOVER REISTANT
     
     // Update display buffer
     for (uint8_t i = 0; i < PLAYER_COUNT; i++)

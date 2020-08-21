@@ -1,19 +1,3 @@
-/*
- * Zero-life messages
- * OUCH
- * OOF
- * GG
- * rIP
- * dEAd
- * F
- * Srry
- * byE
- * diEd
- * bOOP
- * dEd
- * 
- */
-
 #ifndef _DISPLAY_H_
 #define _DISPLAY_H_
 
@@ -48,5 +32,6 @@ void display_set_int(uint8_t player, int16_t value);
 void display_set_digit(uint8_t player, uint8_t pos, uint8_t chr);
 void display_set_string(uint8_t player, uint8_t* text);
 void display_fill(uint8_t player, uint8_t fill_char);
+void display_fill_raw(uint8_t player, uint8_t fill_char);
 
 #endif /* _DISPLAY_H_ */
