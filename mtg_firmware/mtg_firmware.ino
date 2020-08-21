@@ -95,15 +95,13 @@ void setup() {
   
   Serial.println("Initialization complete");
   Serial.println(DISPLAY_MAX);
-  Serial.println(DISPLAY_MAX);
+  Serial.println(DISPLAY_MIN);
 }
 
 void loop() {
-  static uint8_t reset_state = 1;
-  static uint8_t reset_state_last = 1;
-  static uint8_t roll_state = 1;
-  static uint8_t roll_state_last = 1;
-  static uint8_t roll_animation = 0;
+  uint8_t reset_state = 0;
+  uint8_t reset_state_last = digitalRead(RESET_BTN_PIN);
+ 
   uint8_t mode_state = 0;
   uint8_t mode_state_last = digitalRead(MODE_SWITCH_PIN);
   
@@ -130,30 +128,7 @@ void loop() {
     mode_state_last = mode_state;
     
     // Check for roll button activation
-    roll_state = digitalRead(ROLL_BTN_PIN);
-    if ((roll_state == 0) && roll_state_last)
-    {
-      // Button pressed
-      Serial.println("Roll started");
-      uint8_t roll_counter = 0;
-      animate_roll(NULL, 1);  // Reset the animation
-      do
-      {
-        // Button held
-        roll_counter++;
-        digitalWrite(DEBUG_PIN, roll_counter == 0);
-        roll_state = digitalRead(ROLL_BTN_PIN);
-        animate_roll(roll_animation, 0);
-      }
-      while(roll_state == 0);
-
-      // Button released
-      Serial.print("Result: ");
-      Serial.println(roll_counter % PLAYER_COUNT);
-      roll_animation = (roll_animation + 1) % ANIMATION_COUNT;
-      update_display();
-    }
-    roll_state_last = roll_state;
+    roll();
 
 
     // Read switch states
@@ -168,12 +143,16 @@ void loop() {
       for (uint8_t i = 0; i < BUTTON_COUNT; i++)
       {
         uint8_t mask = (1 << i);
+
+        // Check if both
+        
+        // Check if this button was pressed
         if ((switch_state[sw].button_state & mask) && (changes & mask))
         {
           counters[BUTTON_PLAYER_MAPPING[i]].life += BUTTON_INCREMENT_MAPPING[i];
+          display_set_int(BUTTON_PLAYER_MAPPING[i], counters[BUTTON_PLAYER_MAPPING[i]].life);
         }
       }
-      update_display();
       switches_print(&switch_state[sw]);
     }
     
@@ -188,6 +167,36 @@ void loop() {
 ////////////////////////////////////////////////////////////////////////////////
 // FUNCTIONS
 ////////////////////////////////////////////////////////////////////////////////
+
+void roll(void)
+{
+  static uint8_t roll_state = 0;
+  static uint8_t roll_state_last = digitalRead(ROLL_BTN_PIN);
+  
+  roll_state = digitalRead(ROLL_BTN_PIN);
+  if ((roll_state == 0) && roll_state_last)
+  {
+    // Button pressed
+    Serial.println("Roll started");
+    uint8_t roll_counter = 0;
+    animate_roll(0);  // Reset the animation
+    do
+    {
+      // Button held
+      roll_counter++;
+      digitalWrite(DEBUG_PIN, roll_counter == 0);
+      roll_state = digitalRead(ROLL_BTN_PIN);
+      animate_roll(1);
+    }
+    while(roll_state == 0);
+
+    // Button released
+    Serial.print("Result: ");
+    Serial.println(roll_counter % PLAYER_COUNT);
+    update_display();
+  }
+  roll_state_last = roll_state;
+}
 
 /*
  * Updates the display buffer with the counter data
@@ -225,15 +234,18 @@ void counter_reset_all(void)
 
 /*
  * Updates the roll animation
+ * 0 = reset, 1 = animate
  */
-void animate_roll(uint8_t animation, uint8_t reset)
+void animate_roll(uint8_t animate)
 {
+  static uint8_t animation = ANIMATION_COUNT;
   static uint8_t x = 0;
   static uint32_t inc_time = 0;
 
-  if (reset)
+  if (animate == 0)
   {
     inc_time = 0;
+    animation = (animation + 1) % ANIMATION_COUNT;
     return;
   }
   
@@ -287,6 +299,7 @@ void counter_wakeup(void)
 #endif
   Serial.println("Woke up");
   counter_reset_all();
+  update_display();
   display_enable();
   attachInterrupt(digitalPinToInterrupt(POWER_SWITCH_PIN), counter_sleep, LOW);
 }
