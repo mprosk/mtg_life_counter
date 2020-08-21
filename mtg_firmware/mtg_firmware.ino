@@ -29,6 +29,8 @@ typedef struct LifeCounter_t
 {
   int16_t life;                           // Life Total (-999...9999)
   uint8_t commander[PLAYER_COUNT - 1];    // Commander Damage (0..21)
+  uint8_t display_mode;
+  uint32_t timeout;
 } LifeCounter_t;
 
 
@@ -47,7 +49,7 @@ void animate_roll(uint8_t animation, uint8_t reset);
 // LOCAL CONSTANTS
 ////////////////////////////////////////////////////////////////////////////////
 static const uint8_t STARTING_LIFE[2] = {20, 40};
-static const uint8_t PLAYER_POSITION[PLAYER_COUNT][PLAYER_COUNT -1] = {
+static const uint8_t PLAYER_POSITION[PLAYER_COUNT][PLAYER_COUNT - 1] = {
   {1, 0, 3},
   {0, 1, 2},
   {1, 0, 3},
@@ -116,6 +118,8 @@ void loop() {
   while(1)
   {
 
+    digitalWrite(DEBUG_PIN2, HIGH);
+
     // Check for reset button activation or mode switch change
     reset_state = digitalRead(RESET_BTN_PIN);
     mode_state = digitalRead(MODE_SWITCH_PIN);
@@ -137,15 +141,17 @@ void loop() {
     // Read switch states
     switches_update(&switch_state[sw]);
 
+    // Process rotary switch changes
+    uint8_t rotary_changed = switches_rotary_changed(&switch_state[0], &switch_state[1]); 
 
-    // Check for differences
+    // Process button changes
     uint8_t changes = switch_state[sw].button_state ^ switch_state[sw_last].button_state;
-    //if (switches_changed(&switch_state[0], &switch_state[1]))
     if (changes)
     {
       for (uint8_t i = 0; i < BUTTON_COUNT; i++)
       {
         uint8_t mask = (1 << i);
+        uint8_t player = BUTTON_PLAYER_MAPPING[i];
 
         // Check if both buttons in that player group are held
         if (i % 2 == 1)
@@ -154,8 +160,8 @@ void loop() {
           if ((switch_state[sw].button_state & mask) &&
                 (switch_state[sw].button_state & mask2))
           {
-            counter_reset(&counters[BUTTON_PLAYER_MAPPING[i]]);
-            update_display();
+            counter_reset(&counters[player]);
+            display_set_int(player, counters[player].life);
             continue;
           }
         }
@@ -163,18 +169,27 @@ void loop() {
         // Check if this button was pressed
         if ((switch_state[sw].button_state & mask) && (changes & mask))
         {
-          counters[BUTTON_PLAYER_MAPPING[i]].life += BUTTON_INCREMENT_MAPPING[i];
-          display_set_int(BUTTON_PLAYER_MAPPING[i], counters[BUTTON_PLAYER_MAPPING[i]].life);
+          // Only change values if we're within the display-able range
+          if ((counters[player].life > DISPLAY_MIN) && (counters[player].life < DISPLAY_MAX))
+          {
+            counters[player].life += BUTTON_INCREMENT_MAPPING[i];
+            display_set_int(player, counters[player].life);
+          }
         }
       }
+    }
+
+    // Debug printout
+    if (changes || rotary_changed)
+    {
       switches_print(&switch_state[sw]);
     }
-    
-    
     
     // Update internal switch states
     sw ^= 1;
     sw_last ^= 1;
+
+    digitalWrite(DEBUG_PIN2, LOW);
   }
 }
 

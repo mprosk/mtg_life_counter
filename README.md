@@ -34,6 +34,16 @@ Four player life counter for *Magic: The Gathering*
 
 1. 
 
+#### Roll Button
+
+The ROLL button on the counter allows you to quickly and easily select a player at random, useful for determining which player starts, or even for randomly selecting which player you should deal damage to.
+
+To activate this feature, press and hold the blue ROLL button in the middle of the counter. When you are ready, release the button, and the random output will be shown on the displays. It will automatically disappear after a few seconds.
+
+##### Random Number Generation
+
+While the button is held, a counter is continuously incremented. When the button is released, the value of this counter is used to calculate which player won the roll. This counter increments approximately 64,000 times per second, roughly once every 16 microseconds. It is virtually impossible for a human to actuate the button quickly enough or precisely enough to influence the output of the roll.
+
 ##  Next Hardware Revision
 
 List of features and fixes that will be included in the next hardware revision

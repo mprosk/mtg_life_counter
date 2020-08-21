@@ -57,14 +57,10 @@ void switches_update(SwitchState * state_ptr)
 }
 
 /*
- * Returns 1 if two given SwitchStates are different
+ * Returns 1 if the rotray switch settings between two given SwitchStates are different
  */
-uint8_t switches_changed(SwitchState * state_a, SwitchState * state_b)
+uint8_t switches_rotary_changed(SwitchState * state_a, SwitchState * state_b)
 {
-  if (state_a->button_state ^ state_b->button_state)
-  {
-    return 1;
-  }
   for (uint8_t i = 0; i < PLAYER_COUNT; i++)
   {
     if (state_a->rotary_position[i] != state_b->rotary_position[i])

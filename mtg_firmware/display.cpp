@@ -99,6 +99,17 @@ void display_set_digit(uint8_t player, uint8_t pos, uint8_t chr){
 }
 
 /*
+ * 
+ */
+void display_set_string(uint8_t player, uint8_t* text)
+{
+  for (uint8_t i = 0; i < DISPLAY_WIDTH; i++)
+  {
+    display_buffer[player][i] = SEG[text[i]];
+  }
+}
+
+/*
  * Fills an entire player display with the given pattern
  */
 void display_fill(uint8_t player, uint8_t fill_char)

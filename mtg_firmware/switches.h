@@ -28,7 +28,7 @@ typedef struct SwitchState
 ////////////////////////////////////////////////////////////////////////////////
 void switches_init(void);
 void switches_update(SwitchState * state_ptr);
-uint8_t switches_changed(SwitchState * state_a, SwitchState * state_b);
+uint8_t switches_rotary_changed(SwitchState * state_a, SwitchState * state_b);
 void switches_print(SwitchState *state_ptr);
 
 
