@@ -131,7 +131,7 @@ void loop() {
   
   /* STARTUP */
   counter_reset_all();
-  rotary_init();  
+  rotary_init();
   update_display_all();
   display_enable();
   switches_print(&switch_state[sw_last]);
@@ -402,9 +402,14 @@ void rotary_init(void)
   for (uint8_t i = 0; i < PLAYER_COUNT; i++)
   {
     int8_t setting = switch_state[sw_last].rotary_position[i];
+    uint8_t player = SWITCH_PLAYER_MAPPING[i];
     if (setting >= 0)
     {
-      counters[i].mode = (uint8_t)setting;
+      counters[player].mode = (uint8_t)setting;
+    }
+    else
+    {
+      counters[player].mode = 0;
     }
   }
 }
