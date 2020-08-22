@@ -20,7 +20,7 @@
 /* CONFIG */
 //#define CPU_SLEEP_ENABLE
 #define ANIMATION_SPEED_MS  (50)
-#define COMMANDER_DMG_MAX (21)
+#define COMMANDER_DAMAGE (21)
 #define ROLL_RESULT_DURATION_MS   (2000)
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -28,8 +28,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 typedef struct LifeCounter_t
 {
-  int16_t life;                           // Life Total (-999...9999)
-  uint8_t commander[PLAYER_COUNT - 1];    // Commander Damage (0..21)
+  uint8_t life[PLAYER_COUNT];
   uint8_t mode;
   int16_t delta;
   uint32_t timeout;
@@ -48,6 +47,7 @@ void update_display_all(void);
 void rotary_init(void);
 void set_buffer(uint8_t * buf, int16_t x);
 void animate_roll(uint8_t reset);
+//void play_to_win(void);
 
 ////////////////////////////////////////////////////////////////////////////////
 // LOCAL CONSTANTS
@@ -67,6 +67,12 @@ static const uint8_t PLAYER_MAP[PLAYER_COUNT][PLAYER_COUNT] = {   // Player-to-d
   {2, 3, 0, 1},
   {0, 1, 2, 3},
   {0, 1, 2, 3},
+};
+static const uint8_t CMDR_DMG_MAP[PLAYER_COUNT][PLAYER_COUNT] = {   // Player-to-direction mapping
+  {2, 1, 0, 3},
+  {3, 0, 1, 2},
+  {2, 1, 0, 3},
+  {3, 0, 1, 2},
 };
 static const uint8_t ROLL_TEXT[][PLAYER_COUNT] = {
   "PLAY", " GO ", " YOU", " YES", "GLHF"
@@ -129,6 +135,7 @@ void loop() {
   update_display_all();
   display_enable();
   switches_print(&switch_state[sw_last]);
+//  play_to_win();
     
   /* MAIN LOOP */
   while(1)
@@ -146,7 +153,7 @@ void loop() {
       counter_reset_all();
       update_display_all();
       Serial.print("Counter reset. Mode ");
-      Serial.println(counters[0].life);
+      Serial.println(counters[0].life[0]);
     }
     reset_state_last = reset_state;
     mode_state_last = mode_state;
@@ -201,11 +208,28 @@ void loop() {
         // Check if this button was pressed
         if ((switch_state[sw].button_state & mask) && (changes & mask))
         {
-          // Only change values if we're within the display-able range
-          if ((counters[player].life > DISPLAY_MIN) && (counters[player].life < DISPLAY_MAX))
+          uint8_t mode = counters[player].mode;
+          int8_t increment = BUTTON_INCREMENT_MAPPING[i];
+          int16_t target = counters[player].life[mode] + increment;
+          if (mode)
           {
-            counters[player].life += BUTTON_INCREMENT_MAPPING[i];
-            update_display(player);
+            // Commander damage mode
+            if ((target >= 0) && (target <= COMMANDER_DAMAGE))
+            {
+              // Only change values if we're within the possible commander damage range
+              counters[player].life[mode] = target;
+              update_display(player);
+            }
+          }
+          else
+          {
+            // Own life mode
+            if ((target >= DISPLAY_MIN) && (target <= DISPLAY_MAX))
+            {
+              // Only change values if we're within the display-able range
+              counters[player].life[mode] = target;
+              update_display(player);
+            }
           }
         }
       }
@@ -295,16 +319,11 @@ uint8_t roll(void)
 void update_display(uint8_t player)
 {
   uint8_t mode = counters[player].mode;
+  display_set_int(player, counters[player].life[mode]);
   if (mode)
   {
     // Commander damage mode
-    display_set_int(player, counters[player].commander[mode - 1]);
-    display_set_digit(player, 0, DIRECTION[mode]);
-  }
-  else
-  {
-    // Own life mode
-    display_set_int(player, counters[player].life);
+    display_set_digit(player, 0, DIRECTION[CMDR_DMG_MAP[player][mode]]);
   }
 }
 
@@ -322,10 +341,10 @@ void update_display_all(void)
  */
 void counter_reset(LifeCounter_t *counter)
 {
-  counter->life = STARTING_LIFE[digitalRead(MODE_SWITCH_PIN)];
-  for (uint8_t i = 0; i < PLAYER_COUNT - 1; i++)
+  counter->life[0] = STARTING_LIFE[digitalRead(MODE_SWITCH_PIN)];
+  for (uint8_t i = 1; i < PLAYER_COUNT; i++)
   {
-    counter->commander[i] = i + 1;
+    counter->life[i] = 0;
   }
 }
 
@@ -427,4 +446,28 @@ void counter_wakeup(void)
   update_display_all();
   display_enable();
   attachInterrupt(digitalPinToInterrupt(POWER_SWITCH_PIN), counter_sleep, LOW);
+//  play_to_win();
+}
+
+
+void play_to_win(void)
+{
+  for (uint8_t i = 0; i < PLAYER_COUNT; i++)
+  {
+    display_set_string(i, "PLAY");
+  }
+  delay(500);
+  for (uint8_t i = 0; i < PLAYER_COUNT; i++)
+  {
+    display_set_string(i, " TO ");
+  }
+  delay(500);
+  for (uint8_t i = 0; i < PLAYER_COUNT; i++)
+  {
+    display_set_string(i, "  IN");
+    display_set_digit(i, 0, B00111100);
+    display_set_digit(i, 1, B01111000);
+  }
+  delay(500);
+  update_display_all();
 }
