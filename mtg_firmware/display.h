@@ -26,10 +26,13 @@
 // PUBLIC FUNCTION DECLARATIONS
 ////////////////////////////////////////////////////////////////////////////////
 void display_init(void);
+void display_power_on(void);
+void display_power_off(void);
 void display_enable(void);
 void display_disable(void);
 void display_set_int(uint8_t player, int16_t value);
-void display_set_digit(uint8_t player, uint8_t pos, uint8_t chr);
+void display_set_digit(uint8_t player, uint8_t pos, uint8_t value);
+void display_set_char(uint8_t player, uint8_t pos, uint8_t chr);
 void display_set_string(uint8_t player, uint8_t* text);
 void display_fill(uint8_t player, uint8_t fill_char);
 void display_fill_raw(uint8_t player, uint8_t fill_char);

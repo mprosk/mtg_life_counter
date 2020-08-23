@@ -39,7 +39,7 @@ void display_init(void)
 }
 
 /*
- * 
+ * Enables the timer interrupt and un-blanks the display
  */
 void display_enable(void)
 {
@@ -62,6 +62,51 @@ void display_disable(void)
   digitalWrite(DISPLAY_NENABLE_PIN, HIGH);
 }
 
+/*
+ * Puts the display into a power-on state
+ * Reenables the DIO and SPI pins and starts the refresh interrupt
+ */
+void display_power_on(void)
+{
+  // Restore pin modes
+  pinMode(DISPLAY_DATA_PIN, OUTPUT);
+  pinMode(DISPLAY_CLOCK_PIN, OUTPUT);
+  pinMode(DISPLAY_LATCH_PIN, OUTPUT);
+  pinMode(DISPLAY_NENABLE_PIN, OUTPUT);
+  
+  // Start SPI bus
+  SPI.begin();
+  SPI.beginTransaction(SPISettings(SPI_BUS_SPEED_HZ, LSBFIRST, SPI_MODE0));
+  
+  // Enable the display
+  digitalWrite(DISPLAY_NENABLE_PIN, LOW);
+
+  // Enable timer compare interrupt
+  TIMSK1 |= (1 << OCIE1A);
+}
+
+/*
+ * Puts the display into a power-off state
+ * Disables SPI bus and sets all DIO to floating inputs. Disables refresh interrupt
+ */
+void display_power_off(void)
+{
+  // Disable timer compare interrupt
+  TIMSK1 &= ~(1 << OCIE1A);
+
+  // Disable the SPI bus
+  SPI.endTransaction();
+  SPI.end();
+
+  // Set any active-high lines to low
+  digitalWrite(DISPLAY_NENABLE_PIN, LOW);
+  digitalWrite(DISPLAY_DATA_PIN, LOW);
+
+  pinMode(DISPLAY_DATA_PIN, INPUT);
+  pinMode(DISPLAY_CLOCK_PIN, INPUT);
+  pinMode(DISPLAY_LATCH_PIN, INPUT);
+  pinMode(DISPLAY_NENABLE_PIN, INPUT);
+}
 
 /*
  * Sets the given player's display to an integer value
@@ -94,8 +139,17 @@ void display_set_int(uint8_t player, int16_t value)
 /*
  * Sets a specific digit within a given player's display to a pattern
  */
-void display_set_digit(uint8_t player, uint8_t pos, uint8_t chr){
-  display_buffer[player][pos] = chr;
+void display_set_digit(uint8_t player, uint8_t pos, uint8_t value)
+{
+  display_buffer[player][pos] = value;
+}
+
+/*
+ * 
+ */
+void display_set_char(uint8_t player, uint8_t pos, uint8_t chr)
+{
+  display_set_digit(player, pos, SEG[chr]);
 }
 
 /*

@@ -18,18 +18,20 @@
 #define DEBUG_PIN2        (5)
 
 /* CONFIG */
-//#define CPU_SLEEP_ENABLE
-#define ANIMATION_SPEED_MS        (50)
-#define COMMANDER_DAMAGE          (21)
-#define POISON_COUNTERS           (10)
-#define ROLL_RESULT_DURATION_MS   (2000)
+//#define CPU_SLEEP_ENABLE                    // If defined the MCU will enter sleep mode when the power switch is turned off (doesn't work)
+//#define PLAY_TO_WIN                         // If defined, enable the PlayToWin easter egg
+#define ANIMATION_SPEED_MS        (50)      // Delay in ms between frames of the roll animations
+#define COMMANDER_DAMAGE          (21)      // Max amount of commander damage
+#define POISON_COUNTERS           (10)      // Max number of posion counters
+#define ROLL_RESULT_DURATION_MS   (2000)    // Time in ms that the roll result will be displayed
+#define LIFE_CHANGE_DURATION_MS   (1000)    // Time in ms that the change in life total will be displayed
 
 ////////////////////////////////////////////////////////////////////////////////
 // LOCAL TYPES
 ////////////////////////////////////////////////////////////////////////////////
 typedef struct LifeCounter_t
 {
-  uint8_t life[PLAYER_COUNT];
+  int16_t life[PLAYER_COUNT + 1];
   uint8_t mode;
   int16_t delta;
   uint32_t timeout;
@@ -48,7 +50,7 @@ void update_display_all(void);
 void rotary_init(void);
 void set_buffer(uint8_t * buf, int16_t x);
 void animate_roll(uint8_t reset);
-//void play_to_win(void);
+void play_to_win(void);
 
 ////////////////////////////////////////////////////////////////////////////////
 // LOCAL CONSTANTS
@@ -97,7 +99,6 @@ static uint8_t sw_last = 1;
 void setup() {
   /* HARDWARE INITIALIZATION */
   Serial.begin(115200);
-  Serial.println("Online"); Serial.flush();
   
   // Initialize Top-Level
   pinMode(POWER_SWITCH_PIN, INPUT);
@@ -108,19 +109,12 @@ void setup() {
   pinMode(DEBUG_PIN2, OUTPUT);
 
   // Initialize 7-Segment Display Driver
-  Serial.print("Initializing display.. "); Serial.flush();
   display_init();
-  Serial.println("DONE");
 
   // Initialize Switch Sensing
-  Serial.print("Initializing switch sensing... ");
   switches_init();
-  Serial.println("DONE");
 
   Serial.println("Initialization complete"); Serial.flush();
-  
-  // Attach power switch interrupt
-  attachInterrupt(digitalPinToInterrupt(POWER_SWITCH_PIN), counter_sleep, LOW);
 }
 
 void loop() {
@@ -130,20 +124,28 @@ void loop() {
   uint8_t mode_state = 0;
   uint8_t mode_state_last = digitalRead(MODE_SWITCH_PIN);
   
-  /* STARTUP */
   counter_reset_all();
   rotary_init();
-  update_display_all();
-  display_enable();
-  switches_print(&switch_state[sw_last]);
-//  play_to_win();
-    
+  if (digitalRead(POWER_SWITCH_PIN))
+  {
+    display_power_on();
+#ifdef PLAY_TO_WIN
+    play_to_win();
+#endif
+    update_display_all();
+  }
+  
   /* MAIN LOOP */
   while(1)
   {
-
     digitalWrite(DEBUG_PIN2, HIGH);
 
+    // Check for a power-off state
+    if (digitalRead(POWER_SWITCH_PIN) == 0)
+    {
+      counter_sleep();
+    }
+    
     // Check for reset button activation or mode switch change
     reset_state = digitalRead(RESET_BTN_PIN);
     mode_state = digitalRead(MODE_SWITCH_PIN);
@@ -321,7 +323,12 @@ void update_display(uint8_t player)
 {
   uint8_t mode = counters[player].mode;
   display_set_int(player, counters[player].life[mode]);
-  if (mode)
+  if (mode == PLAYER_COUNT)
+  {
+    // Poison counter mode
+    display_set_char(player, 0, 'P');
+  }
+  else if (mode)
   {
     // Commander damage mode
     display_set_digit(player, 0, DIRECTION[CMDR_DMG_MAP[player][mode]]);
@@ -345,7 +352,7 @@ void update_display_all(void)
 void counter_reset(LifeCounter_t *counter)
 {
   counter->life[0] = STARTING_LIFE[digitalRead(MODE_SWITCH_PIN)];
-  for (uint8_t i = 1; i < PLAYER_COUNT; i++)
+  for (uint8_t i = 1; i < PLAYER_COUNT + 1; i++)
   {
     counter->life[i] = 0;
   }
@@ -412,6 +419,7 @@ void rotary_init(void)
     }
     else
     {
+      // On a bad init read, just assume we're in own life mode
       counters[player].mode = 0;
     }
   }
@@ -422,21 +430,30 @@ void rotary_init(void)
  */
 void counter_sleep(void)
 {
-  display_disable();
+  display_power_off();
   Serial.println("Going to sleep");
   Serial.flush();
 #ifdef CPU_SLEEP_ENABLE
+  // Enable wakeup interrupt and sleep the CPU
   sleep_enable();
   attachInterrupt(digitalPinToInterrupt(POWER_SWITCH_PIN), counter_wakeup, RISING);
   set_sleep_mode(SLEEP_MODE_PWR_DOWN);
   sleep_cpu();
 #else
+  // Wait for the power to get switched back on
   while(digitalRead(POWER_SWITCH_PIN) == 0)
   {
-    delay(100);
-  }
-  counter_wakeup();
+    delay(250);
+  };
 #endif
+  Serial.println("Woke up");
+  counter_reset_all();
+  rotary_init();
+  display_power_on();
+#ifdef PLAY_TO_WIN
+  play_to_win();
+#endif
+  update_display_all();
 }
 
 /*
@@ -444,20 +461,14 @@ void counter_sleep(void)
  */
 void counter_wakeup(void)
 {
-#ifdef CPU_SLEEP_ENABLE
   sleep_disable();
   detachInterrupt(digitalPinToInterrupt(POWER_SWITCH_PIN));
-#endif
-  Serial.println("Woke up");
-  counter_reset_all();
-  rotary_init();
-  update_display_all();
-  display_enable();
-  attachInterrupt(digitalPinToInterrupt(POWER_SWITCH_PIN), counter_sleep, LOW);
-//  play_to_win();
 }
 
-
+/*
+ * Play To Win easter egg
+ */
+ #ifdef PLAY_TO_WIN
 void play_to_win(void)
 {
   for (uint8_t i = 0; i < PLAYER_COUNT; i++)
@@ -477,5 +488,5 @@ void play_to_win(void)
     display_set_digit(i, 1, B01111000);
   }
   delay(500);
-  update_display_all();
 }
+#endif

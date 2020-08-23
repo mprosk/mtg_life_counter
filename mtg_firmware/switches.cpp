@@ -95,5 +95,10 @@ int8_t switches_decode_rotary(uint8_t rotary_state)
       return PLAYER_COUNT - i - 1;
     }
   }
+  if (rotary_state == 0)
+  {
+    // Poison counter
+    return PLAYER_COUNT;
+  }
   return -1;
 }
