@@ -19,8 +19,9 @@
 
 /* CONFIG */
 //#define CPU_SLEEP_ENABLE
-#define ANIMATION_SPEED_MS  (50)
-#define COMMANDER_DAMAGE (21)
+#define ANIMATION_SPEED_MS        (50)
+#define COMMANDER_DAMAGE          (21)
+#define POISON_COUNTERS           (10)
 #define ROLL_RESULT_DURATION_MS   (2000)
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -174,7 +175,7 @@ void loop() {
         // If the reading is valid
         int8_t setting = switch_state[sw].rotary_position[i];
         if (setting >= 0)
-        {
+        { 
           uint8_t player = SWITCH_PLAYER_MAPPING[i];
           rotary_changed = 1;
           counters[player].mode = (uint8_t)setting;
@@ -327,6 +328,9 @@ void update_display(uint8_t player)
   }
 }
 
+/*
+ * Updates the display buffer for all players
+ */
 void update_display_all(void)
 {
   for (uint8_t i = 0; i < PLAYER_COUNT; i++)
@@ -334,7 +338,6 @@ void update_display_all(void)
     update_display(i);
   }
 }
-
 
 /*
  * Resets the given counter
