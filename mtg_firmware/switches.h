@@ -27,6 +27,8 @@ typedef struct SwitchState
 // PUBLIC FUNCTION DECLARATIONS
 ////////////////////////////////////////////////////////////////////////////////
 void switches_init(void);
+void switches_power_off(void);
+void switches_power_on(void);
 void switches_update(SwitchState * state_ptr);
 void switches_print(SwitchState *state_ptr);
 

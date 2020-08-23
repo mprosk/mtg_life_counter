@@ -61,8 +61,6 @@ void switches_update(SwitchState * state_ptr)
   state_ptr->rotary_position[3] = switches_decode_rotary((sw_3_4 & 0xF0) >> 4);
 }
 
-
-
 /*
  * Prints the state position to the screen
  */
@@ -82,6 +80,22 @@ void switches_print(SwitchState *state_ptr)
   Serial.println();
 }
 
+void switches_power_off(void)
+{
+  digitalWrite(MUX_SELECT_0, LOW);
+  digitalWrite(MUX_SELECT_1, LOW);
+  digitalWrite(MUX_SELECT_2, LOW);
+  pinMode(MUX_SELECT_0, INPUT);
+  pinMode(MUX_SELECT_1, INPUT);
+  pinMode(MUX_SELECT_2, INPUT);
+}
+
+void switches_power_on(void)
+{
+  pinMode(MUX_SELECT_0, OUTPUT);
+  pinMode(MUX_SELECT_1, OUTPUT);
+  pinMode(MUX_SELECT_2, OUTPUT);
+}
 ////////////////////////////////////////////////////////////////////////////////
 // PRIVATE FUNCTIONS
 ////////////////////////////////////////////////////////////////////////////////

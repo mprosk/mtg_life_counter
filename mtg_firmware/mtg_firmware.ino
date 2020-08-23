@@ -20,6 +20,7 @@
 /* CONFIG */
 //#define CPU_SLEEP_ENABLE                    // If defined the MCU will enter sleep mode when the power switch is turned off (doesn't work)
 //#define PLAY_TO_WIN                         // If defined, enable the PlayToWin easter egg
+//#define TEMP_MONITOR                        // If defined, write CPU temp to serial port
 #define ANIMATION_SPEED_MS        (50)      // Delay in ms between frames of the roll animations
 #define COMMANDER_DAMAGE          (21)      // Max amount of commander damage
 #define POISON_COUNTERS           (10)      // Max number of posion counters
@@ -51,6 +52,7 @@ void rotary_init(void);
 void set_buffer(uint8_t * buf, int16_t x);
 void animate_roll(uint8_t reset);
 void play_to_win(void);
+float average_temp();
 
 ////////////////////////////////////////////////////////////////////////////////
 // LOCAL CONSTANTS
@@ -114,7 +116,11 @@ void setup() {
   // Initialize Switch Sensing
   switches_init();
 
+#ifdef TEMP_MONITOR
+  ADMUX = 0xC8;
+#else
   Serial.println("Initialization complete"); Serial.flush();
+#endif
 }
 
 void loop() {
@@ -129,6 +135,7 @@ void loop() {
   if (digitalRead(POWER_SWITCH_PIN))
   {
     display_power_on();
+    switches_power_on();
 #ifdef PLAY_TO_WIN
     play_to_win();
 #endif
@@ -139,6 +146,10 @@ void loop() {
   while(1)
   {
     digitalWrite(DEBUG_PIN2, HIGH);
+
+#ifdef TEMP_MONITOR
+    Serial.println(average_temp());
+#endif
 
     // Check for a power-off state
     if (digitalRead(POWER_SWITCH_PIN) == 0)
@@ -239,11 +250,13 @@ void loop() {
     }
 
     // Debug printout
+#ifndef TEMP_MONITOR
     if (changes || rotary_changed)
     {
       switches_print(&switch_state[sw]);
     }
-    
+#endif
+
     // Update internal switch states
     sw ^= 1;
     sw_last ^= 1;
@@ -431,8 +444,11 @@ void rotary_init(void)
 void counter_sleep(void)
 {
   display_power_off();
+  switches_power_off();
+#ifndef TEMP_MONITOR
   Serial.println("Going to sleep");
   Serial.flush();
+#endif
 #ifdef CPU_SLEEP_ENABLE
   // Enable wakeup interrupt and sleep the CPU
   sleep_enable();
@@ -443,13 +459,20 @@ void counter_sleep(void)
   // Wait for the power to get switched back on
   while(digitalRead(POWER_SWITCH_PIN) == 0)
   {
+#ifdef TEMP_MONITOR
+    Serial.println(average_temp());
+#else
     delay(250);
+#endif
   };
 #endif
+#ifndef TEMP_MONITOR
   Serial.println("Woke up");
+#endif
   counter_reset_all();
   rotary_init();
   display_power_on();
+  switches_power_on();
 #ifdef PLAY_TO_WIN
   play_to_win();
 #endif
@@ -488,5 +511,28 @@ void play_to_win(void)
     display_set_digit(i, 1, B01111000);
   }
   delay(500);
+}
+#endif
+
+#ifdef TEMP_MONITOR
+/*
+ * Copied from https://forum.arduino.cc/index.php?topic=8140.0
+ */
+int read_temp()
+{
+ ADCSRA |= _BV(ADSC); // start the conversion
+ while (bit_is_set(ADCSRA, ADSC)); // ADSC is cleared when the conversion finishes
+ return (ADCL | (ADCH << 8)) - 342; // combine bytes & correct for temp offset (approximate)}
+}
+
+float average_temp()
+{
+ read_temp(); // discard first sample (never hurts to be safe)
+
+ float average; // create a float to hold running average
+ for (int i = 1; i < 1000; i++) // start at 1 so we dont divide by 0
+   average += ((read_temp() - average)/(float)i); // get next sample, calculate running average
+
+ return average; // return average temperature reading
 }
 #endif
