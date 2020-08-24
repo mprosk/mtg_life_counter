@@ -183,10 +183,10 @@ static const uint8_t SWITCH_PLAYER_MAPPING[] = {1, 0, 3, 2};
  *      Contains the 7-segment display pattern that points to the given direction
  *---------------------------------------------------------------------*/
 static const uint8_t DIRECTION[4] = {
-  B10000100,  // 0: Upper Left
-  B11000000,  // 1: Upper Right
-  B00110000,  // 2: Lower Right
-  B00011000,  // 3: Lower Left
+    B10000100,  // 0: Upper Left
+    B11000000,  // 1: Upper Right
+    B00110000,  // 2: Lower Right
+    B00011000,  // 3: Lower Left
 };
 
 /*---------------------------------------------------------------------*
@@ -199,10 +199,10 @@ static const uint8_t DIRECTION[4] = {
  *      Input = Player index FROM, Player index TO; Output = DIRECTION index
  *---------------------------------------------------------------------*/
 static const uint8_t PLAYER_MAP[PLAYER_COUNT][PLAYER_COUNT] = {
-  {2, 3, 0, 1},
-  {2, 3, 0, 1},
-  {0, 1, 2, 3},
-  {0, 1, 2, 3},
+    {2, 3, 0, 1},
+    {2, 3, 0, 1},
+    {0, 1, 2, 3},
+    {0, 1, 2, 3},
 };
 
 /*---------------------------------------------------------------------*
@@ -216,18 +216,18 @@ static const uint8_t PLAYER_MAP[PLAYER_COUNT][PLAYER_COUNT] = {
  *      Input = Player index FROM, Commander damage index TO; Output = DIRECTION index
  *---------------------------------------------------------------------*/
 static const uint8_t CMDR_DMG_MAP[PLAYER_COUNT][PLAYER_COUNT] = {
-  {2, 1, 0, 3},
-  {3, 0, 1, 2},
-  {2, 1, 0, 3},
-  {3, 0, 1, 2},
+    {2, 1, 0, 3},
+    {3, 0, 1, 2},
+    {2, 1, 0, 3},
+    {3, 0, 1, 2},
 };
 
 static const uint8_t ROLL_TEXT[][PLAYER_COUNT] = {
-  "PLAY", " GO ", " YOU", " YES", "GLHF"
+    "PLAY", " GO ", " YOU", " YES", "GLHF"
 };
 
 static const uint8_t DEATH_TEXT[][PLAYER_COUNT] = {
-  "OUCH", " OOF", " GG ", " RIP", "DEAD", "DIED", "  F ", "SRRY", " BYE", "BOOP", " DED", "LOSE"
+    "OUCH", " OOF", " GG ", " RIP", "DEAD", "DIED", "  F ", "SRRY", " BYE", "BOOP", " DED", "LOSE"
 };
 
 
