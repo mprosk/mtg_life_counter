@@ -57,7 +57,10 @@ float average_temp();
 ////////////////////////////////////////////////////////////////////////////////
 // LOCAL CONSTANTS
 ////////////////////////////////////////////////////////////////////////////////
-static const uint8_t STARTING_LIFE[2] = {20, 40};
+static const int16_t STARTING_LIFE[2] = {20, 40};
+static const int16_t LIFE_MODE_MIN[PLAYER_COUNT + 1] = {DISPLAY_MIN, 0, 0, 0, 0};
+static const int16_t LIFE_MODE_MAX[PLAYER_COUNT + 1] = {
+  DISPLAY_MAX, COMMANDER_DAMAGE, COMMANDER_DAMAGE, COMMANDER_DAMAGE, POISON_COUNTERS};
 static const uint8_t BUTTON_PLAYER_MAPPING[] = {2, 2, 3, 3, 0, 0, 1, 1};
 static const uint8_t SWITCH_PLAYER_MAPPING[] = {1, 0, 3, 2};
 static const int8_t BUTTON_INCREMENT_MAPPING[] = {1, -1, -1, 1, -1, 1, -1, 1};
@@ -188,7 +191,8 @@ void loop() {
         // If the reading is valid
         int8_t setting = switch_state[sw].rotary_position[i];
         if (setting >= 0)
-        { 
+        {
+          // Update the display mode for this player
           uint8_t player = SWITCH_PLAYER_MAPPING[i];
           rotary_changed = 1;
           counters[player].mode = (uint8_t)setting;
@@ -225,25 +229,11 @@ void loop() {
           uint8_t mode = counters[player].mode;
           int8_t increment = BUTTON_INCREMENT_MAPPING[i];
           int16_t target = counters[player].life[mode] + increment;
-          if (mode)
+          if ((target >= LIFE_MODE_MIN[mode]) && (target <= LIFE_MODE_MAX[mode]))
           {
-            // Commander damage mode
-            if ((target >= 0) && (target <= COMMANDER_DAMAGE))
-            {
-              // Only change values if we're within the possible commander damage range
-              counters[player].life[mode] = target;
-              update_display(player);
-            }
-          }
-          else
-          {
-            // Own life mode
-            if ((target >= DISPLAY_MIN) && (target <= DISPLAY_MAX))
-            {
-              // Only change values if we're within the display-able range
-              counters[player].life[mode] = target;
-              update_display(player);
-            }
+            // Only change values if we're within the acceptable range for this display mode
+            counters[player].life[mode] = target;
+            update_display(player);
           }
         }
       }
@@ -299,7 +289,7 @@ uint8_t roll(void)
     // Button released
     uint8_t roll_result = roll_counter % PLAYER_COUNT;
     roll_hold = 1;
-    roll_timeout = millis() + ROLL_RESULT_DURATION_MS;   // THIS IS NOT ROLLOVER RESISTANT
+    roll_timeout = millis() + ROLL_RESULT_DURATION_MS;   // TODO: THIS IS NOT ROLLOVER RESISTANT
     // Generate roll result display
     for (uint8_t i = 0; i < PLAYER_COUNT; i++)
     {
@@ -401,7 +391,7 @@ void animate_roll(uint8_t animate)
   
   if (millis() >= inc_time)
   {
-    inc_time = millis() + ANIMATION_SPEED_MS;   // THIS IS NOT ROLLOVER REISTANT
+    inc_time = millis() + ANIMATION_SPEED_MS;   // TODO: THIS IS NOT ROLLOVER REISTANT
     
     // Update display buffer
     for (uint8_t i = 0; i < PLAYER_COUNT; i++)
