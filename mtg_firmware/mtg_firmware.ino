@@ -17,26 +17,20 @@
 #define RNG_PIN           (A0)
 #define DEBUG_PIN1        (4)
 #define DEBUG_PIN2        (5)
-
-/* CONFIG */
+/* CONFIG OPTIONS */
 //#define CPU_SLEEP_ENABLE                    // If defined the MCU will enter sleep mode when the power switch is turned off (doesn't work)
 //#define PLAY_TO_WIN                         // If defined, enable the PlayToWin easter egg
 //#define TEMP_MONITOR                        // If defined, write CPU temp to serial port
-#define ANIMATION_SPEED_MS        (50)      // Delay in ms between frames of the roll animations
-#define COMMANDER_DAMAGE          (21)      // Max amount of commander damage
-#define POISON_COUNTERS           (10)      // Max number of posion counters
-#define ROLL_RESULT_DURATION_MS   (2000)    // Time in ms that the roll result will be displayed
-#define LIFE_CHANGE_DURATION_MS   (1000)    // Time in ms that the change in life total will be displayed
 
 ////////////////////////////////////////////////////////////////////////////////
 // LOCAL TYPES
 ////////////////////////////////////////////////////////////////////////////////
 typedef struct LifeCounter_t
 {
-  int16_t life[PLAYER_COUNT + 1];
-  uint8_t mode;
-  int16_t delta;
-  uint32_t timeout;
+  int16_t life[PLAYER_COUNT + 1];   // Life/Damage amounts (self, commander, poison)
+  uint8_t mode;                     // Indicates which display mode the counter is in
+  int16_t delta;                    // The change in life that the user has entered
+  uint32_t timeout;                 // 
 } LifeCounter_t;
 
 
@@ -54,41 +48,6 @@ void set_buffer(uint8_t * buf, int16_t x);
 void animate_roll(uint8_t reset);
 void play_to_win(void);
 float average_temp();
-
-////////////////////////////////////////////////////////////////////////////////
-// LOCAL CONSTANTS
-////////////////////////////////////////////////////////////////////////////////
-static const int16_t STARTING_LIFE[2] = {20, 40};
-static const int16_t LIFE_MODE_MIN[PLAYER_COUNT + 1] = {DISPLAY_MIN, 0, 0, 0, 0};
-static const int16_t LIFE_MODE_MAX[PLAYER_COUNT + 1] = {
-  DISPLAY_MAX, COMMANDER_DAMAGE, COMMANDER_DAMAGE, COMMANDER_DAMAGE, POISON_COUNTERS};
-static const uint8_t BUTTON_PLAYER_MAPPING[] = {2, 2, 3, 3, 0, 0, 1, 1};
-static const uint8_t SWITCH_PLAYER_MAPPING[] = {1, 0, 3, 2};
-static const int8_t BUTTON_INCREMENT_MAPPING[] = {1, -1, -1, 1, -1, 1, -1, 1};
-static const uint8_t DIRECTION[4] = {
-  B10000100,  // 0: Upper Left
-  B11000000,  // 1: Upper Right
-  B00110000,  // 2: Lower Right
-  B00011000,  // 3: Lower Left
-};
-static const uint8_t PLAYER_MAP[PLAYER_COUNT][PLAYER_COUNT] = {   // Player-to-direction mapping
-  {2, 3, 0, 1},
-  {2, 3, 0, 1},
-  {0, 1, 2, 3},
-  {0, 1, 2, 3},
-};
-static const uint8_t CMDR_DMG_MAP[PLAYER_COUNT][PLAYER_COUNT] = {   // Player-to-direction mapping
-  {2, 1, 0, 3},
-  {3, 0, 1, 2},
-  {2, 1, 0, 3},
-  {3, 0, 1, 2},
-};
-static const uint8_t ROLL_TEXT[][PLAYER_COUNT] = {
-  "PLAY", " GO ", " YOU", " YES", "GLHF"
-};
-static const uint8_t DEATH_TEXT[][PLAYER_COUNT] = {
-  "OUCH", " OOF", " GG ", " RIP", "DEAD", "DIED", "  F ", "SRRY", " BYE", "BOOP", " DED", "LOSE"
-};
 
 
 ////////////////////////////////////////////////////////////////////////////////

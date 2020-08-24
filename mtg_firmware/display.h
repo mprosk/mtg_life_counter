@@ -19,8 +19,7 @@
 #define MATRIX_DEPTH        (2)     // Nnumber of multiplexed groups
 #define MATRIX_WIDTH        (8)     // Number of digits in each multiplexed group
 #define PLAYERS_PER_BANK    (MATRIX_WIDTH / PLAYER_COUNT)     // Number of player displays in each multiplexed group
-#define DISPLAY_MAX         (pow(10, DISPLAY_WIDTH) - 1)
-#define DISPLAY_MIN         (-pow(10, DISPLAY_WIDTH - 1) + 1)
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // PUBLIC FUNCTION DECLARATIONS

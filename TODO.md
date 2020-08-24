@@ -13,7 +13,7 @@
 ##### High Priority
 
 1. "Delta" display
-2. Test poison counter mode
+2. 30-life mode (hold reset while switching modes)
 
 ##### Low Priority
 
@@ -23,6 +23,7 @@
 
 ### Fixes
 
+- Rotary cleanup
 - timer rollover
 - cleanup and formatting/templating
 - Improve modularity
