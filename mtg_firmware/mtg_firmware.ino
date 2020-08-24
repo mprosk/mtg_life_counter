@@ -4,6 +4,7 @@
 #include "display.h"
 #include "switches.h"
 #include "animations.h"
+#include "coretemp.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // DEFINES
@@ -120,7 +121,7 @@ void setup() {
   switches_init();
 
 #ifdef TEMP_MONITOR
-  ADMUX = 0xC8;
+  coretemp_init();
 #else
   Serial.println("Initialization complete"); Serial.flush();
 #endif
@@ -151,7 +152,7 @@ void loop() {
     digitalWrite(DEBUG_PIN2, HIGH);
 
 #ifdef TEMP_MONITOR
-    Serial.println(average_temp());
+    Serial.println(coretemp_average(100));
 #endif
 
     // Check for a power-off state
@@ -252,6 +253,7 @@ void loop() {
     sw_last ^= 1;
 
     digitalWrite(DEBUG_PIN2, LOW);
+    // delay(5);
   }
 }
 
@@ -501,28 +503,5 @@ void play_to_win(void)
     display_set_digit(i, 1, B01111000);
   }
   delay(500);
-}
-#endif
-
-#ifdef TEMP_MONITOR
-/*
- * Copied from https://forum.arduino.cc/index.php?topic=8140.0
- */
-int read_temp()
-{
- ADCSRA |= _BV(ADSC); // start the conversion
- while (bit_is_set(ADCSRA, ADSC)); // ADSC is cleared when the conversion finishes
- return (ADCL | (ADCH << 8)) - 342; // combine bytes & correct for temp offset (approximate)}
-}
-
-float average_temp()
-{
- read_temp(); // discard first sample (never hurts to be safe)
-
- float average; // create a float to hold running average
- for (int i = 1; i < 1000; i++) // start at 1 so we dont divide by 0
-   average += ((read_temp() - average)/(float)i); // get next sample, calculate running average
-
- return average; // return average temperature reading
 }
 #endif
