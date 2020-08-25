@@ -75,7 +75,7 @@ static const int16_t LIFE_MODE_MAX[PLAYER_COUNT + 1] = {
 // LOCAL VARIABLES
 ////////////////////////////////////////////////////////////////////////////////
 static LifeCounter_t counters[PLAYER_COUNT];
-static SwitchState switch_state[2];
+static SwitchState_t switch_state[2];
 static uint8_t sw = 0;
 static uint8_t sw_last = 1;
 
@@ -119,7 +119,7 @@ void loop() {
     if (digitalRead(POWER_SWITCH_PIN))
     {
         display_start();
-        switches_power_on();
+        switches_start();
 #ifdef PLAY_TO_WIN
         play_to_win();
 #endif
@@ -428,7 +428,7 @@ void rotary_init(void)
 void counter_sleep(void)
 {
     display_stop();
-    switches_power_off();
+    switches_stop();
 #ifndef TEMP_MONITOR
     Serial.println("Going to sleep");
     Serial.flush();
@@ -456,7 +456,7 @@ void counter_sleep(void)
     counter_reset_all(STARTING_LIFE[digitalRead(MODE_SWITCH_PIN)]);
     rotary_init();
     display_start();
-    switches_power_on();
+    switches_start();
 #ifdef PLAY_TO_WIN
   play_t    o_win();
 #endif
