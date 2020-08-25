@@ -47,22 +47,6 @@
  *
  *  DESCRIPTION
  *      <<TODO>> Description of the function in as much detail as is necessary
- *      for the caller of the function. As much as possible, this should be
- *      agnostic of any aspect of the function's implementation. This allows
- *      the implementation to change, if needed, without modifying the API
- *      without changing the externally-visible behaviour and associated tests.
- *
- *      This should include:
- *          - Pre-conditions to be satisfied before the function can be called
- *          - Post-conditions that must be satisfied when the function returns
- *          - Description of any constraints, limitations, or unusual aspects
- *            of the function the caller must be aware of, such as:
- *              - blocking/non-blocking behaviour
- *              - side-effects
- *              - MT-safety
- *              - required calling context or periodicity
- *
- *      Enclose parameter names referenced in the description in single quotes.
  *
  *  RETURNS
  *      <<TODO>> Describe what data the function returns
