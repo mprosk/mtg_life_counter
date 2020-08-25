@@ -117,7 +117,7 @@ static const uint8_t ANIMATION_LENGTH[ANIMATION_COUNT] = {
  *  DESCRIPTION
  *      Array containing the keyframes of all animation sequences
  *---------------------------------------------------------------------*/
-static const uint8_t* ANIMATIONS[ANIMATION_COUNT] = {
+static const uint8_t *ANIMATIONS[ANIMATION_COUNT] = {
     TWO_SEG_SPIN,
     FIGURE_EIGHT,
     BOUNCE,

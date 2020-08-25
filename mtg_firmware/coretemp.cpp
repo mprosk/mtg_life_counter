@@ -22,22 +22,8 @@
 
 /*=====================================================================*
     Private Function Prototypes
-
-    GUIDANCE:
-    This section contains function prototypes (declarations) that are private
-    to this .c file. They must be declared 'static'.
-
-    RATIONALE:
-    This follows best practices in data-hiding and encapsulation. It allows
-    the module implemenatation to change substantially without affecting the
-    module interface.
-
-    EXAMPLES:
-    static void thing_do(special_thing_t this_thing);
-    static bool data_process(const mydata_t * const p_data);
-    static bool data_modify(mydata_t * const p_data);
  *=====================================================================*/
-static int coretemp_read(void);
+static int temp_read(void);
 
 
 /*=====================================================================*
@@ -76,12 +62,12 @@ void coretemp_init(void)
  *---------------------------------------------------------------------*/
 float coretemp_average(unsigned int samples = 1000)
 {
-    coretemp_read();    // discard first sample (never hurts to be safe)
+    temp_read();    // discard first sample (never hurts to be safe)
     float average;      // create a float to hold running average
     for (int i = 1; i <= samples; i++)
     {
         // Get the next sample and calculate running average
-        average += ( (coretemp_read() - average) / (float)i );
+        average += ( (temp_read() - average) / (float)i );
     }
     return average; // return average temperature reading
 }
@@ -101,7 +87,7 @@ float coretemp_average(unsigned int samples = 1000)
  *  RETURNS
  *      Temperature reading from the ADC
  *---------------------------------------------------------------------*/
-static int coretemp_read()
+static int temp_read()
 {
     ADCSRA |= _BV(ADSC);                   // Start the conversion
     while (bit_is_set(ADCSRA, ADSC));      // ADSC is cleared when the conversion finishes

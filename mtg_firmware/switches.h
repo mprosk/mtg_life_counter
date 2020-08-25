@@ -139,7 +139,7 @@ void switches_stop(void);
  *  RETURNS
  *      None
  *---------------------------------------------------------------------*/
-void switches_update(SwitchState_t * state_ptr);
+void switches_update(SwitchState_t *state_ptr);
 
 /*---------------------------------------------------------------------*
  *  NAME

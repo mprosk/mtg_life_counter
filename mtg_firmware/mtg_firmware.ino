@@ -44,7 +44,6 @@ void counter_reset_all(int16_t starting_life);
 void update_display(uint8_t player);
 void update_display_all(void);
 void rotary_init(void);
-void set_buffer(uint8_t * buf, int16_t x);
 void animate_roll(uint8_t reset);
 void play_to_win(void);
 float average_temp();

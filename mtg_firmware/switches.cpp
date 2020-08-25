@@ -18,7 +18,7 @@
 /*=====================================================================*
     Private Function Prototypes
  *=====================================================================*/
-static int8_t switches_decode_rotary(uint8_t switch_state);
+static int8_t decode_rotary(uint8_t switch_state);
 
 
 /*=====================================================================*
@@ -96,7 +96,7 @@ void switches_stop(void)
  *  RETURNS
  *      None
  *---------------------------------------------------------------------*/
-void switches_update(SwitchState_t * state_ptr)
+void switches_update(SwitchState_t *state_ptr)
 {
     uint8_t sw_1_2 = 0;
     uint8_t sw_3_4 = 0;
@@ -126,10 +126,10 @@ void switches_update(SwitchState_t * state_ptr)
     }
 
     // Decode the rotary switch positions
-    state_ptr->rotary_position[0] = switches_decode_rotary(sw_1_2 & 0x0F);
-    state_ptr->rotary_position[1] = switches_decode_rotary((sw_1_2 & 0xF0) >> 4);
-    state_ptr->rotary_position[2] = switches_decode_rotary(sw_3_4 & 0x0F);
-    state_ptr->rotary_position[3] = switches_decode_rotary((sw_3_4 & 0xF0) >> 4);
+    state_ptr->rotary_position[0] = decode_rotary(sw_1_2 & 0x0F);
+    state_ptr->rotary_position[1] = decode_rotary((sw_1_2 & 0xF0) >> 4);
+    state_ptr->rotary_position[2] = decode_rotary(sw_3_4 & 0x0F);
+    state_ptr->rotary_position[3] = decode_rotary((sw_3_4 & 0xF0) >> 4);
 }
 
 /*---------------------------------------------------------------------*
@@ -162,7 +162,7 @@ void switches_print(SwitchState_t *state_ptr)
 /*=====================================================================*
     Private Function Implementations
  *=====================================================================*/
-int8_t switches_decode_rotary(uint8_t rotary_state)
+static int8_t decode_rotary(uint8_t rotary_state)
 {
     for (uint8_t i = 0; i < PLAYER_COUNT; i++)
     {

@@ -215,12 +215,12 @@ void display_set_int(uint8_t player, int16_t integer)
  *  DESCRIPTION
  *      Sets the given player's display to the given character array
  *      uint8_t player: index of the player display to update
- *      uint8_t * text: pointer to the character array to display
+ *      uint8_t *text: pointer to the character array to display
  * 
  *  RETURNS
  *      None
  *---------------------------------------------------------------------*/
-void display_set_string(uint8_t player, uint8_t* text)
+void display_set_string(uint8_t player, uint8_t *text)
 {
   for (uint8_t i = 0; i < DISPLAY_PLAYER_WIDTH; i++)
   {
