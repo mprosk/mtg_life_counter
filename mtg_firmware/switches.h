@@ -56,7 +56,7 @@
  *      MUX_SELECT_0
  *
  *  DESCRIPTION
- *      Pin bit 0 of the multiplexer select bus
+ *      Pin number of bit 0 of the multiplexer select bus
  *---------------------------------------------------------------------*/
 #define MUX_SELECT_0      (A5)
 
@@ -65,7 +65,7 @@
  *      MUX_SELECT_1
  *
  *  DESCRIPTION
- *      Pin bit 1 of the multiplexer select bus
+ *      Pin number of bit 1 of the multiplexer select bus
  *---------------------------------------------------------------------*/
 #define MUX_SELECT_1      (A0)
 
@@ -74,7 +74,7 @@
  *      MUX_SELECT_2
  *
  *  DESCRIPTION
- *      Pin bit 2 of the multiplexer select bus
+ *      Pin number of bit 2 of the multiplexer select bus
  *---------------------------------------------------------------------*/
 #define MUX_SELECT_2      (10)
 
@@ -84,8 +84,18 @@
  *=====================================================================*/
 typedef struct SwitchState_t
 {
-    uint8_t button_state;         // Bitfield of push button states
-    int8_t rotary_position[PLAYER_COUNT];
+    /* Flag indicating that any of the buttons have changed */
+    uint8_t buttons_changed;
+    /* Current state of each button for each player */
+    uint8_t button_state[PLAYER_COUNT][BUTTONS_PER_PLAYER];
+    /* Flag indicating a changed button state for each player's buttons */
+    uint8_t button_changes[PLAYER_COUNT][BUTTONS_PER_PLAYER];
+    /* Flag indicating that any of the rotary switches have changed */
+    uint8_t rotaries_changed;
+    /* Current switch state for each player */
+    int8_t rotary_state[PLAYER_COUNT];
+    /* Flag indicating a changed switch state for each player */   
+    uint8_t rotary_changes[PLAYER_COUNT];
 } SwitchState_t;
 
 

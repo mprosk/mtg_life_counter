@@ -18,6 +18,7 @@
 /*=====================================================================*
     Private Function Prototypes
  *=====================================================================*/
+static void read_switches(void);
 static int8_t decode_rotary(uint8_t switch_state);
 
 
@@ -25,7 +26,10 @@ static int8_t decode_rotary(uint8_t switch_state);
     Private Data
  *=====================================================================*/
 static uint8_t button_state = 0;
-static uint8_t rotary_state[4];
+static uint8_t button_state_last = 0;
+static int8_t rotary_state[2][PLAYER_COUNT] = { {0, 0, 0, 0}, {0, 0, 0, 0} };
+static uint8_t sw = 0;
+static uint8_t sw_last = 1;
 
 
 /*=====================================================================*
@@ -64,6 +68,7 @@ void switches_start(void)
     pinMode(MUX_SELECT_0, OUTPUT);
     pinMode(MUX_SELECT_1, OUTPUT);
     pinMode(MUX_SELECT_2, OUTPUT);
+    read_switches();
 }
 
 /*---------------------------------------------------------------------*
@@ -92,45 +97,54 @@ void switches_stop(void)
  *
  *  DESCRIPTION
  *      Scans through the multiplexers and reads the switch states
+ *      Compares the current state to the previous state and updates
+ *      the given data structure accordingly. Data in the structure
+ *      is placed in player-index order (hardware order of the switches
+ *      is un-maped)
  *
  *  RETURNS
  *      None
  *---------------------------------------------------------------------*/
 void switches_update(SwitchState_t *state_ptr)
 {
-    uint8_t sw_1_2 = 0;
-    uint8_t sw_3_4 = 0;
+    // Update the internal switch states
+    read_switches();
 
-    // Scan through the mux and read back
-    for (uint8_t i = 0; i < 8; i++)
+    // Process rotary switch changes
+    uint8_t rotary_changes = 0;
+    for (uint8_t i = 0; i < PLAYER_COUNT; i++)
     {
-        // Update the select bus
-        digitalWrite(MUX_SELECT_0, i & (1 << 0));
-        digitalWrite(MUX_SELECT_1, i & (1 << 1));
-        digitalWrite(MUX_SELECT_2, i & (1 << 2));
-    //    delay(1);
+        uint8_t player = SWITCH_PLAYER_MAPPING[i];
+        uint8_t changed = (rotary_state[sw][i] != rotary_state[sw_last][i]);
 
-        // Read button state
-        if (digitalRead(BUTTON_RB_PIN))
-        {
-            state_ptr->button_state |= (1 << i);
-        }
-        else
-        {
-            state_ptr->button_state &= ~(1 << i);
-        }
-        
-        // Read rotary switch state
-        sw_1_2 |= (digitalRead(SWITCH_RB1_PIN) << i);
-        sw_3_4 |= (digitalRead(SWITCH_RB2_PIN) << i);
+        // Update the state structure
+        state_ptr->rotary_state[player] = rotary_state[sw][i];
+        state_ptr->rotary_changes[player] = changed;
+        rotary_changes |= changed;
     }
+     state_ptr->rotaries_changed = rotary_changes;
 
-    // Decode the rotary switch positions
-    state_ptr->rotary_position[0] = decode_rotary(sw_1_2 & 0x0F);
-    state_ptr->rotary_position[1] = decode_rotary((sw_1_2 & 0xF0) >> 4);
-    state_ptr->rotary_position[2] = decode_rotary(sw_3_4 & 0x0F);
-    state_ptr->rotary_position[3] = decode_rotary((sw_3_4 & 0xF0) >> 4);
+    // Process button changes
+    uint8_t changes = button_state ^ button_state_last;
+    for (uint8_t i = 0; i < BUTTON_COUNT; i++)
+    {
+        // Get the mapping to player index
+        uint8_t mask = (1 << i);
+        uint8_t player = BUTTON_PLAYER_MAPPING[i];
+        uint8_t button = BUTTON_DIRECTION_MAPPING[i];
+
+        // Update the state structure with the new state info
+        state_ptr->button_state[player][button] = (button_state & mask) >> i;
+        state_ptr->button_changes[player][button] = (changes & mask) >> i;
+    }
+    state_ptr->buttons_changed = changes;   // Convert to logical
+    
+    // Swap current and last to get ready for the next reading
+    button_state_last = button_state;
+    sw ^= 1;
+    sw_last ^= 1;
 }
+
 
 /*---------------------------------------------------------------------*
  *  NAME
@@ -144,15 +158,18 @@ void switches_update(SwitchState_t *state_ptr)
  *---------------------------------------------------------------------*/
 void switches_print(SwitchState_t *state_ptr)
 {
-    for (uint8_t i = 0; i < BUTTON_COUNT; i++)
+    for (uint8_t i = 0; i < PLAYER_COUNT; i++)
     {
-        Serial.print((state_ptr->button_state & (1 << i)) >> i);
-        Serial.print(" ");
+        for (uint8_t j = 0; j < BUTTONS_PER_PLAYER; j++)
+        {
+            Serial.print(state_ptr->button_state[i][j]);
+            Serial.print(" ");
+        }
     }
     Serial.print("| ");
     for (uint8_t i = 0; i < PLAYER_COUNT; i++)
     {
-        Serial.print(state_ptr->rotary_position[i], HEX);
+        Serial.print(state_ptr->rotary_state[i]);
         Serial.print(" ");
     }
     Serial.println();
@@ -162,8 +179,69 @@ void switches_print(SwitchState_t *state_ptr)
 /*=====================================================================*
     Private Function Implementations
  *=====================================================================*/
+
+/*---------------------------------------------------------------------*
+ *  NAME
+ *      read_switches
+ *
+ *  DESCRIPTION
+ *      Cycles through the multiplexers and reads all switch states
+ *      into the internal state variables
+ *
+ *  RETURNS
+ *      None
+ *---------------------------------------------------------------------*/
+static void read_switches(void)
+{
+    uint8_t this_rotary[4] = {0, 0, 0, 0};
+
+    // Scan through the mux and read back
+    for (uint8_t i = 0; i < 8; i++)
+    {
+        // Update the select bus
+        digitalWrite(MUX_SELECT_0, i & (1 << 0));
+        digitalWrite(MUX_SELECT_1, i & (1 << 1));
+        digitalWrite(MUX_SELECT_2, i & (1 << 2));
+
+        // Read button state
+        if (digitalRead(BUTTON_RB_PIN))
+        {
+            button_state |= (1 << i);
+        }
+        else
+        {
+            button_state &= ~(1 << i);
+        }
+        
+        // Read rotary switch state
+        this_rotary[(i / 4) + 0] |= digitalRead(SWITCH_RB1_PIN) << (i % 4);
+        this_rotary[(i / 4) + 2] |= digitalRead(SWITCH_RB2_PIN) << (i % 4);
+    }
+
+    // Decode the 1-hot encoding
+    for (uint8_t i = 0; i < PLAYER_COUNT; i++)
+    {
+        rotary_state[sw][i] = decode_rotary(this_rotary[i]);
+    }
+}
+
+/*---------------------------------------------------------------------*
+ *  NAME
+ *      decode_rotary
+ *
+ *  DESCRIPTION
+ *      Converts the one-hot encoded switch setting into an integer representation
+ *
+ *  RETURNS
+ *      The numeric setting of the rotary switch. -1 if invalid
+ *---------------------------------------------------------------------*/
 static int8_t decode_rotary(uint8_t rotary_state)
 {
+    if (rotary_state == 0)
+    {
+        return PLAYER_COUNT;
+    }
+
     for (uint8_t i = 0; i < PLAYER_COUNT; i++)
     {
         if (rotary_state == (1 << i))
@@ -171,10 +249,6 @@ static int8_t decode_rotary(uint8_t rotary_state)
         return PLAYER_COUNT - i - 1;
         }
     }
-    if (rotary_state == 0)
-    {
-        // Poison counter
-        return PLAYER_COUNT;
-    }
+
     return -1;
 }

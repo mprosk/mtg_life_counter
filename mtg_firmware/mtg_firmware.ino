@@ -74,9 +74,7 @@ static const int16_t LIFE_MODE_MAX[PLAYER_COUNT + 1] = {
 // LOCAL VARIABLES
 ////////////////////////////////////////////////////////////////////////////////
 static LifeCounter_t counters[PLAYER_COUNT];
-static SwitchState_t switch_state[2];
-static uint8_t sw = 0;
-static uint8_t sw_last = 1;
+static SwitchState_t switch_state;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -105,6 +103,7 @@ void setup() {
     Serial.println("Initialization complete"); Serial.flush();
 #endif
 }
+
 
 void loop() {
     uint8_t reset_state = 0;
@@ -151,6 +150,7 @@ void loop() {
         }
         reset_state_last = reset_state;
         
+        // Check for a mode switch activation
         mode_state = digitalRead(MODE_SWITCH_PIN);
         if (mode_state != mode_state_last)
         {
@@ -170,62 +170,60 @@ void loop() {
         // Handle roll button activation
         uint8_t roll_state = roll();
 
-        // Read switch states
-        switches_update(&switch_state[sw]);
+        // Get new switch states
+        switches_update(&switch_state);
 
         // Process rotary switch changes
-        uint8_t rotary_changed = 0;
-        for (uint8_t i = 0; i < PLAYER_COUNT; i++)
+        if (switch_state.rotaries_changed && !roll_state)
         {
-            // Check if this rotary switch changed
-            if (switch_state[0].rotary_position[i] != switch_state[1].rotary_position[i])
+            for (uint8_t player = 0; player < PLAYER_COUNT; player++)
             {
-                // If the reading is valid
-                int8_t setting = switch_state[sw].rotary_position[i];
-                if (setting >= 0)
+                // Check if this rotary switch changed
+                if (switch_state.rotary_changes[player])
                 {
-                    // Update the display mode for this player
-                    uint8_t player = SWITCH_PLAYER_MAPPING[i];
-                    rotary_changed = 1;
-                    counters[player].mode = (uint8_t)setting;
-                    update_display(player);
+                    // Check if the reading is valid
+                    int8_t setting = switch_state.rotary_state[player];
+                    if (setting >= 0)
+                    {
+                        // Update the display mode for this player
+                        counters[player].mode = (uint8_t)setting;
+                        update_display(player);
+                    }
                 }
             }
         }
-
-        // Process button changes
-        uint8_t changes = switch_state[sw].button_state ^ switch_state[sw_last].button_state;
-        if (changes && !roll_state)
+        
+         // Process button changes
+        if (switch_state.buttons_changed && !roll_state)
         {
-            for (uint8_t i = 0; i < BUTTON_COUNT; i++)
+            for (uint8_t player = 0; player < PLAYER_COUNT; player++)
             {
-                uint8_t mask = (1 << i);
-                uint8_t player = BUTTON_PLAYER_MAPPING[i];
-
-                // Check if both buttons in that player group are held
-                if (i % 2 == 1)
+                for (uint8_t button = 0; button < BUTTONS_PER_PLAYER; button++)
                 {
-                    uint8_t mask2 = (1 << (i - 1));
-                    if ((switch_state[sw].button_state & mask) &&
-                            (switch_state[sw].button_state & mask2))
+
+                    // Check if both buttons in that player group are held and at least one of the buttons changed
+                    if ((button == 1)
+                        && switch_state.button_state[player][button]
+                        && switch_state.button_state[player][button - 1])
                     {
                         counter_reset(&counters[player], STARTING_LIFE[digitalRead(MODE_SWITCH_PIN)]);
                         update_display(player);
                         continue;
                     }
-                }
-                
-                // Check if this button was pressed
-                if ((switch_state[sw].button_state & mask) && (changes & mask))
-                {
-                    uint8_t mode = counters[player].mode;
-                    int8_t increment = BUTTON_INCREMENT_MAPPING[i];
-                    int16_t target = counters[player].life[mode] + increment;
-                    if ((target >= LIFE_MODE_MIN[mode]) && (target <= LIFE_MODE_MAX[mode]))
+
+                    // Check if this button changed state and is now pressed
+                    if (switch_state.button_changes[player][button]
+                        && switch_state.button_state[player][button])
                     {
-                        // Only change values if we're within the acceptable range for this display mode
-                        counters[player].life[mode] = target;
-                        update_display(player);
+                        uint8_t mode = counters[player].mode;
+                        int8_t increment = BUTTON_INCREMENT[button];
+                        int16_t target = counters[player].life[mode] + increment;
+                        if ((target >= LIFE_MODE_MIN[mode]) && (target <= LIFE_MODE_MAX[mode]))
+                        {
+                            // Only change values if we're within the acceptable range for this display mode
+                            counters[player].life[mode] = target;
+                            update_display(player);
+                        }
                     }
                 }
             }
@@ -233,18 +231,13 @@ void loop() {
 
         // Debug printout
 #ifndef TEMP_MONITOR
-        if (changes || rotary_changed)
+        if (switch_state.buttons_changed || switch_state.rotaries_changed)
         {
-        switches_print(&switch_state[sw]);
+            switches_print(&switch_state);
         }
 #endif
 
-        // Update internal switch states
-        sw ^= 1;
-        sw_last ^= 1;
-
         digitalWrite(DEBUG_PIN2, LOW);
-        // delay(5);
     }
 }
 
@@ -404,18 +397,17 @@ void animate_roll(uint8_t animate)
  */
 void rotary_init(void)
 {
-    switches_update(&switch_state[sw_last]);
-    for (uint8_t i = 0; i < PLAYER_COUNT; i++)
+    switches_update(&switch_state);
+    for (uint8_t player = 0; player < PLAYER_COUNT; player++)
     {
-        int8_t setting = switch_state[sw_last].rotary_position[i];
-        uint8_t player = SWITCH_PLAYER_MAPPING[i];
+        int8_t setting = switch_state.rotary_state[player];
         if (setting >= 0)
         {
             counters[player].mode = (uint8_t)setting;
         }
         else
         {
-        // On a bad init read, just assume we're in own life mode
+            // On a bad init read, just assume we're in own life mode
             counters[player].mode = 0;
         }
     }

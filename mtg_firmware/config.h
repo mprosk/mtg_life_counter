@@ -30,12 +30,21 @@
 
 /*---------------------------------------------------------------------*
  *  NAME
- *      PLAYER COUNT
+ *      BUTTONS_PER_PLAYER
+ *
+ *  DESCRIPTION
+ *      Number of buttons each player has
+ *---------------------------------------------------------------------*/
+#define BUTTONS_PER_PLAYER          (2)
+
+/*---------------------------------------------------------------------*
+ *  NAME
+ *      BUTTON_COUNT
  *
  *  DESCRIPTION
  *      Number of players
  *---------------------------------------------------------------------*/
-#define BUTTON_COUNT	            (PLAYER_COUNT * 2)
+#define BUTTON_COUNT	            (PLAYER_COUNT * BUTTONS_PER_PLAYER)
 
 /*---------------------------------------------------------------------*
  *  NAME
@@ -108,13 +117,23 @@ static const uint8_t BUTTON_PLAYER_MAPPING[] = {2, 2, 3, 3, 0, 0, 1, 1};
 
 /*---------------------------------------------------------------------*
  *  NAME
- *      BUTTON_INCREMENT_MAPPING        
+ *      BUTTON_DIRECTION_MAPPING        
  *
  *  DESCRIPTION
- *      Indicates the change in life total a given button should incur
- *      Input = Button Index, Output = Increment amount
+ *      Indicates the direction a given button refers to
+ *      Input = Button Index, Output = Button direction (0 = down, 1 = up)
  *---------------------------------------------------------------------*/
-static const int8_t BUTTON_INCREMENT_MAPPING[] = {1, -1, -1, 1, -1, 1, -1, 1};
+static const int8_t BUTTON_DIRECTION_MAPPING[] = {1, 0, 0, 1, 0, 1, 0, 1};
+
+/*---------------------------------------------------------------------*
+ *  NAME
+ *      BUTTON_INCREMENT        
+ *
+ *  DESCRIPTION
+ *      Indicates the change in life total each player's button should incur
+ *      Input = Player Button Index, Output = Button increment
+ *---------------------------------------------------------------------*/
+static const int8_t BUTTON_INCREMENT[] = {-1, 1};
 
 /*---------------------------------------------------------------------*
  *  NAME
