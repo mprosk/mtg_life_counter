@@ -1,14 +1,35 @@
-/* INCLUDES */
-#include <avr/sleep.h>
+/***********************************************************************
+ *  MTG Life Counter
+ *
+ *  DESCRIPTION
+ *      Four player life counter for Magic: The Gathering
+ *      Life totals are displayed on 7-segement displays
+ *      Players adjust life using up/down buttons, and can
+ *      track commander damage and poison counters using a 
+ *      rotary switch to change display modes.
+ *
+ *  REFERENCES
+ *      MTG Life Counter Schematic
+ ***********************************************************************/
+
+/*=====================================================================*
+    Interface Header Files
+ *=====================================================================*/
 #include "config.h"
 #include "display.h"
 #include "switches.h"
 #include "animations.h"
 #include "coretemp.h"
 
-////////////////////////////////////////////////////////////////////////////////
-// DEFINES
-////////////////////////////////////////////////////////////////////////////////
+/*=====================================================================*
+    System-wide Header Files
+ *=====================================================================*/
+#include <avr/sleep.h>
+
+
+/*=====================================================================*
+    Private Defines
+ *=====================================================================*/
 /* PINS */
 #define POWER_SWITCH_PIN  (2)
 #define MODE_SWITCH_PIN   (A1)
@@ -18,13 +39,14 @@
 #define DEBUG_PIN1        (4)
 #define DEBUG_PIN2        (5)
 /* CONFIG OPTIONS */
-//#define CPU_SLEEP_ENABLE                    // If defined the MCU will enter sleep mode when the power switch is turned off (doesn't work)
-//#define PLAY_TO_WIN                         // If defined, enable the PlayToWin easter egg
-//#define TEMP_MONITOR                        // If defined, write CPU temp to serial port
+//#define CPU_SLEEP_ENABLE      // MCU will enter sleep mode when the power switch is turned off (doesn't work)
+//#define PLAY_TO_WIN           // Enables the PlayToWin easter egg
+//#define TEMP_MONITOR          // Write CPU temp to serial port (slows normal operation)
 
-////////////////////////////////////////////////////////////////////////////////
-// LOCAL TYPES
-////////////////////////////////////////////////////////////////////////////////
+
+/*=====================================================================*
+    Private Data Types
+ *=====================================================================*/
 typedef struct LifeCounter_t
 {
   int16_t life[PLAYER_COUNT + 1];   // Life/Damage amounts (self, commander, poison)
@@ -34,9 +56,9 @@ typedef struct LifeCounter_t
 } LifeCounter_t;
 
 
-////////////////////////////////////////////////////////////////////////////////
-// FUNCTION DECLARATIONS
-////////////////////////////////////////////////////////////////////////////////
+/*=====================================================================*
+    Private Function Prototypes
+ *=====================================================================*/
 void counter_sleep(void);
 void counter_wakeup(void);
 void counter_reset(LifeCounter_t *counter, int16_t starting_life);
@@ -46,7 +68,11 @@ void update_display_all(void);
 void rotary_init(void);
 void animate_roll(uint8_t reset);
 void play_to_win(void);
-float average_temp();
+
+
+/*=====================================================================*
+    Private Constants
+ *=====================================================================*/
 
 /*---------------------------------------------------------------------*
  *  NAME
@@ -70,14 +96,17 @@ static const int16_t LIFE_MODE_MAX[PLAYER_COUNT + 1] = {
     DISPLAY_MAX, COMMANDER_DAMAGE, COMMANDER_DAMAGE, COMMANDER_DAMAGE, POISON_COUNTERS
 };
 
-////////////////////////////////////////////////////////////////////////////////
-// LOCAL VARIABLES
-////////////////////////////////////////////////////////////////////////////////
+
+/*=====================================================================*
+    Private Data
+ *=====================================================================*/
 static LifeCounter_t counters[PLAYER_COUNT];
 static SwitchState_t switch_state;
 
 
-////////////////////////////////////////////////////////////////////////////////
+/*=====================================================================*
+    Arduino Hooks
+ *=====================================================================*/
 
 void setup() {
     /* HARDWARE INITIALIZATION */
@@ -104,6 +133,7 @@ void setup() {
 #endif
 }
 
+/*=====================================================================*/
 
 void loop() {
     uint8_t reset_state = 0;
@@ -241,9 +271,10 @@ void loop() {
     }
 }
 
-////////////////////////////////////////////////////////////////////////////////
-// FUNCTIONS
-////////////////////////////////////////////////////////////////////////////////
+
+/*=====================================================================*
+    Private Function Implementations
+ *=====================================================================*/
 
 /*
  * Performs all state transitions and animations for the roll feature
