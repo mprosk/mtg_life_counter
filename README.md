@@ -1,4 +1,4 @@
-# MTG Life Counter
+# WIP: MTG Life Counter
 Four player life counter for *Magic: The Gathering*
 
 ## Features
