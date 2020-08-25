@@ -16,7 +16,7 @@
 
 - Randomized loose messages
 - Randomized roll messages
-- Serial options menu
+- Serial config menu
 
 ### Refactor
 
