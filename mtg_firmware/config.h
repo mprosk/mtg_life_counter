@@ -26,7 +26,7 @@
  *  DESCRIPTION
  *      Number of players the counter supports
  *---------------------------------------------------------------------*/
-#define PLAYER_COUNT        (4)
+#define PLAYER_COUNT                (4)
 
 /*---------------------------------------------------------------------*
  *  NAME
@@ -35,34 +35,7 @@
  *  DESCRIPTION
  *      Number of players
  *---------------------------------------------------------------------*/
-#define BUTTON_COUNT	    (PLAYER_COUNT * 2)
-
-/*---------------------------------------------------------------------*
- *  NAME
- *      DISPLAY_WIDTH
- *
- *  DESCRIPTION
- *      Number of digits on each player's display
- *---------------------------------------------------------------------*/
-#define DISPLAY_WIDTH       (4)
-
-/*---------------------------------------------------------------------*
- *  NAME
- *      DISPLAY_MAX
- *
- *  DESCRIPTION
- *      Maximum integer value that the counter can display
- *---------------------------------------------------------------------*/
-#define DISPLAY_MAX         (pow(10, DISPLAY_WIDTH) - 1)
-
-/*---------------------------------------------------------------------*
- *  NAME
- *      DISPLAY_MIN
- *
- *  DESCRIPTION
- *      Minimum integer value that the counter can display
- *---------------------------------------------------------------------*/
-#define DISPLAY_MIN         (-pow(10, DISPLAY_WIDTH - 1) + 1)
+#define BUTTON_COUNT	            (PLAYER_COUNT * 2)
 
 /*---------------------------------------------------------------------*
  *  NAME
@@ -71,7 +44,7 @@
  *  DESCRIPTION
  *      Maximum amount of commander damage a player can receive
  *---------------------------------------------------------------------*/
-#define COMMANDER_DAMAGE          (21)
+#define COMMANDER_DAMAGE            (21)
 
 /*---------------------------------------------------------------------*
  *  NAME
@@ -80,7 +53,7 @@
  *  DESCRIPTION
  *      Maximum amount of poison counters a player can receive
  *---------------------------------------------------------------------*/
-#define POISON_COUNTERS           (10)
+#define POISON_COUNTERS             (10)
 
 /*---------------------------------------------------------------------*
  *  NAME
@@ -89,7 +62,7 @@
  *  DESCRIPTION
  *      Delay in ms between frames of the roll animations
  *---------------------------------------------------------------------*/
-#define ANIMATION_SPEED_MS        (50)
+#define ANIMATION_SPEED_MS          (50)
 
 /*---------------------------------------------------------------------*
  *  NAME
@@ -98,7 +71,7 @@
  *  DESCRIPTION
  *      Time in ms that the roll result will be displayed
  *---------------------------------------------------------------------*/
-#define ROLL_RESULT_DURATION_MS   (2000)    // Time in ms that the roll result will be displayed
+#define ROLL_RESULT_DURATION_MS     (2000)    // Time in ms that the roll result will be displayed
 
 /*---------------------------------------------------------------------*
  *  NAME
@@ -107,7 +80,7 @@
  *  DESCRIPTION
  *      Time in ms that the change in life total will be displayed
  *---------------------------------------------------------------------*/
-#define LIFE_CHANGE_DURATION_MS   (1000)
+#define LIFE_CHANGE_DURATION_MS     (1000)
 
 
 /*=====================================================================*
@@ -122,28 +95,6 @@
  *      Starting life totals for the different gamemodes
  *---------------------------------------------------------------------*/
 static const int16_t STARTING_LIFE[3] = {20, 40, 30};
-
-/*---------------------------------------------------------------------*
- *  NAME
- *      LIFE_MODE_MIN        
- *
- *  DESCRIPTION
- *      The minimum possible counter value for each display mode
- *      Self, Cmdr 1, Cmdr 2, Cmdr 3, Poison
- *---------------------------------------------------------------------*/
-static const int16_t LIFE_MODE_MIN[PLAYER_COUNT + 1] = {DISPLAY_MIN, 0, 0, 0, 0};
-
-/*---------------------------------------------------------------------*
- *  NAME
- *      LIFE_MODE_MAX       
- *
- *  DESCRIPTION
- *      The maximum possible counter value for each display mode
- *      Self, Cmdr 1, Cmdr 2, Cmdr 3, Poison
- *---------------------------------------------------------------------*/
-static const int16_t LIFE_MODE_MAX[PLAYER_COUNT + 1] = {
-  DISPLAY_MAX, COMMANDER_DAMAGE, COMMANDER_DAMAGE, COMMANDER_DAMAGE, POISON_COUNTERS
-};
 
 /*---------------------------------------------------------------------*
  *  NAME

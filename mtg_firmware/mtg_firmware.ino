@@ -49,6 +49,27 @@ void animate_roll(uint8_t reset);
 void play_to_win(void);
 float average_temp();
 
+/*---------------------------------------------------------------------*
+ *  NAME
+ *      LIFE_MODE_MIN        
+ *
+ *  DESCRIPTION
+ *      The minimum possible counter value for each display mode
+ *      Self, Cmdr 1, Cmdr 2, Cmdr 3, Poison
+ *---------------------------------------------------------------------*/
+static const int16_t LIFE_MODE_MIN[PLAYER_COUNT + 1] = {DISPLAY_MIN, 0, 0, 0, 0};
+
+/*---------------------------------------------------------------------*
+ *  NAME
+ *      LIFE_MODE_MAX       
+ *
+ *  DESCRIPTION
+ *      The maximum possible counter value for each display mode
+ *      Self, Cmdr 1, Cmdr 2, Cmdr 3, Poison
+ *---------------------------------------------------------------------*/
+static const int16_t LIFE_MODE_MAX[PLAYER_COUNT + 1] = {
+    DISPLAY_MAX, COMMANDER_DAMAGE, COMMANDER_DAMAGE, COMMANDER_DAMAGE, POISON_COUNTERS
+};
 
 ////////////////////////////////////////////////////////////////////////////////
 // LOCAL VARIABLES
@@ -97,7 +118,7 @@ void loop() {
     rotary_init();
     if (digitalRead(POWER_SWITCH_PIN))
     {
-        display_power_on();
+        display_start();
         switches_power_on();
 #ifdef PLAY_TO_WIN
         play_to_win();
@@ -272,7 +293,7 @@ uint8_t roll(void)
             }
             else
             {
-                display_fill_raw(i, DIRECTION[PLAYER_MAP[i][roll_result]]);
+                display_fill_pattern(i, DIRECTION[PLAYER_MAP[i][roll_result]]);
             }
         }
         Serial.print("Result: ");
@@ -369,7 +390,7 @@ void animate_roll(uint8_t animate)
         // Update display buffer
         for (uint8_t i = 0; i < PLAYER_COUNT; i++)
         {
-            for (uint8_t j = 0; j < DISPLAY_WIDTH; j++)
+            for (uint8_t j = 0; j < DISPLAY_PLAYER_WIDTH; j++)
             {
                 display_set_digit(i, j, ANIMATIONS[animation][(x + j) % ANIMATION_LENGTH[animation]]);
             }
@@ -406,7 +427,7 @@ void rotary_init(void)
  */
 void counter_sleep(void)
 {
-    display_power_off();
+    display_stop();
     switches_power_off();
 #ifndef TEMP_MONITOR
     Serial.println("Going to sleep");
@@ -434,7 +455,7 @@ void counter_sleep(void)
 #endif
     counter_reset_all(STARTING_LIFE[digitalRead(MODE_SWITCH_PIN)]);
     rotary_init();
-    display_power_on();
+    display_start();
     switches_power_on();
 #ifdef PLAY_TO_WIN
   play_t    o_win();

@@ -2,9 +2,7 @@
 
 ## Project
 
-- [ ] Look into VSCode + arduino 
-- [ ] CC Code review/templates 
-- [ ] Git pre-commit hook for codebase ToDos
+- 
 
 ## Codebase
 
@@ -13,7 +11,6 @@
 ##### High Priority
 
 1. "Delta" display
-2. 30-life mode (hold reset while switching modes)
 
 ##### Low Priority
 
@@ -21,24 +18,14 @@
 - Randomized roll messages
 - Serial options menu
 
+### Refactor
+
+- Apply formatting + style guide
+- Improve modularity
+  - Move roll stuff to separate module
+  - Change API in `switches`
+
 ### Fixes
 
-- Rotary cleanup
+- Poison counter mode switch bounce
 - timer rollover
-- cleanup and formatting/templating
-- Improve modularity
-  - Move temperature stuff to its own modularity
-  - move more stuff to config?
-- get clarification on:
-  - hw init
-  - implementation specific header configs
-  - arrays as const LUT, memory location?
-
-# tmp
-
-
-
-### /src/file.h
-
-- Line 29: TODO: this is a hack
-- Line 83: todo: fix timer rollover
