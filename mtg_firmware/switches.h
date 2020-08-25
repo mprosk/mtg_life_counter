@@ -12,11 +12,13 @@
 #if !defined(INC_SWITCHES_H)
 #define INC_SWITCHES_H
 
+
 /*=====================================================================*
     Required Header Files
  *=====================================================================*/
 #include <arduino.h>
 #include "config.h"
+
 
 /*=====================================================================*
     Public Defines
@@ -85,6 +87,7 @@ typedef struct SwitchState_t
     uint8_t button_state;         // Bitfield of push button states
     int8_t rotary_position[PLAYER_COUNT];
 } SwitchState_t;
+
 
 /*=====================================================================*
     Public Functions
