@@ -144,6 +144,7 @@ void switches_update(SwitchState_t *state_ptr)
             }
             else
             {
+                // Debounce expired, just show as the null state unchanged
                 state_ptr->rotary_state[player_id] = rotary_state[sw][i];
                 state_ptr->rotary_changes[player_id] = 0;
             }
@@ -178,7 +179,6 @@ void switches_update(SwitchState_t *state_ptr)
     sw ^= 1;
     sw_last ^= 1;
 }
-
 
 /*---------------------------------------------------------------------*
  *  NAME

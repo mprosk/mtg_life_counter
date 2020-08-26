@@ -39,7 +39,7 @@ typedef struct LifeCounter_t
   int16_t life[PLAYER_COUNT + 1];   // Life/Damage amounts (self, commander, poison)
   uint8_t mode;                     // Indicates which display mode the counter is in
   int16_t delta;                    // The change in life that the user has entered
-  uint32_t timeout;                 // 
+  uint32_t last_changed;            // the millis timestamp that the counter was last adjusted
 } LifeCounter_t;
 
 
@@ -48,9 +48,9 @@ typedef struct LifeCounter_t
  *=====================================================================*/
 void process_rotary(void);
 void process_buttons(void);
-void update_display(uint8_t player);
+void update_display(uint8_t player_id);
 void update_display_all(void);
-void counter_reset(LifeCounter_t *counter, int16_t starting_life);
+void counter_reset(uint8_t player_id, int16_t starting_life);
 void counter_reset_all(int16_t starting_life);
 void counter_sleep(void);
 void play_to_win(void);
@@ -197,6 +197,19 @@ void loop() {
         switches_print(&switch_state);
     }
 
+    // Handle delta displays
+    for (uint8_t player_id = 0; player_id < PLAYER_COUNT; player_id++)
+    {
+        if (counters[player_id].delta != 0)
+        {
+            if ((millis() - counters[player_id].last_changed) > LIFE_CHANGE_DURATION_MS)
+            {
+                counters[player_id].delta = 0;
+                update_display(player_id);
+            }
+        }
+    }
+
     digitalWrite(PIN_DEBUG_2, LOW);
 }
 
@@ -219,18 +232,19 @@ void loop() {
 void process_rotary(void)
 {
     // Process rotary switch changes
-    for (uint8_t player = 0; player < PLAYER_COUNT; player++)
+    for (uint8_t player_id = 0; player_id < PLAYER_COUNT; player_id++)
     {
         // Check if this rotary switch changed
-        if (switch_state.rotary_changes[player])
+        if (switch_state.rotary_changes[player_id])
         {
             // Check if the reading is valid
-            int8_t setting = switch_state.rotary_state[player];
+            int8_t setting = switch_state.rotary_state[player_id];
             if (setting >= 0)
             {
                 // Update the display mode for this player
-                counters[player].mode = (uint8_t)setting;
-                update_display(player);
+                counters[player_id].mode = (uint8_t)setting;
+                counters[player_id].delta = 0;
+                update_display(player_id);
             }
         }
     }
@@ -262,7 +276,7 @@ void process_buttons(void)
         if (both_held && either_changed)
         {
             // Reset this display
-            counter_reset(&counters[player_id], STARTING_LIFE[digitalRead(PIN_MODE_SWITCH)]);
+            counter_reset(player_id, STARTING_LIFE[digitalRead(PIN_MODE_SWITCH)]);
             update_display(player_id);
             continue;
         }
@@ -274,6 +288,7 @@ void process_buttons(void)
             if (switch_state.button_changes[player_id][button]
                 && switch_state.button_state[player_id][button])
             {
+                counters[player_id].last_changed = millis();
                 uint8_t mode = counters[player_id].mode;
                 int8_t increment = BUTTON_INCREMENT[button];
                 int16_t target = counters[player_id].life[mode] + increment;
@@ -281,6 +296,7 @@ void process_buttons(void)
                 {
                     // Only change values if we're within the acceptable range for this display mode
                     counters[player_id].life[mode] = target;
+                    counters[player_id].delta += increment;
                     update_display(player_id);
                 }
                 break;
@@ -302,7 +318,15 @@ void process_buttons(void)
 void update_display(uint8_t player_id)
 {
     uint8_t mode = counters[player_id].mode;
-    display_set_int(player_id, counters[player_id].life[mode]);
+    int16_t value = counters[player_id].life[mode];
+    
+    if (counters[player_id].delta != 0)
+    {
+        value = counters[player_id].delta;
+    }
+    
+    // Write the value to the screen and add any additional symbols
+    display_set_int(player_id, value);
     if (mode == PLAYER_COUNT)
     {
         // Poison counter mode
@@ -343,12 +367,13 @@ void update_display_all(void)
  *  RETURNS
  *      None
  *---------------------------------------------------------------------*/
-void counter_reset(LifeCounter_t *counter, int16_t starting_life)
+void counter_reset(uint8_t player_id, int16_t starting_life)
 {
-    counter->life[0] = starting_life;
-    for (uint8_t player_id = 1; player_id < PLAYER_COUNT + 1; player_id++)
+    counters[player_id].life[0] = starting_life;
+    counters[player_id].delta = 0;
+    for (uint8_t i = 1; i < PLAYER_COUNT + 1; i++)
     {
-        counter->life[player_id] = 0;
+        counters[player_id].life[i] = 0;
     }
 }
 
@@ -366,7 +391,7 @@ void counter_reset_all(int16_t starting_life)
 {
     for (uint8_t player_id = 0; player_id < PLAYER_COUNT; player_id++)
     {
-        counter_reset(&counters[player_id], starting_life);
+        counter_reset(player_id, starting_life);
     }
 }
 
