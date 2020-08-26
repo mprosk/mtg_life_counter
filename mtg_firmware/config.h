@@ -16,6 +16,13 @@
 
 
 /*=====================================================================*
+    Public Pin Assignments
+ *=====================================================================*/
+#define PIN_DEBUG_1       (4)
+#define PIN_DEBUG_2       (5)
+
+
+/*=====================================================================*
     Public Defines
  *=====================================================================*/
 
@@ -63,24 +70,6 @@
  *      Maximum amount of poison counters a player can receive
  *---------------------------------------------------------------------*/
 #define POISON_COUNTERS             (10)
-
-/*---------------------------------------------------------------------*
- *  NAME
- *      ANIMATION_SPEED_MS
- *
- *  DESCRIPTION
- *      Delay in ms between frames of the roll animations
- *---------------------------------------------------------------------*/
-#define ANIMATION_SPEED_MS          (50)
-
-/*---------------------------------------------------------------------*
- *  NAME
- *      ROLL_RESULT_DURATION_MS
- *
- *  DESCRIPTION
- *      Time in ms that the roll result will be displayed
- *---------------------------------------------------------------------*/
-#define ROLL_RESULT_DURATION_MS     (2000)    // Time in ms that the roll result will be displayed
 
 /*---------------------------------------------------------------------*
  *  NAME
@@ -159,21 +148,6 @@ static const uint8_t DIRECTION[4] = {
     B00011000,  // 3: Lower Left
 };
 
-/*---------------------------------------------------------------------*
- *  NAME
- *      PLAYER_MAP        
- *
- *  DESCRIPTION
- *      Contains the DIRECTION index that points from a given player
- *      to another given player
- *      Input = Player index FROM, Player index TO; Output = DIRECTION index
- *---------------------------------------------------------------------*/
-static const uint8_t PLAYER_MAP[PLAYER_COUNT][PLAYER_COUNT] = {
-    {2, 3, 0, 1},
-    {2, 3, 0, 1},
-    {0, 1, 2, 3},
-    {0, 1, 2, 3},
-};
 
 /*---------------------------------------------------------------------*
  *  NAME

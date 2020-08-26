@@ -19,24 +19,41 @@
     Required Header Files
  *=====================================================================*/
 #include <arduino.h>
+#include "config.h"
+#include "animations.h"
+#include "display.h"
 
 
 /*=====================================================================*
     Public Defines
  *=====================================================================*/
-/* None */
 
+/*---------------------------------------------------------------------*
+ *  NAME
+ *      PIN_ROLL_BTN
+ *
+ *  DESCRIPTION
+ *      Pin number of the roll button
+ *---------------------------------------------------------------------*/
+#define PIN_ROLL_BTN      (6)
 
-/*=====================================================================*
-    Public Data Types
- *=====================================================================*/
-/* None */
+/*---------------------------------------------------------------------*
+ *  NAME
+ *      ANIMATION_SPEED_MS
+ *
+ *  DESCRIPTION
+ *      Delay in ms between frames of the roll animations
+ *---------------------------------------------------------------------*/
+#define ANIMATION_SPEED_MS          (50)
 
-
-/*=====================================================================*
-    Public Data
- *=====================================================================*/
-/* REMOVE THIS SECTION IF NO PUBLIC DATA IS DEFINED */
+/*---------------------------------------------------------------------*
+ *  NAME
+ *      ROLL_RESULT_DURATION_MS
+ *
+ *  DESCRIPTION
+ *      Time in ms that the roll result will be displayed
+ *---------------------------------------------------------------------*/
+#define ROLL_RESULT_DURATION_MS     (2000)
 
 
 /*=====================================================================*
@@ -45,13 +62,27 @@
 
 /*---------------------------------------------------------------------*
  *  NAME
- *      universe_galaxy_system_planet_verb
+ *      roll_init
  *
  *  DESCRIPTION
- *      <<TODO>> Description of the function in as much detail as is necessary
+ *      Initializes the roll button pin
  *
  *  RETURNS
- *      <<TODO>> Describe what data the function returns
+ *      None
  *---------------------------------------------------------------------*/
+void roll_init(void);
 
-#endif /* !defined(INC_<<TODO>>_H) */
+/*---------------------------------------------------------------------*
+ *  NAME
+ *      roll
+ *
+ *  DESCRIPTION
+ *      Handles the roll button input and sends animations to the display
+ *
+ *  RETURNS
+ *      True if the roll animation occurred
+ *---------------------------------------------------------------------*/
+bool roll(void);
+
+
+#endif /* !defined(INC_ROLL_H) */

@@ -154,7 +154,7 @@ void display_init(void);
  *  RETURNS
  *      None
  *---------------------------------------------------------------------*/
-void display_blank(uint8_t blank_enable);
+void display_blank(bool blank_enable);
 
 /*---------------------------------------------------------------------*
  *  NAME
@@ -195,7 +195,7 @@ void display_stop(void);
  *  RETURNS
  *      None
  *---------------------------------------------------------------------*/
-void display_set_int(uint8_t player, int16_t integer);
+void display_set_int(uint8_t player_id, int16_t integer);
 
 /*---------------------------------------------------------------------*
  *  NAME
@@ -209,7 +209,7 @@ void display_set_int(uint8_t player, int16_t integer);
  *  RETURNS
  *      None
  *---------------------------------------------------------------------*/
-void display_set_string(uint8_t player, uint8_t *text);
+void display_set_string(uint8_t player_id, uint8_t *text);
 
 /*---------------------------------------------------------------------*
  *  NAME
@@ -225,7 +225,7 @@ void display_set_string(uint8_t player, uint8_t *text);
  *  RETURNS
  *      None
  *---------------------------------------------------------------------*/
-void display_set_digit(uint8_t player, uint8_t pos, uint8_t pattern);
+void display_set_digit(uint8_t player_id, uint8_t pos, uint8_t pattern);
 
 /*---------------------------------------------------------------------*
  *  NAME
@@ -241,7 +241,7 @@ void display_set_digit(uint8_t player, uint8_t pos, uint8_t pattern);
  *  RETURNS
  *      None
  *---------------------------------------------------------------------*/
-void display_set_char(uint8_t player, uint8_t pos, uint8_t chr);
+void display_set_char(uint8_t player_id, uint8_t pos, uint8_t chr);
 
 /*---------------------------------------------------------------------*
  *  NAME
@@ -256,7 +256,7 @@ void display_set_char(uint8_t player, uint8_t pos, uint8_t chr);
  *  RETURNS
  *      None
  *---------------------------------------------------------------------*/
-void display_fill(uint8_t player, uint8_t fill_char);
+void display_fill(uint8_t player_id, uint8_t fill_char);
 
 /*---------------------------------------------------------------------*
  *  NAME
@@ -271,7 +271,7 @@ void display_fill(uint8_t player, uint8_t fill_char);
  *  RETURNS
  *      None
  *---------------------------------------------------------------------*/
-void display_fill_pattern(uint8_t player, uint8_t pattern);
+void display_fill_pattern(uint8_t player_id, uint8_t pattern);
 
 
 #endif /* !defined(INC_DISPLAY_H) */
