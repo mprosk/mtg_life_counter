@@ -1,12 +1,14 @@
 # WIP: MTG Life Counter
 Four player life counter for *Magic: The Gathering*
 
+![MTG Life Counter](https://github.com/mprosk/mtg_life_counter/tree/master/img/counter.jpg)
+
 ## Features
 
 - Easily track the life of up to four players
-- Each player can track commander damage from the other three players and poison counters
+- Each player can track poison counters and commander damage from the other three players
 - Supported life totals of -999 to 9999
-- Selectable starting life of 20 or 40 (who plays paper Brawl?)
+- Selectable starting life of 20, 30, or 40
 - "Roll" button for randomly selecting the starting player
 
 ## Hardware
