@@ -127,15 +127,13 @@ void animate_roll(bool animate)
 
     if (!animate)
     {
-        inc_time = 0;
+        inc_time = millis() - ANIMATION_SPEED_MS;
         animation = (animation + 1) % ANIMATION_COUNT;
         return;
     }
     
-    if (millis() >= inc_time)
+    if ((millis() - inc_time) > ANIMATION_SPEED_MS)
     {
-        inc_time = millis() + ANIMATION_SPEED_MS;   // TODO: THIS IS NOT ROLLOVER REISTANT
-        
         // Update display buffer
         for (uint8_t i = 0; i < PLAYER_COUNT; i++)
         {
@@ -146,5 +144,6 @@ void animate_roll(bool animate)
         }
         // increment
         x = (x + 1) % ANIMATION_LENGTH[animation];
+        inc_time = millis();
     }
 }
