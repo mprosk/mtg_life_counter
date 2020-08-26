@@ -316,7 +316,7 @@ uint8_t roll(void)
             }
             else
             {
-                display_fill_pattern(i, DIRECTION[PLAYER_MAP[i][roll_result]]);
+                display_fill(i, ' ');
             }
         }
         Serial.print("Result: ");
