@@ -114,12 +114,12 @@ void switches_update(SwitchState_t *state_ptr)
     uint8_t rotary_changes = 0;
     for (uint8_t i = 0; i < PLAYER_COUNT; i++)
     {
-        uint8_t player = SWITCH_PLAYER_MAPPING[i];
+        uint8_t player_id = SWITCH_PLAYER_MAPPING[i];
         uint8_t changed = (rotary_state[sw][i] != rotary_state[sw_last][i]);
 
         // Update the state structure
-        state_ptr->rotary_state[player] = rotary_state[sw][i];
-        state_ptr->rotary_changes[player] = changed;
+        state_ptr->rotary_state[player_id] = rotary_state[sw][i];
+        state_ptr->rotary_changes[player_id] = changed;
         rotary_changes |= changed;
     }
      state_ptr->rotaries_changed = rotary_changes;
@@ -130,12 +130,12 @@ void switches_update(SwitchState_t *state_ptr)
     {
         // Get the mapping to player index
         uint8_t mask = (1 << i);
-        uint8_t player = BUTTON_PLAYER_MAPPING[i];
+        uint8_t player_id = BUTTON_PLAYER_MAPPING[i];
         uint8_t button = BUTTON_DIRECTION_MAPPING[i];
 
         // Update the state structure with the new state info
-        state_ptr->button_state[player][button] = (button_state & mask) >> i;
-        state_ptr->button_changes[player][button] = (changes & mask) >> i;
+        state_ptr->button_state[player_id][button] = (button_state & mask) >> i;
+        state_ptr->button_changes[player_id][button] = (changes & mask) >> i;
     }
     state_ptr->buttons_changed = changes;   // Convert to logical
     

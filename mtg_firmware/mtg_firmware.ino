@@ -12,32 +12,21 @@
  *      MTG Life Counter Schematic
  ***********************************************************************/
 
-/*=====================================================================*
-    Interface Header Files
- *=====================================================================*/
+/* INCLUDES */
+#include <avr/sleep.h>
 #include "config.h"
 #include "display.h"
 #include "switches.h"
-#include "animations.h"
+#include "roll.h"
 #include "coretemp.h"
 
-/*=====================================================================*
-    System-wide Header Files
- *=====================================================================*/
-#include <avr/sleep.h>
+/* PIN DEFINES */
+#define PIN_POWER_SWITCH  (2)
+#define PIN_MODE_SWITCH   (A1)
+#define PIN_RESET_BTN     (7)
+#define PIN_RNG           (A0)
 
 
-/*=====================================================================*
-    Private Defines
- *=====================================================================*/
-/* PINS */
-#define POWER_SWITCH_PIN  (2)
-#define MODE_SWITCH_PIN   (A1)
-#define ROLL_BTN_PIN      (6)
-#define RESET_BTN_PIN     (7)
-#define RNG_PIN           (A0)
-#define DEBUG_PIN1        (4)
-#define DEBUG_PIN2        (5)
 /* CONFIG OPTIONS */
 //#define CPU_SLEEP_ENABLE      // MCU will enter sleep mode when the power switch is turned off (doesn't work)
 //#define PLAY_TO_WIN           // Enables the PlayToWin easter egg
@@ -66,7 +55,6 @@ void counter_reset_all(int16_t starting_life);
 void update_display(uint8_t player);
 void update_display_all(void);
 void rotary_init(void);
-void animate_roll(uint8_t reset);
 void play_to_win(void);
 
 
@@ -113,38 +101,32 @@ void setup() {
     Serial.begin(115200);
 
     // Initialize Top-Level
-    pinMode(POWER_SWITCH_PIN, INPUT);
-    pinMode(MODE_SWITCH_PIN, INPUT_PULLUP);
-    pinMode(ROLL_BTN_PIN, INPUT_PULLUP);
-    pinMode(RESET_BTN_PIN, INPUT_PULLUP);
-    pinMode(DEBUG_PIN1, OUTPUT);
-    pinMode(DEBUG_PIN2, OUTPUT);
+    pinMode(PIN_POWER_SWITCH, INPUT);
+    pinMode(PIN_MODE_SWITCH, INPUT_PULLUP);
+    pinMode(PIN_RESET_BTN, INPUT_PULLUP);
+    pinMode(PIN_DEBUG_1, OUTPUT);
+    pinMode(PIN_DEBUG_2, OUTPUT);
 
-    // Initialize 7-Segment Display Driver
+    // Initialize 7-segment display driver
     display_init();
 
-    // Initialize Switch Sensing
+    // Initialize switch sensing
     switches_init();
 
+    // Initialize roll
+    roll_init();
+
 #ifdef TEMP_MONITOR
+    // Initialize internal temperature sensor
     coretemp_init();
-#else
-    Serial.println("Initialization complete"); Serial.flush();
 #endif
-}
 
-/*=====================================================================*/
-
-void loop() {
-    uint8_t reset_state = 0;
-    uint8_t reset_state_last = digitalRead(RESET_BTN_PIN);
-    
-    uint8_t mode_state = 0;
-    uint8_t mode_state_last = digitalRead(MODE_SWITCH_PIN);
-    
-    counter_reset_all(STARTING_LIFE[digitalRead(MODE_SWITCH_PIN)]);
+    // Initialize counter
+    counter_reset_all(STARTING_LIFE[digitalRead(PIN_MODE_SWITCH)]);
     rotary_init();
-    if (digitalRead(POWER_SWITCH_PIN))
+
+    // Turn on the display if power is on
+    if (digitalRead(PIN_POWER_SWITCH))
     {
         display_start();
         switches_start();
@@ -153,122 +135,136 @@ void loop() {
 #endif
         update_display_all();
     }
-  
-    /* MAIN LOOP */
-    while(1)
-    {
-        digitalWrite(DEBUG_PIN2, HIGH);
+
+#ifndef TEMP_MONITOR
+    Serial.println("Initialization complete"); Serial.flush();
+#endif
+}
+
+/*=====================================================================*/
+
+void loop() {
+    static uint8_t reset_state = 0;
+    static uint8_t reset_state_last = digitalRead(PIN_RESET_BTN);
+    
+    static uint8_t mode_state = 0;
+    static uint8_t mode_state_last = digitalRead(PIN_MODE_SWITCH);
+
+    digitalWrite(PIN_DEBUG_2, HIGH);
 
 #ifdef TEMP_MONITOR
-        Serial.println(coretemp_average(100));
+    Serial.println(coretemp_average(100));
 #endif
 
-        // Check for a power-off state
-        if (digitalRead(POWER_SWITCH_PIN) == 0)
-        {
-            counter_sleep();
-        }
-        
-        // Check for reset button activation
-        reset_state = digitalRead(RESET_BTN_PIN);
-        if ((reset_state == 0) && reset_state_last)
-        {
-            counter_reset_all(STARTING_LIFE[digitalRead(MODE_SWITCH_PIN)]);
-            update_display_all();
-            Serial.print("Counter reset. Mode ");
-            Serial.println(counters[0].life[0]);
-        }
-        reset_state_last = reset_state;
-        
-        // Check for a mode switch activation
-        mode_state = digitalRead(MODE_SWITCH_PIN);
-        if (mode_state != mode_state_last)
-        {
-            uint8_t mode = digitalRead(MODE_SWITCH_PIN);
-            if (reset_state == 0)
-            {
-                // Switch to 30 life mode if the reset button is held when the mode switch changes
-                mode = 2;
-            }
-            counter_reset_all(STARTING_LIFE[mode]);
-            update_display_all();
-            Serial.print("Mode changed. Mode ");
-            Serial.println(counters[0].life[0]);
-        }
-        mode_state_last = mode_state;
-        
-        // Handle roll button activation
-        uint8_t roll_state = roll();
-
-        // Get new switch states
-        switches_update(&switch_state);
-
-        // Process rotary switch changes
-        if (switch_state.rotaries_changed && !roll_state)
-        {
-            for (uint8_t player = 0; player < PLAYER_COUNT; player++)
-            {
-                // Check if this rotary switch changed
-                if (switch_state.rotary_changes[player])
-                {
-                    // Check if the reading is valid
-                    int8_t setting = switch_state.rotary_state[player];
-                    if (setting >= 0)
-                    {
-                        // Update the display mode for this player
-                        counters[player].mode = (uint8_t)setting;
-                        update_display(player);
-                    }
-                }
-            }
-        }
-        
-         // Process button changes
-        if (switch_state.buttons_changed && !roll_state)
-        {
-            for (uint8_t player = 0; player < PLAYER_COUNT; player++)
-            {
-                for (uint8_t button = 0; button < BUTTONS_PER_PLAYER; button++)
-                {
-
-                    // Check if both buttons in that player group are held and at least one of the buttons changed
-                    if ((button == 1)
-                        && switch_state.button_state[player][button]
-                        && switch_state.button_state[player][button - 1])
-                    {
-                        counter_reset(&counters[player], STARTING_LIFE[digitalRead(MODE_SWITCH_PIN)]);
-                        update_display(player);
-                        continue;
-                    }
-
-                    // Check if this button changed state and is now pressed
-                    if (switch_state.button_changes[player][button]
-                        && switch_state.button_state[player][button])
-                    {
-                        uint8_t mode = counters[player].mode;
-                        int8_t increment = BUTTON_INCREMENT[button];
-                        int16_t target = counters[player].life[mode] + increment;
-                        if ((target >= LIFE_MODE_MIN[mode]) && (target <= LIFE_MODE_MAX[mode]))
-                        {
-                            // Only change values if we're within the acceptable range for this display mode
-                            counters[player].life[mode] = target;
-                            update_display(player);
-                        }
-                    }
-                }
-            }
-        }
-
-        // Debug printout
-#ifndef TEMP_MONITOR
-        if (switch_state.buttons_changed || switch_state.rotaries_changed)
-        {
-            switches_print(&switch_state);
-        }
-#endif
-
-        digitalWrite(DEBUG_PIN2, LOW);
+    // Check for a power-off state
+    if (digitalRead(PIN_POWER_SWITCH) == 0)
+    {
+        counter_sleep();
     }
+    
+    // Check for reset button activation
+    reset_state = digitalRead(PIN_RESET_BTN);
+    if ((reset_state == 0) && reset_state_last)
+    {
+        counter_reset_all(STARTING_LIFE[digitalRead(PIN_MODE_SWITCH)]);
+        update_display_all();
+        Serial.print("Counter reset. Mode ");
+        Serial.println(counters[0].life[0]);
+    }
+    reset_state_last = reset_state;
+    
+    // Check for a mode switch activation
+    mode_state = digitalRead(PIN_MODE_SWITCH);
+    if (mode_state != mode_state_last)
+    {
+        uint8_t mode = digitalRead(PIN_MODE_SWITCH);
+        if (reset_state == 0)
+        {
+            // Switch to 30 life mode if the reset button is held when the mode switch changes
+            mode = 2;
+        }
+        counter_reset_all(STARTING_LIFE[mode]);
+        update_display_all();
+        Serial.print("Mode changed. Mode ");
+        Serial.println(counters[0].life[0]);
+    }
+    mode_state_last = mode_state;
+    
+    // Handle roll button
+    if(roll())
+    {
+        // Reset display after roll animation complete
+        update_display_all();
+    }
+
+    // Get new switch states
+    switches_update(&switch_state);
+
+    // Process rotary switch changes
+    if (switch_state.rotaries_changed)
+    {
+        for (uint8_t player = 0; player < PLAYER_COUNT; player++)
+        {
+            // Check if this rotary switch changed
+            if (switch_state.rotary_changes[player])
+            {
+                // Check if the reading is valid
+                int8_t setting = switch_state.rotary_state[player];
+                if (setting >= 0)
+                {
+                    // Update the display mode for this player
+                    counters[player].mode = (uint8_t)setting;
+                    update_display(player);
+                }
+            }
+        }
+    }
+    
+        // Process button changes
+    if (switch_state.buttons_changed)
+    {
+        for (uint8_t player = 0; player < PLAYER_COUNT; player++)
+        {
+            for (uint8_t button = 0; button < BUTTONS_PER_PLAYER; button++)
+            {
+
+                // Check if both buttons in that player group are held and at least one of the buttons changed
+                if ((button == 1)
+                    && switch_state.button_state[player][button]
+                    && switch_state.button_state[player][button - 1])
+                {
+                    counter_reset(&counters[player], STARTING_LIFE[digitalRead(PIN_MODE_SWITCH)]);
+                    update_display(player);
+                    continue;
+                }
+
+                // Check if this button changed state and is now pressed
+                if (switch_state.button_changes[player][button]
+                    && switch_state.button_state[player][button])
+                {
+                    uint8_t mode = counters[player].mode;
+                    int8_t increment = BUTTON_INCREMENT[button];
+                    int16_t target = counters[player].life[mode] + increment;
+                    if ((target >= LIFE_MODE_MIN[mode]) && (target <= LIFE_MODE_MAX[mode]))
+                    {
+                        // Only change values if we're within the acceptable range for this display mode
+                        counters[player].life[mode] = target;
+                        update_display(player);
+                    }
+                }
+            }
+        }
+    }
+
+    // Debug printout
+#ifndef TEMP_MONITOR
+    if (switch_state.buttons_changed || switch_state.rotaries_changed)
+    {
+        switches_print(&switch_state);
+    }
+#endif
+
+    digitalWrite(PIN_DEBUG_2, LOW);
 }
 
 
@@ -277,81 +273,21 @@ void loop() {
  *=====================================================================*/
 
 /*
- * Performs all state transitions and animations for the roll feature
- */
-uint8_t roll(void)
-{
-    static uint8_t roll_state = 0;
-    static uint8_t roll_state_last = digitalRead(ROLL_BTN_PIN);
-    static uint32_t roll_timeout = 0;
-    static uint8_t roll_hold = 0;
-    
-    roll_state = digitalRead(ROLL_BTN_PIN);
-    if ((roll_state == 0) && roll_state_last)
-    {
-        // Button pressed
-        Serial.println("Roll started");
-        uint8_t roll_counter = 0;
-        animate_roll(0);  // Reset the animation
-        do
-        {
-            // Button held
-            roll_counter++;
-            digitalWrite(DEBUG_PIN1, roll_counter == 0);
-            roll_state = digitalRead(ROLL_BTN_PIN);
-            animate_roll(1);
-        }
-        while(roll_state == 0);
-
-        // Button released
-        uint8_t roll_result = roll_counter % PLAYER_COUNT;
-        roll_hold = 1;
-        roll_timeout = millis() + ROLL_RESULT_DURATION_MS;   // TODO: THIS IS NOT ROLLOVER RESISTANT
-        // Generate roll result display
-        for (uint8_t i = 0; i < PLAYER_COUNT; i++)
-        {
-            if (i == roll_result)
-            {
-                display_set_string(roll_result, "PLAY");  
-            }
-            else
-            {
-                display_fill(i, ' ');
-            }
-        }
-        Serial.print("Result: ");
-        Serial.println(roll_result);
-    }
-    roll_state_last = roll_state;
-
-    // Clear roll display if timeout expired
-    if (roll_hold)
-    {
-        if (millis() >= roll_timeout)
-        {
-            roll_hold = 0;
-            update_display_all();
-        }
-    }
-    return roll_hold;
-}
-
-/*
  * Updates the display buffer with the selected counter data for all players
  */
-void update_display(uint8_t player)
+void update_display(uint8_t player_id)
 {
-    uint8_t mode = counters[player].mode;
-    display_set_int(player, counters[player].life[mode]);
+    uint8_t mode = counters[player_id].mode;
+    display_set_int(player_id, counters[player_id].life[mode]);
     if (mode == PLAYER_COUNT)
     {
         // Poison counter mode
-        display_set_char(player, 0, 'P');
+        display_set_char(player_id, 0, 'P');
     }
     else if (mode)
     {
         // Commander damage mode
-        display_set_digit(player, 0, DIRECTION[CMDR_DMG_MAP[player][mode]]);
+        display_set_digit(player_id, 0, DIRECTION[CMDR_DMG_MAP[player_id][mode]]);
     }
 }
 
@@ -360,9 +296,9 @@ void update_display(uint8_t player)
  */
 void update_display_all(void)
 {
-    for (uint8_t i = 0; i < PLAYER_COUNT; i++)
+    for (uint8_t player_id = 0; player_id < PLAYER_COUNT; player_id++)
     {
-        update_display(i);
+        update_display(player_id);
     }
 }
 
@@ -372,9 +308,9 @@ void update_display_all(void)
 void counter_reset(LifeCounter_t *counter, int16_t starting_life)
 {
     counter->life[0] = starting_life;
-    for (uint8_t i = 1; i < PLAYER_COUNT + 1; i++)
+    for (uint8_t player_id = 1; player_id < PLAYER_COUNT + 1; player_id++)
     {
-        counter->life[i] = 0;
+        counter->life[player_id] = 0;
     }
 }
 
@@ -383,45 +319,13 @@ void counter_reset(LifeCounter_t *counter, int16_t starting_life)
  */
 void counter_reset_all(int16_t starting_life)
 {
-    for (uint8_t i = 0; i < PLAYER_COUNT; i++)
+    for (uint8_t player_id = 0; player_id < PLAYER_COUNT; player_id++)
     {
-        counter_reset(&counters[i], starting_life);
+        counter_reset(&counters[player_id], starting_life);
     }
 }
 
-/*
- * Updates the roll animation
- * 0 = reset, 1 = animate
- */
-void animate_roll(uint8_t animate)
-{
-    static uint8_t animation = ANIMATION_COUNT - 1;
-    static uint8_t x = 0;
-    static uint32_t inc_time = 0;
 
-    if (animate == 0)
-    {
-        inc_time = 0;
-        animation = (animation + 1) % ANIMATION_COUNT;
-        return;
-    }
-    
-    if (millis() >= inc_time)
-    {
-        inc_time = millis() + ANIMATION_SPEED_MS;   // TODO: THIS IS NOT ROLLOVER REISTANT
-        
-        // Update display buffer
-        for (uint8_t i = 0; i < PLAYER_COUNT; i++)
-        {
-            for (uint8_t j = 0; j < DISPLAY_PLAYER_WIDTH; j++)
-            {
-                display_set_digit(i, j, ANIMATIONS[animation][(x + j) % ANIMATION_LENGTH[animation]]);
-            }
-        }
-        // increment
-        x = (x + 1) % ANIMATION_LENGTH[animation];
-    }
-}
 
 /*
  * Sets the display modes when the unit is first started
@@ -429,17 +333,17 @@ void animate_roll(uint8_t animate)
 void rotary_init(void)
 {
     switches_update(&switch_state);
-    for (uint8_t player = 0; player < PLAYER_COUNT; player++)
+    for (uint8_t player_id = 0; player_id < PLAYER_COUNT; player_id++)
     {
-        int8_t setting = switch_state.rotary_state[player];
+        int8_t setting = switch_state.rotary_state[player_id];
         if (setting >= 0)
         {
-            counters[player].mode = (uint8_t)setting;
+            counters[player_id].mode = (uint8_t)setting;
         }
         else
         {
             // On a bad init read, just assume we're in own life mode
-            counters[player].mode = 0;
+            counters[player_id].mode = 0;
         }
     }
 }
@@ -458,12 +362,12 @@ void counter_sleep(void)
 #ifdef CPU_SLEEP_ENABLE
     // Enable wakeup interrupt and sleep the CPU
     sleep_enable();
-    attachInterrupt(digitalPinToInterrupt(POWER_SWITCH_PIN), counter_wakeup, RISING);
+    attachInterrupt(digitalPinToInterrupt(PIN_POWER_SWITCH), counter_wakeup, RISING);
     set_sleep_mode(SLEEP_MODE_PWR_DOWN);
     sleep_cpu();
 #else
     // Wait for the power to get switched back on
-    while(digitalRead(POWER_SWITCH_PIN) == 0)
+    while(digitalRead(PIN_POWER_SWITCH) == 0)
     {
 #ifdef TEMP_MONITOR
         Serial.println(average_temp());
@@ -475,7 +379,7 @@ void counter_sleep(void)
 #ifndef TEMP_MONITOR
     Serial.println("Woke up");
 #endif
-    counter_reset_all(STARTING_LIFE[digitalRead(MODE_SWITCH_PIN)]);
+    counter_reset_all(STARTING_LIFE[digitalRead(PIN_MODE_SWITCH)]);
     rotary_init();
     display_start();
     switches_start();
@@ -491,7 +395,7 @@ void counter_sleep(void)
 void counter_wakeup(void)
 {
     sleep_disable();
-    detachInterrupt(digitalPinToInterrupt(POWER_SWITCH_PIN));
+    detachInterrupt(digitalPinToInterrupt(PIN_POWER_SWITCH));
 }
 
 /*

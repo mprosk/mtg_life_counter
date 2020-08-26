@@ -78,13 +78,13 @@ void display_init(void)
  *
  *  DESCRIPTION
  *      Blanks or unblanks the display
- *      'blank_enable' = 0: un-blanks the display
- *      'blank_enable' = 0: blanks the display
+ *      'blank_enable' = False: un-blanks the display
+ *      'blank_enable' =  True: blanks the display
  * 
  *  RETURNS
  *      None
  *---------------------------------------------------------------------*/
-void display_blank(uint8_t blank_enable)
+void display_blank(bool blank_enable)
 {
     if (display_enabled)
     {
@@ -181,12 +181,12 @@ void display_stop(void)
  *  RETURNS
  *      None
  *---------------------------------------------------------------------*/
-void display_set_int(uint8_t player, int16_t integer)
+void display_set_int(uint8_t player_id, int16_t integer)
 {
     // Clear buffer
     for (uint8_t i = 0; i < DISPLAY_PLAYER_WIDTH; i++)
     {
-        display_buffer[player][i] = SEG[' '];
+        display_buffer[player_id][i] = SEG[' '];
     }
 
     // Set each place
@@ -195,7 +195,7 @@ void display_set_int(uint8_t player, int16_t integer)
     uint8_t pos = DISPLAY_PLAYER_WIDTH - 1;
     do
     {
-        display_buffer[player][pos] = SEG[(mag / divisor) % 10];
+        display_buffer[player_id][pos] = SEG[(mag / divisor) % 10];
         divisor *= 10;
         pos--;
     }
@@ -204,7 +204,7 @@ void display_set_int(uint8_t player, int16_t integer)
     // Add minus sign if applicable
     if ((integer < 0) && (pos < DISPLAY_PLAYER_WIDTH))
     {
-        display_buffer[player][pos] = SEG['-'];
+        display_buffer[player_id][pos] = SEG['-'];
     }
 }
 
@@ -220,11 +220,11 @@ void display_set_int(uint8_t player, int16_t integer)
  *  RETURNS
  *      None
  *---------------------------------------------------------------------*/
-void display_set_string(uint8_t player, uint8_t *text)
+void display_set_string(uint8_t player_id, uint8_t *text)
 {
   for (uint8_t i = 0; i < DISPLAY_PLAYER_WIDTH; i++)
   {
-    display_buffer[player][i] = SEG[text[i]];
+    display_buffer[player_id][i] = SEG[text[i]];
   }
 }
 
@@ -242,9 +242,9 @@ void display_set_string(uint8_t player, uint8_t *text)
  *  RETURNS
  *      None
  *---------------------------------------------------------------------*/
-void display_set_digit(uint8_t player, uint8_t pos, uint8_t pattern)
+void display_set_digit(uint8_t player_id, uint8_t pos, uint8_t pattern)
 {
-  display_buffer[player][pos] = pattern;
+  display_buffer[player_id][pos] = pattern;
 }
 
 /*---------------------------------------------------------------------*
@@ -261,9 +261,9 @@ void display_set_digit(uint8_t player, uint8_t pos, uint8_t pattern)
  *  RETURNS
  *      None
  *---------------------------------------------------------------------*/
-void display_set_char(uint8_t player, uint8_t pos, uint8_t chr)
+void display_set_char(uint8_t player_id, uint8_t pos, uint8_t chr)
 {
-  display_set_digit(player, pos, SEG[chr]);
+  display_set_digit(player_id, pos, SEG[chr]);
 }
 
 
@@ -281,11 +281,11 @@ void display_set_char(uint8_t player, uint8_t pos, uint8_t chr)
  *  RETURNS
  *      None
  *---------------------------------------------------------------------*/
-void display_fill_pattern(uint8_t player, uint8_t pattern)
+void display_fill_pattern(uint8_t player_id, uint8_t pattern)
 {
   for (uint8_t i = 0; i < DISPLAY_PLAYER_WIDTH; i++)
   {
-    display_buffer[player][i] = pattern;
+    display_buffer[player_id][i] = pattern;
   }
 }
 
@@ -302,9 +302,9 @@ void display_fill_pattern(uint8_t player, uint8_t pattern)
  *  RETURNS
  *      None
  *---------------------------------------------------------------------*/
-void display_fill(uint8_t player, uint8_t chr)
+void display_fill(uint8_t player_id, uint8_t chr)
 {
-  display_fill_pattern(player, SEG[chr]);
+  display_fill_pattern(player_id, SEG[chr]);
 }
 
 /*=====================================================================*
