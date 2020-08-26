@@ -320,7 +320,7 @@ void display_fill(uint8_t player_id, uint8_t chr)
  *      Segment Driver 1 --> Segment Driver 2 --> Digit Sink 1 --> Digit Sink 2
  *
  *  DURATION
- *      <<TODO>>
+ *      40 us
  * 
  *  FREQUENCY
  *      1600 Hz
