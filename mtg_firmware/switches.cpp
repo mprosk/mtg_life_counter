@@ -25,6 +25,7 @@ static int8_t decode_rotary(uint8_t switch_state);
 /*=====================================================================*
     Private Data
  *=====================================================================*/
+static uint16_t rotary_latch[PLAYER_COUNT] = {0, 0, 0, 0};
 static uint8_t button_state = 0;
 static uint8_t button_state_last = 0;
 static int8_t rotary_state[2][PLAYER_COUNT] = { {0, 0, 0, 0}, {0, 0, 0, 0} };
@@ -115,12 +116,45 @@ void switches_update(SwitchState_t *state_ptr)
     for (uint8_t i = 0; i < PLAYER_COUNT; i++)
     {
         uint8_t player_id = SWITCH_PLAYER_MAPPING[i];
-        uint8_t changed = (rotary_state[sw][i] != rotary_state[sw_last][i]);
+        bool changed = (rotary_state[sw][i] != rotary_state[sw_last][i]);
 
-        // Update the state structure
-        state_ptr->rotary_state[player_id] = rotary_state[sw][i];
-        state_ptr->rotary_changes[player_id] = changed;
-        rotary_changes |= changed;
+        // Handle debounce of null-state rotary
+        if (rotary_state[sw][i] == PLAYER_COUNT)
+        {
+            // Reset the latch counter if this is the first null reading
+            if (changed)
+            {
+                rotary_latch[i] = 1;
+                state_ptr->rotary_changes[player_id] = 0;
+            }
+            else if (rotary_latch[i] > ROTARY_THRESHOLD)
+            {
+                // Threshold met, set the output
+                state_ptr->rotary_state[player_id] = rotary_state[sw][i];
+                state_ptr->rotary_changes[player_id] = 1;
+                rotary_changes = 1;
+                Serial.println(rotary_latch[i]);
+                rotary_latch[i] = 0;    // stop the counter
+            }
+            else if (rotary_latch[i])
+            {
+                // Increment the counter
+                rotary_latch[i]++;
+                state_ptr->rotary_changes[player_id] = 0;
+            }
+            else
+            {
+                state_ptr->rotary_state[player_id] = rotary_state[sw][i];
+                state_ptr->rotary_changes[player_id] = 0;
+            }
+        }
+        else
+        {
+            // Update the state structure
+            state_ptr->rotary_state[player_id] = rotary_state[sw][i];
+            state_ptr->rotary_changes[player_id] = changed;
+            rotary_changes |= changed;
+        }
     }
      state_ptr->rotaries_changed = rotary_changes;
 

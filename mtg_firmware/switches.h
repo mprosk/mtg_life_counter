@@ -26,6 +26,17 @@
 
 /*---------------------------------------------------------------------*
  *  NAME
+ *      ROTARY_THRESHOLD
+ *
+ *  DESCRIPTION
+ *      Number of samples required before a zero reading on the
+ *      rotary switches will be accepted as a real setting, not
+ *      just switch bounce
+ *---------------------------------------------------------------------*/
+#define ROTARY_THRESHOLD    (100)
+
+/*---------------------------------------------------------------------*
+ *  NAME
  *      SWITCH_RB1_PIN
  *
  *  DESCRIPTION
@@ -87,15 +98,15 @@ typedef struct SwitchState_t
     /* Flag indicating that any of the buttons have changed */
     uint8_t buttons_changed;
     /* Current state of each button for each player */
-    uint8_t button_state[PLAYER_COUNT][BUTTONS_PER_PLAYER];
+    bool button_state[PLAYER_COUNT][BUTTONS_PER_PLAYER];
     /* Flag indicating a changed button state for each player's buttons */
-    uint8_t button_changes[PLAYER_COUNT][BUTTONS_PER_PLAYER];
+    bool button_changes[PLAYER_COUNT][BUTTONS_PER_PLAYER];
     /* Flag indicating that any of the rotary switches have changed */
     uint8_t rotaries_changed;
     /* Current switch state for each player */
     int8_t rotary_state[PLAYER_COUNT];
     /* Flag indicating a changed switch state for each player */   
-    uint8_t rotary_changes[PLAYER_COUNT];
+    bool rotary_changes[PLAYER_COUNT];
 } SwitchState_t;
 
 
