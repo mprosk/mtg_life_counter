@@ -18,7 +18,7 @@
 #include "display.h"
 #include "switches.h"
 #include "roll.h"
-#include "coretemp.h"
+
 
 /* PIN DEFINES */
 #define PIN_POWER_SWITCH  (2)
@@ -28,9 +28,7 @@
 
 
 /* CONFIG OPTIONS */
-//#define CPU_SLEEP_ENABLE      // MCU will enter sleep mode when the power switch is turned off (doesn't work)
 //#define PLAY_TO_WIN           // Enables the PlayToWin easter egg
-//#define TEMP_MONITOR          // Write CPU temp to serial port (slows normal operation)
 
 
 /*=====================================================================*
@@ -48,13 +46,13 @@ typedef struct LifeCounter_t
 /*=====================================================================*
     Private Function Prototypes
  *=====================================================================*/
-void counter_sleep(void);
-void counter_wakeup(void);
-void counter_reset(LifeCounter_t *counter, int16_t starting_life);
-void counter_reset_all(int16_t starting_life);
+void process_rotary(void);
+void process_buttons(void);
 void update_display(uint8_t player);
 void update_display_all(void);
-void rotary_init(void);
+void counter_reset(LifeCounter_t *counter, int16_t starting_life);
+void counter_reset_all(int16_t starting_life);
+void counter_sleep(void);
 void play_to_win(void);
 
 
@@ -116,14 +114,9 @@ void setup() {
     // Initialize roll
     roll_init();
 
-#ifdef TEMP_MONITOR
-    // Initialize internal temperature sensor
-    coretemp_init();
-#endif
-
     // Initialize counter
     counter_reset_all(STARTING_LIFE[digitalRead(PIN_MODE_SWITCH)]);
-    rotary_init();
+    // rotary_init();
 
     // Turn on the display if power is on
     if (digitalRead(PIN_POWER_SWITCH))
@@ -136,25 +129,17 @@ void setup() {
         update_display_all();
     }
 
-#ifndef TEMP_MONITOR
     Serial.println("Initialization complete"); Serial.flush();
-#endif
 }
 
 /*=====================================================================*/
 
 void loop() {
-    static uint8_t reset_state = 0;
+
     static uint8_t reset_state_last = digitalRead(PIN_RESET_BTN);
-    
-    static uint8_t mode_state = 0;
     static uint8_t mode_state_last = digitalRead(PIN_MODE_SWITCH);
 
     digitalWrite(PIN_DEBUG_2, HIGH);
-
-#ifdef TEMP_MONITOR
-    Serial.println(coretemp_average(100));
-#endif
 
     // Check for a power-off state
     if (digitalRead(PIN_POWER_SWITCH) == 0)
@@ -163,7 +148,7 @@ void loop() {
     }
     
     // Check for reset button activation
-    reset_state = digitalRead(PIN_RESET_BTN);
+    uint8_t reset_state = digitalRead(PIN_RESET_BTN);
     if ((reset_state == 0) && reset_state_last)
     {
         counter_reset_all(STARTING_LIFE[digitalRead(PIN_MODE_SWITCH)]);
@@ -174,7 +159,7 @@ void loop() {
     reset_state_last = reset_state;
     
     // Check for a mode switch activation
-    mode_state = digitalRead(PIN_MODE_SWITCH);
+    uint8_t mode_state = digitalRead(PIN_MODE_SWITCH);
     if (mode_state != mode_state_last)
     {
         uint8_t mode = digitalRead(PIN_MODE_SWITCH);
@@ -200,69 +185,17 @@ void loop() {
     // Get new switch states
     switches_update(&switch_state);
 
-    // Process rotary switch changes
-    if (switch_state.rotaries_changed)
-    {
-        for (uint8_t player = 0; player < PLAYER_COUNT; player++)
-        {
-            // Check if this rotary switch changed
-            if (switch_state.rotary_changes[player])
-            {
-                // Check if the reading is valid
-                int8_t setting = switch_state.rotary_state[player];
-                if (setting >= 0)
-                {
-                    // Update the display mode for this player
-                    counters[player].mode = (uint8_t)setting;
-                    update_display(player);
-                }
-            }
-        }
-    }
-    
-        // Process button changes
-    if (switch_state.buttons_changed)
-    {
-        for (uint8_t player = 0; player < PLAYER_COUNT; player++)
-        {
-            for (uint8_t button = 0; button < BUTTONS_PER_PLAYER; button++)
-            {
+    // Handle rotary changes
+    process_rotary();
 
-                // Check if both buttons in that player group are held and at least one of the buttons changed
-                if ((button == 1)
-                    && switch_state.button_state[player][button]
-                    && switch_state.button_state[player][button - 1])
-                {
-                    counter_reset(&counters[player], STARTING_LIFE[digitalRead(PIN_MODE_SWITCH)]);
-                    update_display(player);
-                    continue;
-                }
-
-                // Check if this button changed state and is now pressed
-                if (switch_state.button_changes[player][button]
-                    && switch_state.button_state[player][button])
-                {
-                    uint8_t mode = counters[player].mode;
-                    int8_t increment = BUTTON_INCREMENT[button];
-                    int16_t target = counters[player].life[mode] + increment;
-                    if ((target >= LIFE_MODE_MIN[mode]) && (target <= LIFE_MODE_MAX[mode]))
-                    {
-                        // Only change values if we're within the acceptable range for this display mode
-                        counters[player].life[mode] = target;
-                        update_display(player);
-                    }
-                }
-            }
-        }
-    }
+    // Handle button changes
+    process_buttons();
 
     // Debug printout
-#ifndef TEMP_MONITOR
     if (switch_state.buttons_changed || switch_state.rotaries_changed)
     {
         switches_print(&switch_state);
     }
-#endif
 
     digitalWrite(PIN_DEBUG_2, LOW);
 }
@@ -272,9 +205,100 @@ void loop() {
     Private Function Implementations
  *=====================================================================*/
 
-/*
- * Updates the display buffer with the selected counter data for all players
- */
+/*---------------------------------------------------------------------*
+ *  NAME
+ *      process_rotary
+ *
+ *  DESCRIPTION
+ *      Handles changes to the rotary switches by updating the mode
+ *      setting of each player
+ *
+ *  RETURNS
+ *      None
+ *---------------------------------------------------------------------*/
+void process_rotary(void)
+{
+    // Process rotary switch changes
+    for (uint8_t player = 0; player < PLAYER_COUNT; player++)
+    {
+        // Check if this rotary switch changed
+        if (switch_state.rotary_changes[player])
+        {
+            // Check if the reading is valid
+            int8_t setting = switch_state.rotary_state[player];
+            if (setting >= 0)
+            {
+                // Update the display mode for this player
+                counters[player].mode = (uint8_t)setting;
+                update_display(player);
+            }
+        }
+    }
+}
+
+/*---------------------------------------------------------------------*
+ *  NAME
+ *      process_buttons
+ *
+ *  DESCRIPTION
+ *      Handles all button changes. Changes counter values or resets
+ *      the counter
+ *
+ *  RETURNS
+ *      None
+ *---------------------------------------------------------------------*/
+void process_buttons(void)
+{
+    // Process button changes
+    for (uint8_t player_id = 0; player_id < PLAYER_COUNT; player_id++)
+    {
+        // Check if both buttons are held and that one of them changed states
+        bool both_held = (
+            switch_state.button_state[player_id][0]
+            && switch_state.button_state[player_id][1]);
+        bool either_changed = (
+            switch_state.button_changes[player_id][0]
+            || switch_state.button_changes[player_id][1]);
+        if (both_held && either_changed)
+        {
+            // Reset this display
+            counter_reset(&counters[player_id], STARTING_LIFE[digitalRead(PIN_MODE_SWITCH)]);
+            update_display(player_id);
+            continue;
+        }
+        
+        // Handle single button press
+        for (uint8_t button = 0; button < BUTTONS_PER_PLAYER; button++)
+        {
+            // Check if this button changed state and is now pressed
+            if (switch_state.button_changes[player_id][button]
+                && switch_state.button_state[player_id][button])
+            {
+                uint8_t mode = counters[player_id].mode;
+                int8_t increment = BUTTON_INCREMENT[button];
+                int16_t target = counters[player_id].life[mode] + increment;
+                if ((target >= LIFE_MODE_MIN[mode]) && (target <= LIFE_MODE_MAX[mode]))
+                {
+                    // Only change values if we're within the acceptable range for this display mode
+                    counters[player_id].life[mode] = target;
+                    update_display(player_id);
+                }
+                break;
+            }
+        }
+    }
+}
+
+/*---------------------------------------------------------------------*
+ *  NAME
+ *      update_display
+ *
+ *  DESCRIPTION
+ *      Updates the display buffer of the given player
+ *
+ *  RETURNS
+ *      None
+ *---------------------------------------------------------------------*/
 void update_display(uint8_t player_id)
 {
     uint8_t mode = counters[player_id].mode;
@@ -291,9 +315,16 @@ void update_display(uint8_t player_id)
     }
 }
 
-/*
- * Updates the display buffer for all players
- */
+/*---------------------------------------------------------------------*
+ *  NAME
+ *      update_display_all
+ *
+ *  DESCRIPTION
+ *      Updates the display buffer for all players
+ *
+ *  RETURNS
+ *      None
+ *---------------------------------------------------------------------*/
 void update_display_all(void)
 {
     for (uint8_t player_id = 0; player_id < PLAYER_COUNT; player_id++)
@@ -302,9 +333,16 @@ void update_display_all(void)
     }
 }
 
-/*
- * Resets the given counter
- */
+/*---------------------------------------------------------------------*
+ *  NAME
+ *      counter_reset
+ *
+ *  DESCRIPTION
+ *      Resets the target life counter to the given starting life value
+ *
+ *  RETURNS
+ *      None
+ *---------------------------------------------------------------------*/
 void counter_reset(LifeCounter_t *counter, int16_t starting_life)
 {
     counter->life[0] = starting_life;
@@ -314,9 +352,16 @@ void counter_reset(LifeCounter_t *counter, int16_t starting_life)
     }
 }
 
-/*
- * Resets all the life counters
- */
+/*---------------------------------------------------------------------*
+ *  NAME
+ *      counter_reset_all
+ *
+ *  DESCRIPTION
+ *      Resets all the life counters to the given starting life value
+ *
+ *  RETURNS
+ *      None
+ *---------------------------------------------------------------------*/
 void counter_reset_all(int16_t starting_life)
 {
     for (uint8_t player_id = 0; player_id < PLAYER_COUNT; player_id++)
@@ -325,82 +370,50 @@ void counter_reset_all(int16_t starting_life)
     }
 }
 
-
-
-/*
- * Sets the display modes when the unit is first started
- */
-void rotary_init(void)
-{
-    switches_update(&switch_state);
-    for (uint8_t player_id = 0; player_id < PLAYER_COUNT; player_id++)
-    {
-        int8_t setting = switch_state.rotary_state[player_id];
-        if (setting >= 0)
-        {
-            counters[player_id].mode = (uint8_t)setting;
-        }
-        else
-        {
-            // On a bad init read, just assume we're in own life mode
-            counters[player_id].mode = 0;
-        }
-    }
-}
-
-/*
- * Attatches a wake-up interrupt to the power switch and puts the Arduino to sleep
- */
+/*---------------------------------------------------------------------*
+ *  NAME
+ *      counter_sleep
+ *
+ *  DESCRIPTION
+ *      Puts the system into a power-off safe state and polls the
+ *      power switch readback line until power is restored
+ *
+ *  RETURNS
+ *      None
+ *---------------------------------------------------------------------*/
 void counter_sleep(void)
 {
     display_stop();
     switches_stop();
-#ifndef TEMP_MONITOR
-    Serial.println("Going to sleep");
-    Serial.flush();
-#endif
-#ifdef CPU_SLEEP_ENABLE
-    // Enable wakeup interrupt and sleep the CPU
-    sleep_enable();
-    attachInterrupt(digitalPinToInterrupt(PIN_POWER_SWITCH), counter_wakeup, RISING);
-    set_sleep_mode(SLEEP_MODE_PWR_DOWN);
-    sleep_cpu();
-#else
+    Serial.println("Going to sleep"); Serial.flush();
+
     // Wait for the power to get switched back on
     while(digitalRead(PIN_POWER_SWITCH) == 0)
     {
-#ifdef TEMP_MONITOR
-        Serial.println(average_temp());
-#else
         delay(250);
-#endif
     };
-#endif
-#ifndef TEMP_MONITOR
+
+    // Post-wakeup cleanup
     Serial.println("Woke up");
-#endif
     counter_reset_all(STARTING_LIFE[digitalRead(PIN_MODE_SWITCH)]);
-    rotary_init();
     display_start();
     switches_start();
 #ifdef PLAY_TO_WIN
-  play_t    o_win();
+    play_to_win();
 #endif
     update_display_all();
 }
 
-/*
- * Wakes up the Arduino and removes the wake-up interrupt
- */
-void counter_wakeup(void)
-{
-    sleep_disable();
-    detachInterrupt(digitalPinToInterrupt(PIN_POWER_SWITCH));
-}
-
-/*
- * Play To Win easter egg
- */
+/*---------------------------------------------------------------------*
+ *  NAME
+ *      play_to_win
+ *
+ *  DESCRIPTION
+ *      Play to Win Easter Egg
+ *
+ *  RETURNS
+ *      None
+ *---------------------------------------------------------------------*/
  #ifdef PLAY_TO_WIN
 void play_to_win(void)
 {
