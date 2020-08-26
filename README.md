@@ -1,7 +1,7 @@
 # WIP: MTG Life Counter
 Four player life counter for *Magic: The Gathering*
 
-![MTG Life Counter](https://github.com/mprosk/mtg_life_counter/tree/master/img/counter.jpg)
+![MTG Life Counter](https://raw.githubusercontent.com/mprosk/mtg_life_counter/master/img/counter.jpg)
 
 ## Features
 
