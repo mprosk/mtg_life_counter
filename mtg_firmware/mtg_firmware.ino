@@ -97,6 +97,7 @@ static SwitchState_t switch_state;
 void setup() {
     /* HARDWARE INITIALIZATION */
     Serial.begin(115200);
+    Serial.println("Startup");
 
     // Initialize Top-Level
     pinMode(PIN_POWER_SWITCH, INPUT);

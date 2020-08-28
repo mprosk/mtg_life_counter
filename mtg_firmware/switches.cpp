@@ -133,7 +133,6 @@ void switches_update(SwitchState_t *state_ptr)
                 state_ptr->rotary_state[player_id] = rotary_state[sw][i];
                 state_ptr->rotary_changes[player_id] = 1;
                 rotary_changes = 1;
-                Serial.println(rotary_latch[i]);
                 rotary_latch[i] = 0;    // stop the counter
             }
             else if (rotary_latch[i])
