@@ -1,15 +1,7 @@
 # To Do
 
-## Project
+- SP5T support
+- Verify roll counter frequency
+- add Plus symbol
+- complete ToE section in readme
 
-- 
-
-## Codebase
-
-### Features
-
-##### Low Priority
-
-- Randomized loose messages
-- Randomized roll messages
-- Serial config menu
