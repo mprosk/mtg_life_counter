@@ -28,8 +28,8 @@
 
 
 /* CONFIG OPTIONS */
-#define PLAY_TO_WIN           // Enables the PlayToWin easter egg
-#define ROTARY_SP5T           // Enables poison counter mode with the 5pos switch
+// #define PLAY_TO_WIN           // Enables the PlayToWin easter egg
+// #define ROTARY_SP5T           // Enables poison counter mode with the 5pos switch
 
 
 /*=====================================================================*
@@ -93,6 +93,13 @@ static const int16_t LIFE_MODE_MAX[PLAYER_COUNT + 1] = {
     DISPLAY_MAX, COMMANDER_DAMAGE, COMMANDER_DAMAGE, COMMANDER_DAMAGE, POISON_COUNTERS
 };
 
+/*---------------------------------------------------------------------*
+ *  NAME
+ *      MODE_SEQ_x       
+ *
+ *  DESCRIPTION
+ *      Maps the rotary switch position to the display mode that should be applied
+ *---------------------------------------------------------------------*/
 static const DisplayMode_t MODE_SEQ_1[] = {SELF, POISON, CMDR3, CMDR2, CMDR1};
 static const DisplayMode_t MODE_SEQ_2[] = {POISON, CMDR3, CMDR2, CMDR1, SELF};
 
@@ -396,12 +403,12 @@ void update_display_all(void)
  *---------------------------------------------------------------------*/
 void counter_reset(uint8_t player_id, int16_t starting_life)
 {
-    counters[player_id].life[0] = starting_life;
     counters[player_id].delta = 0;
-    for (uint8_t i = 1; i < PLAYER_COUNT + 1; i++)
-    {
-        counters[player_id].life[i] = 0;
-    }
+    counters[player_id].life[SELF] = starting_life;
+    counters[player_id].life[CMDR1] = 0;
+    counters[player_id].life[CMDR2] = 0;
+    counters[player_id].life[CMDR3] = 0;
+    counters[player_id].life[POISON] = 0;    
 }
 
 /*---------------------------------------------------------------------*
