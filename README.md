@@ -25,6 +25,10 @@ Four player life counter for *Magic: The Gathering*
 
 There are two main subsystems within the counter's design, the button and rotary switch input sensing, and the 7-segment display driving.
 
+The input sensing is achieved using three 74HC151 multiplexers. The select bus for all three are connected together, allowing the Arduino to select from all three at once. The output lines from each multiplexer are sent back to the Arduino. This allows the firmware to monitor 24 digital lines using only 6 GPIO pins by scanning through the range of selections and monitoring all the readback lines.
+
+This project uses four 4-digit common cathode 7-segment displays. The displays are arranged into a matrix with 2 rows, and 8 digits each. For each row, a 74HC959 serial-in-parallel-out shift register acts as the segment driver, while a TPIC6B959 serial-in-parallel-out high-current sink illuminates each digit in turn. The serial bus of all four of these shift registers are cascaded together.
+
 
 
 # Operating Instructions
@@ -52,7 +56,7 @@ There are two main subsystems within the counter's design, the button and rotary
 
 1. Once the desired mode has been selected using the rotary switch, the player can adjust that value by pressing the up/down buttons on the edge of the board
 2. When the buttons are pressed, the counter will show the change in value that is being entered. After a brief timeout, the display will switch to showing the new updated value
-   1. EXAMPLE: If you wish to log a loss of two points off your starting total, press the bottom button twice. The display will first read `40` before any buttons are pressed. When you press the first button, the display will switch to `-1`,  then when the next button is pressed, it will display `-2`. After a brief timeout, the display
+   1. EXAMPLE: If you wish to log a loss of two points off your starting total, press the bottom button twice. The display will first read `40` before any buttons are pressed. When you press the first button, the display will switch to `-1`,  then when the next button is pressed, it will display `-2`. After a brief timeout, the display will switch to showing the new updated value
 
 #### Resetting the Counters
 
