@@ -119,7 +119,7 @@ void switches_update(SwitchState_t *state_ptr)
         bool changed = (rotary_state[sw][i] != rotary_state[sw_last][i]);
 
         // Handle debounce of null-state rotary
-        if (rotary_state[sw][i] == PLAYER_COUNT)
+        if (rotary_state[sw][i] == 0)
         {
             // Reset the latch counter if this is the first null reading
             if (changed)
@@ -272,14 +272,14 @@ static int8_t decode_rotary(uint8_t rotary_state)
 {
     if (rotary_state == 0)
     {
-        return PLAYER_COUNT;
+        return 0;
     }
 
     for (uint8_t i = 0; i < PLAYER_COUNT; i++)
     {
         if (rotary_state == (1 << i))
         {
-        return PLAYER_COUNT - i - 1;
+        return i + 1;
         }
     }
 

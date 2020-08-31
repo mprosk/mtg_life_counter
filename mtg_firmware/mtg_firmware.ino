@@ -28,18 +28,29 @@
 
 
 /* CONFIG OPTIONS */
-//#define PLAY_TO_WIN           // Enables the PlayToWin easter egg
+#define PLAY_TO_WIN           // Enables the PlayToWin easter egg
+#define ROTARY_SP5T           // Enables poison counter mode with the 5pos switch
 
 
 /*=====================================================================*
     Private Data Types
  *=====================================================================*/
+typedef enum DisplayMode_t
+{
+    SELF,
+    CMDR1,
+    CMDR2,
+    CMDR3, 
+    POISON
+} DisplayMode_t;
+
 typedef struct LifeCounter_t
 {
   int16_t life[PLAYER_COUNT + 1];   // Life/Damage amounts (self, commander, poison)
-  uint8_t mode;                     // Indicates which display mode the counter is in
+  DisplayMode_t  mode;               // Indicates which display mode the counter is in
   int16_t delta;                    // The change in life that the user has entered
   uint32_t last_changed;            // the millis timestamp that the counter was last adjusted
+  DisplayMode_t *mode_mapping;     // Maps rotary index to the specific mode for this player
 } LifeCounter_t;
 
 
@@ -82,6 +93,9 @@ static const int16_t LIFE_MODE_MAX[PLAYER_COUNT + 1] = {
     DISPLAY_MAX, COMMANDER_DAMAGE, COMMANDER_DAMAGE, COMMANDER_DAMAGE, POISON_COUNTERS
 };
 
+static const DisplayMode_t MODE_SEQ_1[] = {SELF, POISON, CMDR3, CMDR2, CMDR1};
+static const DisplayMode_t MODE_SEQ_2[] = {POISON, CMDR3, CMDR2, CMDR1, SELF};
+
 
 /*=====================================================================*
     Private Data
@@ -117,7 +131,15 @@ void setup() {
 
     // Initialize counter
     counter_reset_all(STARTING_LIFE[digitalRead(PIN_MODE_SWITCH)]);
-    // rotary_init();
+    // Set counter mode sequencing
+    for (uint8_t i = 0; i < PLAYER_COUNT; i++)
+    {
+        counters[i].mode_mapping = MODE_SEQ_2;
+    }
+#ifdef ROTARY_SP5T
+    counters[0].mode_mapping = MODE_SEQ_1;
+    counters[2].mode_mapping = MODE_SEQ_1;
+#endif
 
     // Turn on the display if power is on
     if (digitalRead(PIN_POWER_SWITCH))
@@ -243,7 +265,7 @@ void process_rotary(void)
             if (setting >= 0)
             {
                 // Update the display mode for this player
-                counters[player_id].mode = (uint8_t)setting;
+                counters[player_id].mode = counters[player_id].mode_mapping[setting];
                 counters[player_id].delta = 0;
                 update_display(player_id);
             }
@@ -318,7 +340,7 @@ void process_buttons(void)
  *---------------------------------------------------------------------*/
 void update_display(uint8_t player_id)
 {
-    uint8_t mode = counters[player_id].mode;
+    DisplayMode_t mode = counters[player_id].mode;
     int16_t value = counters[player_id].life[mode];
     
     if (counters[player_id].delta != 0)
@@ -328,12 +350,16 @@ void update_display(uint8_t player_id)
     
     // Write the value to the screen and add any additional symbols
     display_set_int(player_id, value);
-    if (mode == PLAYER_COUNT)
+    if (mode == SELF)
+    {
+        return;
+    }
+    else if (mode == POISON)
     {
         // Poison counter mode
         display_set_char(player_id, 0, 'P');
     }
-    else if (mode)
+    else
     {
         // Commander damage mode
         display_set_digit(player_id, 0, DIRECTION[CMDR_DMG_MAP[player_id][mode]]);
