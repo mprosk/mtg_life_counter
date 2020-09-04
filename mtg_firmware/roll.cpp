@@ -19,9 +19,19 @@
 
 
 /*=====================================================================*
+    Private Defines
+ *=====================================================================*/
+#ifdef ROLL_ADAPTIVE_MODE
+#endif
+
+
+/*=====================================================================*
     Private Function Prototypes
  *=====================================================================*/
 void animate_roll(bool animate);
+
+
+static int8_t roll_result_last = -1;
 
 
 /*=====================================================================*
@@ -41,6 +51,7 @@ void animate_roll(bool animate);
 void roll_init(void)
 {
     pinMode(PIN_ROLL_BTN, INPUT_PULLUP);
+    roll_result_last = -1;
 }
 
 /*---------------------------------------------------------------------*
@@ -67,11 +78,26 @@ bool roll(void)
         // Button pressed
         Serial.println("Roll started");
         uint8_t roll_counter = 0;
+        uint8_t result_count = 4;
+        uint8_t player_map[PLAYER_COUNT] = {0, 1, 2, 3};
+        if (roll_result_last >= 0)
+        {
+            result_count = 3;
+            uint8_t i = 0;
+            for (uint8_t p = 0; p < PLAYER_COUNT; p++)
+            {
+                if (p != roll_result_last)
+                {
+                    player_map[i] = p;
+                    i++;
+                }
+            }
+        }
         animate_roll(0);  // Reset the animation
         do
         {
             // Button held
-            roll_counter++;
+            roll_counter = (roll_counter + 1) % result_count;
             digitalWrite(PIN_DEBUG_1, roll_counter == 0);
             roll_state = digitalRead(PIN_ROLL_BTN);
             animate_roll(1);
@@ -79,7 +105,10 @@ bool roll(void)
         while(roll_state == 0);
 
         // Button released
-        uint8_t roll_result = roll_counter % PLAYER_COUNT;
+        uint8_t roll_result = player_map[roll_counter];
+#ifdef ROLL_ADAPTIVE_MODE
+        roll_result_last = roll_result;
+#endif
         
         // Generate roll result display
         for (uint8_t i = 0; i < PLAYER_COUNT; i++)

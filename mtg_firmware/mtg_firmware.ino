@@ -457,6 +457,7 @@ void counter_sleep(void)
     counter_reset_all(STARTING_LIFE[digitalRead(PIN_MODE_SWITCH)]);
     display_start();
     switches_start();
+    roll_init();
 #ifdef PLAY_TO_WIN
     play_to_win();
 #endif
