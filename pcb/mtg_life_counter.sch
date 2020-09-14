@@ -950,7 +950,7 @@ F 3 "~" H 6900 8710 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Interface_USB:FT232RL U7
+L mtg_life_counter-rescue:FT232RL-Interface_USB U7
 U 1 1 5F77F9F3
 P 6000 5450
 F 0 "U7" H 5450 6350 50  0000 C CNN
@@ -967,9 +967,9 @@ Text Label 9100 5000 0    50   ~ 0
 Text Label 9100 1850 0    50   ~ 0
 ~ENABLE
 Text Label 3500 5500 2    50   ~ 0
-USB_DP
+USB_D_P
 Text Label 3500 5300 2    50   ~ 0
-USB_DM
+USB_D_N
 $Comp
 L power:GND #PWR0101
 U 1 1 5F537739
@@ -987,14 +987,10 @@ Wire Wire Line
 	3500 5500 3000 5500
 Wire Wire Line
 	3500 5300 3000 5300
-Text Label 4850 5050 0    50   ~ 0
-USB_DP
 Wire Wire Line
 	4850 5050 5200 5050
 Wire Wire Line
 	4850 5150 5200 5150
-Text Label 4850 5150 0    50   ~ 0
-USB_DM
 NoConn ~ 5200 4750
 $Comp
 L mtg_life_counter:ATmega328P-AU U1
@@ -2122,7 +2118,7 @@ Wire Wire Line
 Wire Wire Line
 	2400 6300 2400 6400
 $Comp
-L Connector:USB_C_Receptacle_USB2.0 J1
+L mtg_life_counter-rescue:USB_C_Receptacle_USB2.0-Connector J1
 U 1 1 5F6AF0EA
 P 2400 5400
 F 0 "J1" H 2507 6267 50  0000 C CNN
@@ -2313,4 +2309,8 @@ Text Notes 3150 2800 0    50   ~ 0
 D5
 Text Notes 3150 2900 0    50   ~ 0
 D4
+Text Label 4850 5050 0    50   ~ 0
+USB_D_P
+Text Label 4850 5150 0    50   ~ 0
+USB_D_N
 $EndSCHEMATC
