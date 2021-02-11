@@ -1,5 +1,11 @@
 EESchema-DOCLIB  Version 2.0
 #
+$CMP 74HC165
+D Shift Register 8-bit, parallel load
+K TTL SR SR8
+F http://www.ti.com/lit/gpn/sn74LS165
+$ENDCMP
+#
 $CMP ATmega168A-AU
 D 20MHz, 16kB Flash, 1kB SRAM, 512B EEPROM, TQFP-32
 K AVR 8bit Microcontroller MegaAVR

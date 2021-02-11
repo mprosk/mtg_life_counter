@@ -6,7 +6,7 @@ $Descr USLedger 17000 11000
 encoding utf-8
 Sheet 1 1
 Title "Magic: The Gathering Life Counter"
-Date "2020-09-03"
+Date "2021-02-10"
 Rev "2.0"
 Comp "Max Proskauer"
 Comment1 ""
@@ -26,17 +26,6 @@ F 3 "http://www.ti.com/lit/ds/symlink/sn74hc595.pdf" H 9800 2250 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L 74xx:74LS151 U8
-U 1 1 5F293C96
-P 2500 8850
-F 0 "U8" H 2750 9600 50  0000 C CNN
-F 1 "74LS151" H 2300 9600 50  0000 C CNN
-F 2 "Package_SO:SOIC-16_3.9x9.9mm_P1.27mm" H 2500 8850 50  0001 C CNN
-F 3 "http://www.ti.com/lit/gpn/sn74LS151" H 2500 8850 50  0001 C CNN
-	1    2500 8850
-	-1   0    0    -1  
-$EndComp
-$Comp
 L power:+5V #PWR029
 U 1 1 5F2A4AB1
 P 2950 7750
@@ -47,34 +36,22 @@ F 3 "" H 2950 7750 50  0001 C CNN
 	1    2950 7750
 	1    0    0    -1  
 $EndComp
-Text Label 3750 9150 2    50   ~ 0
-MUX_SEL_0
-Text Label 3750 9250 2    50   ~ 0
-MUX_SEL_1
-Text Label 3750 9350 2    50   ~ 0
-MUX_SEL_2
-Wire Wire Line
-	3750 9150 3000 9150
-Wire Wire Line
-	3000 9250 3750 9250
-Wire Wire Line
-	3000 9350 3750 9350
 $Comp
 L power:GND #PWR026
 U 1 1 5F2E233A
-P 3000 9850
-F 0 "#PWR026" H 3000 9600 50  0001 C CNN
-F 1 "GND" H 3005 9677 50  0000 C CNN
-F 2 "" H 3000 9850 50  0001 C CNN
-F 3 "" H 3000 9850 50  0001 C CNN
-	1    3000 9850
+P 5050 10050
+F 0 "#PWR026" H 5050 9800 50  0001 C CNN
+F 1 "GND" H 5055 9877 50  0000 C CNN
+F 2 "" H 5050 10050 50  0001 C CNN
+F 3 "" H 5050 10050 50  0001 C CNN
+	1    5050 10050
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	2500 9850 3000 9850
+	4550 10050 5050 10050
 Wire Wire Line
-	3000 9550 3000 9850
-Connection ~ 3000 9850
+	5050 9750 5050 10050
+Connection ~ 5050 10050
 $Comp
 L power:+5V #PWR023
 U 1 1 5F2E3AF9
@@ -115,8 +92,6 @@ F 3 "" H 2100 7850 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	2100 7850 2200 7850
-Text Label 1500 8250 0    50   ~ 0
-MUX_RB
 Wire Wire Line
 	14300 2550 14400 2550
 Wire Wire Line
@@ -503,9 +478,6 @@ Text Label 15900 7200 2    50   ~ 0
 SER_LINK_1
 Text Label 15900 3350 2    50   ~ 0
 SER_LINK_2
-NoConn ~ 2000 8350
-Wire Wire Line
-	1500 8250 2000 8250
 $Comp
 L Device:Rotary_Encoder_Switch E1
 U 1 1 5F674E57
@@ -536,8 +508,6 @@ F 3 "~" H 3150 5300 50  0001 C CNN
 	1    3150 5300
 	1    0    0    -1  
 $EndComp
-Text Label 15900 6400 2    50   ~ 0
-SER_DATA
 Wire Wire Line
 	15400 6400 15900 6400
 Text Label 15900 2550 2    50   ~ 0
@@ -1856,21 +1826,19 @@ NoConn ~ 2650 5900
 NoConn ~ 2650 5800
 Wire Wire Line
 	3550 1800 4500 1800
-Text Label 7300 2700 2    50   ~ 0
-SER_DATA
 Text Label 5800 2700 0    50   ~ 0
 SER_CLK
-Text Label 4500 1800 2    50   ~ 0
-D12(MISO)
+Text Label 5800 2600 0    50   ~ 0
+SER_MISO
 Wire Wire Line
 	5900 1900 6400 1900
 $Comp
-L Connector:TestPoint TP2
+L Connector:TestPoint TP4
 U 1 1 608B6D51
 P 6400 1900
-F 0 "TP2" V 6400 2100 50  0000 L CNN
+F 0 "TP4" V 6400 2100 50  0000 L CNN
 F 1 "Debug" V 6400 2300 50  0000 L CNN
-F 2 "TestPoint:TestPoint_Pad_D1.0mm" H 6600 1900 50  0001 C CNN
+F 2 "TestPoint:TestPoint_Pad_D1.5mm" H 6600 1900 50  0001 C CNN
 F 3 "~" H 6600 1900 50  0001 C CNN
 	1    6400 1900
 	0    1    1    0   
@@ -1894,12 +1862,12 @@ D2(INT0)
 Wire Wire Line
 	3550 3600 4500 3600
 $Comp
-L Connector:TestPoint TP1
+L Connector:TestPoint TP3
 U 1 1 60802308
 P 6400 1750
-F 0 "TP1" V 6400 1950 50  0000 L CNN
+F 0 "TP3" V 6400 1950 50  0000 L CNN
 F 1 "INT0" V 6400 2150 50  0000 L CNN
-F 2 "TestPoint:TestPoint_Pad_D1.0mm" H 6600 1750 50  0001 C CNN
+F 2 "TestPoint:TestPoint_Pad_D1.5mm" H 6600 1750 50  0001 C CNN
 F 3 "~" H 6600 1750 50  0001 C CNN
 	1    6400 1750
 	0    1    1    0   
@@ -1920,8 +1888,6 @@ Text Notes 3600 3600 0    50   ~ 0
 D2(INT0)
 Text Notes 3600 3500 0    50   ~ 0
 D3(INT1)
-Text Notes 4950 1600 2    50   ~ 0
-D12(MISO)
 Text Notes 3600 2900 0    50   ~ 0
 A0
 Text Notes 3600 2800 0    50   ~ 0
@@ -1983,44 +1949,22 @@ Text Label 4500 2000 2    50   ~ 0
 SER_LATCH
 Wire Wire Line
 	3550 2100 4500 2100
-Wire Wire Line
-	3550 2500 4500 2500
-Text Label 4500 2900 2    50   ~ 0
+Text Label 4500 3200 2    50   ~ 0
 ROLL_BTN
 Text Label 4500 2100 2    50   ~ 0
 MODE_SW
 Wire Wire Line
-	3550 3400 4500 3400
-Wire Wire Line
-	3550 3300 4500 3300
-Wire Wire Line
-	3550 3200 4500 3200
-Wire Wire Line
-	3550 3100 4500 3100
-Wire Wire Line
-	3550 2900 4500 2900
-Wire Wire Line
 	3550 2800 4500 2800
 Wire Wire Line
 	3550 2700 4500 2700
-Wire Wire Line
-	3550 2600 4500 2600
 Text Label 4500 2200 2    50   ~ 0
 E3_SW
-Text Label 4500 3400 2    50   ~ 0
+Text Label 4500 3300 2    50   ~ 0
 E4_SW
 Text Label 4500 2800 2    50   ~ 0
 E2_SW
 Text Label 4500 2700 2    50   ~ 0
 E1_SW
-Text Label 4500 3300 2    50   ~ 0
-MUX_SEL_2
-Text Label 4500 3200 2    50   ~ 0
-MUX_SEL_1
-Text Label 4500 3100 2    50   ~ 0
-MUX_SEL_0
-Text Label 4500 2600 2    50   ~ 0
-MUX_RB
 Wire Wire Line
 	1550 3400 1650 3400
 $Comp
@@ -2119,8 +2063,6 @@ Wire Wire Line
 	5800 2600 6300 2600
 Text Label 5800 2800 0    50   ~ 0
 ~RESET
-Text Label 5800 2600 0    50   ~ 0
-D12(MISO)
 $Comp
 L power:GND #PWR0118
 U 1 1 60B706FB
@@ -2181,7 +2123,7 @@ D0(RX)
 Text Label 4500 3700 2    50   ~ 0
 D1(TX)
 Text Label 4500 1900 2    50   ~ 0
-SER_DATA
+SER_MOSI
 Text Label 4500 1700 2    50   ~ 0
 SER_CLK
 Wire Wire Line
@@ -2427,5 +2369,91 @@ F 3 "~" H 6800 6050 50  0001 C CNN
 	1    6800 5850
 	1    0    0    -1  
 $EndComp
-NoConn ~ 4500 2500
+Text Label 15900 6400 2    50   ~ 0
+SER_MOSI
+Text Label 1300 8250 0    50   ~ 0
+SER_IN
+Text Notes 3600 1800 0    50   ~ 0
+D12(MISO)
+Text Label 1300 8650 0    50   ~ 0
+SER_LATCH
+$Comp
+L mtg_life_counter:74HC165 U8
+U 1 1 603BF06B
+P 2500 8850
+F 0 "U8" H 2250 9750 50  0000 C CNN
+F 1 "74HC165" H 2250 9650 50  0000 C CNN
+F 2 "Package_SO:SOIC-16_3.9x9.9mm_P1.27mm" H 2500 8850 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74LS165" H 2500 8850 50  0001 C CNN
+	1    2500 8850
+	-1   0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR01
+U 1 1 603EBE82
+P 2500 9350
+F 0 "#PWR01" H 2500 9100 50  0001 C CNN
+F 1 "GND" H 2505 9177 50  0000 C CNN
+F 2 "" H 2500 9350 50  0001 C CNN
+F 3 "" H 2500 9350 50  0001 C CNN
+	1    2500 9350
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2500 9250 2500 9350
+Connection ~ 2500 9250
+Text Label 1300 8850 0    50   ~ 0
+SER_CLK
+Wire Wire Line
+	1300 8850 2000 8850
+Wire Wire Line
+	1300 8250 2000 8250
+Wire Wire Line
+	1300 8650 2000 8650
+Wire Wire Line
+	2000 8550 1900 8550
+Wire Wire Line
+	1900 8550 1900 8950
+Wire Wire Line
+	2000 8950 1900 8950
+Connection ~ 1900 8950
+Wire Wire Line
+	1900 8950 1900 9250
+Wire Wire Line
+	1900 9250 2500 9250
+$Comp
+L Connector:TestPoint TP2
+U 1 1 60642369
+P 4500 3800
+F 0 "TP2" V 4500 4000 50  0000 L CNN
+F 1 "RX" V 4500 4200 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Pad_D1.5mm" H 4700 3800 50  0001 C CNN
+F 3 "~" H 4700 3800 50  0001 C CNN
+	1    4500 3800
+	0    1    1    0   
+$EndComp
+$Comp
+L Connector:TestPoint TP1
+U 1 1 60642AD4
+P 4500 3700
+F 0 "TP1" V 4500 3900 50  0000 L CNN
+F 1 "TX" V 4500 4100 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Pad_D1.5mm" H 4700 3700 50  0001 C CNN
+F 3 "~" H 4700 3700 50  0001 C CNN
+	1    4500 3700
+	0    1    1    0   
+$EndComp
+NoConn ~ 3550 2500
+NoConn ~ 3550 2600
+NoConn ~ 3550 3400
+Text Label 4500 1800 2    50   ~ 0
+SER_MISO
+Text Label 7300 2700 2    50   ~ 0
+SER_MOSI
+Wire Wire Line
+	4500 3300 3550 3300
+Wire Wire Line
+	4500 3200 3550 3200
+NoConn ~ 3550 2900
+NoConn ~ 3550 3100
 $EndSCHEMATC
