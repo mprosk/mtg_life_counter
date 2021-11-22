@@ -375,12 +375,12 @@ X PD5 9 600 -550 100 L 50 50 1 1 T
 ENDDRAW
 ENDDEF
 #
-# mtg_life_counter_KW4-566CxB
+# mtg_life_counter_KW4-S561CxB
 #
-DEF mtg_life_counter_KW4-566CxB D 0 20 Y Y 1 F N
+DEF mtg_life_counter_KW4-S561CxB D 0 20 Y Y 1 F N
 F0 "D" 0 500 50 H V C CNN
-F1 "mtg_life_counter_KW4-566CxB" 0 -500 50 H V C CNN
-F2 "KW4-556CxB" 0 -500 50 H I C CNN
+F1 "mtg_life_counter_KW4-S561CxB" 0 -500 50 H V C CNN
+F2 "KW4-S561CxB" 0 -500 50 H I C CNN
 F3 "" -430 30 50 H I C CNN
 $FPLIST
  *CA56*12EWA*
@@ -390,8 +390,6 @@ C 300 -160 14 1 0 10 F
 C 700 -150 14 1 0 10 F
 C -540 -150 14 0 1 10 F
 C -100 -150 14 0 1 10 F
-C 0 -75 14 1 1 10 F
-C 25 125 14 1 1 10 F
 T 0 -600 250 60 0 0 0 A Normal 0 C C
 T 0 -480 110 60 0 0 0 B Normal 0 C C
 T 0 -520 -70 60 0 0 0 C Normal 0 C C
@@ -403,7 +401,6 @@ T 0 700 -240 60 0 0 0 DP4 Normal 0 C C
 T 0 -840 -60 60 0 0 0 E Normal 0 C C
 T 0 -770 120 60 0 0 0 F Normal 0 C C
 T 0 -650 60 60 0 0 0 G Normal 0 C C
-T 0 10 25 40 0 1 1 COL Normal 0 C C
 S -1000 450 1000 -450 0 0 10 f
 P 2 0 0 10 -800 -150 -750 0 N
 P 2 0 0 10 -750 -150 -650 -150 N

@@ -1,4 +1,5 @@
 EESchema Schematic File Version 4
+LIBS:mtg_life_counter-cache
 EELAYER 30 0
 EELAYER END
 $Descr USLedger 17000 11000
@@ -1219,8 +1220,6 @@ F 3 "http://www.ti.com/lit/ds/symlink/tpic6595.pdf" H 14900 6750 50  0001 C CNN
 	1    14900 6800
 	-1   0    0    -1  
 $EndComp
-Text Label 14800 4950 0    50   ~ 0
-~ENABLE
 Wire Wire Line
 	15100 3650 15000 3650
 Connection ~ 15100 3650
@@ -1577,28 +1576,6 @@ Wire Wire Line
 	9200 8600 9300 8600
 Text Notes 11850 1300 0    100  ~ 20
 Seven Segement Displays
-$Comp
-L mtg_life_counter:KW4-566CxB D2
-U 1 1 60A3B26F
-P 12800 4050
-F 0 "D2" H 12800 4667 50  0000 C CNN
-F 1 "KW4-566CVB GREEN" H 12800 4576 50  0000 C CNN
-F 2 "mtg_life_counter:KW4-566xxB_THT" H 12800 3550 50  0001 C CNN
-F 3 "" H 12370 4080 50  0001 C CNN
-	1    12800 4050
-	1    0    0    -1  
-$EndComp
-$Comp
-L mtg_life_counter:KW4-566CxB D1
-U 1 1 60A35AC0
-P 12800 2200
-F 0 "D1" H 12800 2817 50  0000 C CNN
-F 1 "KW4-566CVB RED" H 12800 2726 50  0000 C CNN
-F 2 "mtg_life_counter:KW4-566xxB_THT" H 12800 1700 50  0001 C CNN
-F 3 "" H 12370 2230 50  0001 C CNN
-	1    12800 2200
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	14000 2350 13900 2350
 Wire Wire Line
@@ -1623,28 +1600,6 @@ Wire Wire Line
 	13900 4200 14300 4200
 Wire Wire Line
 	13900 4100 14200 4100
-$Comp
-L mtg_life_counter:KW4-566CxB D3
-U 1 1 60C9EF14
-P 12800 6050
-F 0 "D3" H 12800 6667 50  0000 C CNN
-F 1 "KW4-566CVB YELLOW" H 12800 6576 50  0000 C CNN
-F 2 "mtg_life_counter:KW4-566xxB_THT" H 12800 5550 50  0001 C CNN
-F 3 "" H 12370 6080 50  0001 C CNN
-	1    12800 6050
-	1    0    0    -1  
-$EndComp
-$Comp
-L mtg_life_counter:KW4-566CxB D4
-U 1 1 60CC9F0E
-P 12800 8050
-F 0 "D4" H 12800 8667 50  0000 C CNN
-F 1 "KW4-566CVB BLUE" H 12800 8576 50  0000 C CNN
-F 2 "mtg_life_counter:KW4-566xxB_THT" H 12800 7550 50  0001 C CNN
-F 3 "" H 12370 8080 50  0001 C CNN
-	1    12800 8050
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	13900 6200 14000 6200
 Wire Wire Line
@@ -1669,19 +1624,6 @@ Wire Wire Line
 	13900 8100 14200 8100
 Wire Wire Line
 	13900 8200 14300 8200
-$Comp
-L power:GND #PWR0136
-U 1 1 610D747B
-P 15300 4950
-F 0 "#PWR0136" H 15300 4700 50  0001 C CNN
-F 1 "GND" H 15305 4777 50  0000 C CNN
-F 2 "" H 15300 4950 50  0001 C CNN
-F 3 "" H 15300 4950 50  0001 C CNN
-	1    15300 4950
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	14800 4950 15300 4950
 Wire Wire Line
 	7300 9350 7000 9350
 Wire Wire Line
@@ -2296,7 +2238,7 @@ Text Label 15900 6400 2    50   ~ 0
 SER_MOSI
 Text Notes 3600 1800 0    50   ~ 0
 D12(MISO)
-Text Label 1300 8650 0    50   ~ 0
+Text Label 1500 8650 0    50   ~ 0
 SER_LATCH
 $Comp
 L mtg_life_counter:74HC165 U8
@@ -2322,26 +2264,14 @@ F 3 "" H 2500 9350 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	2500 9250 2500 9350
-Connection ~ 2500 9250
-Text Label 1300 8850 0    50   ~ 0
+Text Label 1500 8850 0    50   ~ 0
 SER_CLK
 Wire Wire Line
-	1300 8850 2000 8850
+	1500 8850 2000 8850
 Wire Wire Line
-	1300 8250 2000 8250
+	1500 8250 2000 8250
 Wire Wire Line
-	1300 8650 2000 8650
-Wire Wire Line
-	2000 8550 1900 8550
-Wire Wire Line
-	1900 8550 1900 8950
-Wire Wire Line
-	2000 8950 1900 8950
-Connection ~ 1900 8950
-Wire Wire Line
-	1900 8950 1900 9250
-Wire Wire Line
-	1900 9250 2500 9250
+	1500 8650 2000 8650
 $Comp
 L Connector:TestPoint TP2
 U 1 1 60642369
@@ -2443,7 +2373,7 @@ Wire Wire Line
 NoConn ~ 3550 2700
 NoConn ~ 3550 2800
 NoConn ~ 2000 8350
-Text Label 1300 8250 0    50   ~ 0
+Text Label 1500 8250 0    50   ~ 0
 SER_MISO
 Connection ~ 7000 8550
 Wire Wire Line
@@ -2460,12 +2390,65 @@ Wire Wire Line
 	5900 1450 6400 1450
 Wire Wire Line
 	6400 1600 5900 1600
-Wire Notes Line
-	14400 3800 14400 3000
-Wire Notes Line
-	14400 3000 9400 3000
-Wire Notes Line
-	9400 3000 9400 2800
-Wire Notes Line
-	14400 3800 15000 3800
+$Comp
+L mtg_life_counter:KW4-S561CxB D1
+U 1 1 61A0F869
+P 12800 2200
+F 0 "D1" H 12800 2817 50  0000 C CNN
+F 1 "KW4-S561CxB RED SMD" H 12800 2726 50  0000 C CNN
+F 2 "mtg_life_counter:KW4-S561xxB_SMD" H 12800 1700 50  0001 C CNN
+F 3 "" H 12370 2230 50  0001 C CNN
+	1    12800 2200
+	1    0    0    -1  
+$EndComp
+$Comp
+L mtg_life_counter:KW4-S561CxB D2
+U 1 1 61A171D8
+P 12800 4050
+F 0 "D2" H 12800 4667 50  0000 C CNN
+F 1 "KW4-S561CxB GREEN SMD" H 12800 4576 50  0000 C CNN
+F 2 "mtg_life_counter:KW4-S561xxB_SMD" H 12800 3550 50  0001 C CNN
+F 3 "" H 12370 4080 50  0001 C CNN
+	1    12800 4050
+	1    0    0    -1  
+$EndComp
+$Comp
+L mtg_life_counter:KW4-S561CxB D3
+U 1 1 61A185C0
+P 12800 6050
+F 0 "D3" H 12800 6667 50  0000 C CNN
+F 1 "KW4-S561CxB YELLOW SMD" H 12800 6576 50  0000 C CNN
+F 2 "mtg_life_counter:KW4-S561xxB_SMD" H 12800 5550 50  0001 C CNN
+F 3 "" H 12370 6080 50  0001 C CNN
+	1    12800 6050
+	1    0    0    -1  
+$EndComp
+$Comp
+L mtg_life_counter:KW4-S561CxB D4
+U 1 1 61A1971E
+P 12800 8050
+F 0 "D4" H 12800 8667 50  0000 C CNN
+F 1 "KW4-S561CxB BLUE SMD" H 12800 8576 50  0000 C CNN
+F 2 "mtg_life_counter:KW4-S561xxB_SMD" H 12800 7550 50  0001 C CNN
+F 3 "" H 12370 8080 50  0001 C CNN
+	1    12800 8050
+	1    0    0    -1  
+$EndComp
+Text Label 1500 8950 0    50   ~ 0
+~ENABLE
+Wire Wire Line
+	2000 8950 1500 8950
+$Comp
+L power:GND #PWR?
+U 1 1 61BA45A0
+P 1250 8550
+F 0 "#PWR?" H 1250 8300 50  0001 C CNN
+F 1 "GND" H 1255 8377 50  0000 C CNN
+F 2 "" H 1250 8550 50  0001 C CNN
+F 3 "" H 1250 8550 50  0001 C CNN
+	1    1250 8550
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1250 8550 2000 8550
 $EndSCHEMATC

@@ -95,6 +95,11 @@ K display LED 7-segment
 F https://cdn-shop.adafruit.com/datasheets/865datasheet.pdf
 $ENDCMP
 #
+$CMP KW4-S561CxB
+D 4 digit 7 segment red LED, common cathode, surface mount
+K display LED 7-segment
+$ENDCMP
+#
 $CMP SW_SP4T
 D Switch, four position, single pole triple throw, 4 position switch, SP4T
 K switch sp4t ON-ON-ON-ON
