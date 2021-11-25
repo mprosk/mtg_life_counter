@@ -1,5 +1,4 @@
 EESchema Schematic File Version 4
-LIBS:mtg_life_counter-cache
 EELAYER 30 0
 EELAYER END
 $Descr USLedger 17000 11000
@@ -456,7 +455,7 @@ U 1 1 5F674E57
 P 5200 8250
 F 0 "E1" H 5200 8617 50  0000 C CNN
 F 1 "Rotary_Encoder_Switch" H 5200 8526 50  0000 C CNN
-F 2 "Rotary_Encoder:RotaryEncoder_Alps_EC11E-Switch_Vertical_H20mm" H 5050 8410 50  0001 C CNN
+F 2 "mtg_life_counter:TT_EN11-HSB" H 5050 8410 50  0001 C CNN
 F 3 "~" H 5200 8510 50  0001 C CNN
 	1    5200 8250
 	1    0    0    -1  
@@ -529,7 +528,7 @@ U 1 1 5FBBE8FD
 P 6700 8250
 F 0 "E2" H 6700 8617 50  0000 C CNN
 F 1 "Rotary_Encoder_Switch" H 6700 8526 50  0000 C CNN
-F 2 "Rotary_Encoder:RotaryEncoder_Alps_EC11E-Switch_Vertical_H20mm" H 6550 8410 50  0001 C CNN
+F 2 "mtg_life_counter:TT_EN11-HSB" H 6550 8410 50  0001 C CNN
 F 3 "~" H 6700 8510 50  0001 C CNN
 	1    6700 8250
 	1    0    0    -1  
@@ -569,7 +568,7 @@ U 1 1 5FBDF65E
 P 5200 9250
 F 0 "E3" H 5200 9617 50  0000 C CNN
 F 1 "Rotary_Encoder_Switch" H 5200 9526 50  0000 C CNN
-F 2 "Rotary_Encoder:RotaryEncoder_Alps_EC11E-Switch_Vertical_H20mm" H 5050 9410 50  0001 C CNN
+F 2 "mtg_life_counter:TT_EN11-HSB" H 5050 9410 50  0001 C CNN
 F 3 "~" H 5200 9510 50  0001 C CNN
 	1    5200 9250
 	1    0    0    -1  
@@ -608,7 +607,7 @@ U 1 1 5FC01795
 P 6700 9250
 F 0 "E4" H 6700 9617 50  0000 C CNN
 F 1 "Rotary_Encoder_Switch" H 6700 9526 50  0000 C CNN
-F 2 "Rotary_Encoder:RotaryEncoder_Alps_EC11E-Switch_Vertical_H20mm" H 6550 9410 50  0001 C CNN
+F 2 "mtg_life_counter:TT_EN11-HSB" H 6550 9410 50  0001 C CNN
 F 3 "~" H 6700 9510 50  0001 C CNN
 	1    6700 9250
 	1    0    0    -1  
