@@ -37,6 +37,15 @@
 
 /*---------------------------------------------------------------------*
  *  NAME
+ *      DISPLAY_MISO_PIN
+ *
+ *  DESCRIPTION
+ *      Pin number of the SPI MISO line
+ *---------------------------------------------------------------------*/
+#define DISPLAY_MISO_PIN    (12)
+
+/*---------------------------------------------------------------------*
+ *  NAME
  *      DISPLAY_CLOCK_PIN
  *
  *  DESCRIPTION
@@ -51,17 +60,7 @@
  *  DESCRIPTION
  *      Pin number of the shift register IC latch line
  *---------------------------------------------------------------------*/
-#define DISPLAY_LATCH_PIN   (9)
-
-/*---------------------------------------------------------------------*
- *  NAME
- *      DISPLAY_NENABLE_PIN
- *
- *  DESCRIPTION
- *      Pin number of the shift register output enable line
- *      ACTIVE LOW
- *---------------------------------------------------------------------*/
-#define DISPLAY_NENABLE_PIN (8)     // ACTIVE LOW
+#define DISPLAY_LATCH_PIN   (10)
 
 /*---------------------------------------------------------------------*
  *  NAME
@@ -70,7 +69,7 @@
  *  DESCRIPTION
  *      Clock speed in Hertz of the SPI bus driving the shift register ICs
  *---------------------------------------------------------------------*/
-#define DISPLAY_SPI_CLK_HZ    (1e6)
+#define DISPLAY_SPI_CLK_HZ    (1e5)
 
 /*---------------------------------------------------------------------*
  *  NAME
@@ -124,7 +123,7 @@
  *  DESCRIPTION
  *      Minimum integer value that the counter can display
  *---------------------------------------------------------------------*/
-#define DISPLAY_MIN         (-pow(10, DISPLAY_MATRIX_WIDTH - 1) + 1)
+#define DISPLAY_MIN         (-(pow(10, DISPLAY_MATRIX_WIDTH - 1) - 1))
 
 /*=====================================================================*
     Public Functions
@@ -141,20 +140,6 @@
  *      None
  *---------------------------------------------------------------------*/
 void display_init(void);
-
-/*---------------------------------------------------------------------*
- *  NAME
- *      display_blank
- *
- *  DESCRIPTION
- *      Blanks or unblanks the display
- *      'blank_enable' = 0: un-blanks the display
- *      'blank_enable' = 0: blanks the display
- * 
- *  RETURNS
- *      None
- *---------------------------------------------------------------------*/
-void display_blank(bool blank_enable);
 
 /*---------------------------------------------------------------------*
  *  NAME

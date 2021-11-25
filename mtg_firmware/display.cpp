@@ -31,16 +31,6 @@
  *---------------------------------------------------------------------*/
 static volatile uint8_t display_buffer[PLAYER_COUNT][DISPLAY_PLAYER_WIDTH];
 
-/*---------------------------------------------------------------------*
- *  NAME
- *      display_buffer
- *
- *  DESCRIPTION
- *      Indicates if the display is enabled
- *      0 = not enabled, others = enabled
- *---------------------------------------------------------------------*/
-static uint8_t display_enabled = 0; 
-
 
 /*=====================================================================*
     Public Function Implementations
@@ -58,8 +48,6 @@ static uint8_t display_enabled = 0;
  *---------------------------------------------------------------------*/
 void display_init(void)
 {
-    display_enabled = 0;
-
     // Initialize timer1 (16-bit)
     TCCR1A = 0;   // set entire TCCR1A register to 0
     TCCR1B = 0;   // same for TCCR1B
@@ -70,39 +58,6 @@ void display_init(void)
     TCCR1B |= (1 << WGM12);
     // Set CS11 bit for 8 prescaler
     TCCR1B |=  (1 << CS11);
-}
-
-/*---------------------------------------------------------------------*
- *  NAME
- *      display_blank
- *
- *  DESCRIPTION
- *      Blanks or unblanks the display
- *      'blank_enable' = False: un-blanks the display
- *      'blank_enable' =  True: blanks the display
- * 
- *  RETURNS
- *      None
- *---------------------------------------------------------------------*/
-void display_blank(bool blank_enable)
-{
-    if (display_enabled)
-    {
-        if (blank_enable)
-        {
-            // Disable timer compare interrupt
-            TIMSK1 &= ~(1 << OCIE1A);
-            // Blank the display
-            digitalWrite(DISPLAY_NENABLE_PIN, HIGH);
-        }
-        else
-        {
-            // Enable the display
-            digitalWrite(DISPLAY_NENABLE_PIN, LOW);
-            // Enable timer compare interrupt
-            TIMSK1 |= (1 << OCIE1A);
-        }
-    }
 }
 
 /*---------------------------------------------------------------------*
@@ -118,20 +73,14 @@ void display_blank(bool blank_enable)
  *---------------------------------------------------------------------*/
 void display_start(void)
 {
-    display_enabled = 1;
-
     // Set pin modes
     pinMode(DISPLAY_DATA_PIN, OUTPUT);
     pinMode(DISPLAY_CLOCK_PIN, OUTPUT);
     pinMode(DISPLAY_LATCH_PIN, OUTPUT);
-    pinMode(DISPLAY_NENABLE_PIN, OUTPUT);
 
     // Start SPI bus
     SPI.begin();
     SPI.beginTransaction(SPISettings(DISPLAY_SPI_CLK_HZ, LSBFIRST, SPI_MODE0));
-    
-    // Enable the display
-    digitalWrite(DISPLAY_NENABLE_PIN, LOW);
 
     // Enable timer compare interrupt
     TIMSK1 |= (1 << OCIE1A);
@@ -156,16 +105,6 @@ void display_stop(void)
     // Disable the SPI bus
     SPI.endTransaction();
     SPI.end();
-
-    // Set any active-high lines to low
-    digitalWrite(DISPLAY_NENABLE_PIN, LOW);
-    digitalWrite(DISPLAY_DATA_PIN, LOW);
-
-    // Set pins to inputs
-    pinMode(DISPLAY_DATA_PIN, INPUT);
-    pinMode(DISPLAY_CLOCK_PIN, INPUT);
-    pinMode(DISPLAY_LATCH_PIN, INPUT);
-    pinMode(DISPLAY_NENABLE_PIN, INPUT);
 }
 
 /*---------------------------------------------------------------------*
@@ -222,10 +161,10 @@ void display_set_int(uint8_t player_id, int16_t integer)
  *---------------------------------------------------------------------*/
 void display_set_string(uint8_t player_id, uint8_t *text)
 {
-  for (uint8_t i = 0; i < DISPLAY_PLAYER_WIDTH; i++)
-  {
-    display_buffer[player_id][i] = SEG[text[i]];
-  }
+    for (uint8_t i = 0; i < DISPLAY_PLAYER_WIDTH; i++)
+    {
+        display_buffer[player_id][i] = SEG[text[i]];
+    }
 }
 
 /*---------------------------------------------------------------------*
@@ -244,7 +183,7 @@ void display_set_string(uint8_t player_id, uint8_t *text)
  *---------------------------------------------------------------------*/
 void display_set_digit(uint8_t player_id, uint8_t pos, uint8_t pattern)
 {
-  display_buffer[player_id][pos] = pattern;
+    display_buffer[player_id][pos] = pattern;
 }
 
 /*---------------------------------------------------------------------*
@@ -263,10 +202,8 @@ void display_set_digit(uint8_t player_id, uint8_t pos, uint8_t pattern)
  *---------------------------------------------------------------------*/
 void display_set_char(uint8_t player_id, uint8_t pos, uint8_t chr)
 {
-  display_set_digit(player_id, pos, SEG[chr]);
+    display_set_digit(player_id, pos, SEG[chr]);
 }
-
-
 
 /*---------------------------------------------------------------------*
  *  NAME
@@ -283,10 +220,10 @@ void display_set_char(uint8_t player_id, uint8_t pos, uint8_t chr)
  *---------------------------------------------------------------------*/
 void display_fill_pattern(uint8_t player_id, uint8_t pattern)
 {
-  for (uint8_t i = 0; i < DISPLAY_PLAYER_WIDTH; i++)
-  {
-    display_buffer[player_id][i] = pattern;
-  }
+    for (uint8_t i = 0; i < DISPLAY_PLAYER_WIDTH; i++)
+    {
+        display_buffer[player_id][i] = pattern;
+    }
 }
 
 /*---------------------------------------------------------------------*
@@ -304,7 +241,7 @@ void display_fill_pattern(uint8_t player_id, uint8_t pattern)
  *---------------------------------------------------------------------*/
 void display_fill(uint8_t player_id, uint8_t chr)
 {
-  display_fill_pattern(player_id, SEG[chr]);
+    display_fill_pattern(player_id, SEG[chr]);
 }
 
 /*=====================================================================*

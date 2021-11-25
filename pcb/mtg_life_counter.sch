@@ -2575,4 +2575,6 @@ NoConn ~ 4350 5650
 NoConn ~ 4600 5650
 NoConn ~ 4850 5650
 NoConn ~ 5100 5650
+Text Notes 600  4400 0    50   ~ 0
+TODO: Confirm latch pull-up/down direction
 $EndSCHEMATC

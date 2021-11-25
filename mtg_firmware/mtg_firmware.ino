@@ -21,10 +21,8 @@
 
 
 /* PIN DEFINES */
-#define PIN_POWER_SWITCH  (2)
-#define PIN_MODE_SWITCH   (A1)
-#define PIN_RESET_BTN     (7)
-#define PIN_RNG           (A0)
+#define PIN_MODE_SWITCH   (9)
+#define PIN_RESET_BTN     (8)
 
 
 /* CONFIG OPTIONS */
@@ -121,7 +119,6 @@ void setup() {
     Serial.println("Startup");
 
     // Initialize Top-Level
-    pinMode(PIN_POWER_SWITCH, INPUT);
     pinMode(PIN_MODE_SWITCH, INPUT_PULLUP);
     pinMode(PIN_RESET_BTN, INPUT_PULLUP);
     pinMode(PIN_DEBUG_1, OUTPUT);
@@ -148,16 +145,13 @@ void setup() {
     counters[2].mode_mapping = MODE_SEQ_1;
 #endif
 
-    // Turn on the display if power is on
-    if (digitalRead(PIN_POWER_SWITCH))
-    {
-        display_start();
-        switches_start();
+
+    display_start();
+    switches_start();
 #ifdef PLAY_TO_WIN
-        play_to_win();
+    play_to_win();
 #endif
-        update_display_all();
-    }
+    update_display_all();
 
     Serial.println("Initialization complete"); Serial.flush();
 }
@@ -170,12 +164,6 @@ void loop() {
     static uint8_t mode_state_last = digitalRead(PIN_MODE_SWITCH);
 
     digitalWrite(PIN_DEBUG_2, HIGH);
-
-    // Check for a power-off state
-    if (digitalRead(PIN_POWER_SWITCH) == 0)
-    {
-        counter_sleep();
-    }
     
     // Check for reset button activation
     uint8_t reset_state = digitalRead(PIN_RESET_BTN);
@@ -427,41 +415,6 @@ void counter_reset_all(int16_t starting_life)
     {
         counter_reset(player_id, starting_life);
     }
-}
-
-/*---------------------------------------------------------------------*
- *  NAME
- *      counter_sleep
- *
- *  DESCRIPTION
- *      Puts the system into a power-off safe state and polls the
- *      power switch readback line until power is restored
- *
- *  RETURNS
- *      None
- *---------------------------------------------------------------------*/
-void counter_sleep(void)
-{
-    display_stop();
-    switches_stop();
-    Serial.println("Going to sleep"); Serial.flush();
-
-    // Wait for the power to get switched back on
-    while(digitalRead(PIN_POWER_SWITCH) == 0)
-    {
-        delay(250);
-    };
-
-    // Post-wakeup cleanup
-    Serial.println("Woke up");
-    counter_reset_all(STARTING_LIFE[digitalRead(PIN_MODE_SWITCH)]);
-    display_start();
-    switches_start();
-    roll_init();
-#ifdef PLAY_TO_WIN
-    play_to_win();
-#endif
-    update_display_all();
 }
 
 /*---------------------------------------------------------------------*
