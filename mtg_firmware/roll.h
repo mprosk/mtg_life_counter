@@ -55,6 +55,16 @@
  *---------------------------------------------------------------------*/
 #define ROLL_RESULT_DURATION_MS     (2000)
 
+/*---------------------------------------------------------------------*
+ *  NAME
+ *      ROLL_ADAPTIVE_MODE
+ *
+ *  DESCRIPTION
+ *      If enabled, causes roll results to never pick the player that
+ *      won the previous roll
+ *---------------------------------------------------------------------*/
+// #define ROLL_ADAPTIVE_MODE
+
 
 /*=====================================================================*
     Public Functions
