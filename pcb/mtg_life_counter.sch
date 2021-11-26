@@ -224,12 +224,8 @@ Wire Wire Line
 	9800 6800 9800 6850
 Text Label 10700 8600 2    50   ~ 0
 SER_LINK_3
-Text Label 8900 6200 0    50   ~ 0
-SER_LATCH
 Wire Wire Line
 	8900 6200 9400 6200
-Text Label 8900 2350 0    50   ~ 0
-SER_LATCH
 Wire Wire Line
 	8900 2350 9400 2350
 $Comp
@@ -255,17 +251,15 @@ Text Label 15900 6600 2    50   ~ 0
 SER_CLK
 Wire Wire Line
 	15400 6600 15900 6600
-Text Label 15900 6900 2    50   ~ 0
-SER_LATCH
 Wire Wire Line
 	15900 6900 15400 6900
 Wire Wire Line
 	15900 7000 15400 7000
 $Comp
-L Device:R R3
+L Device:R R5
 U 1 1 617ED900
 P 15700 6700
-F 0 "R3" V 15700 6300 50  0000 C CNN
+F 0 "R5" V 15700 6300 50  0000 C CNN
 F 1 "10k" V 15700 6700 50  0000 C CNN
 F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.15x1.40mm_HandSolder" V 15630 6700 50  0001 C CNN
 F 3 "~" H 15700 6700 50  0001 C CNN
@@ -350,8 +344,6 @@ Text Label 15900 2750 2    50   ~ 0
 SER_CLK
 Wire Wire Line
 	15400 2750 15900 2750
-Text Label 15900 3050 2    50   ~ 0
-SER_LATCH
 Wire Wire Line
 	15900 3050 15400 3050
 Text Label 15900 3150 2    50   ~ 0
@@ -359,10 +351,10 @@ Text Label 15900 3150 2    50   ~ 0
 Wire Wire Line
 	15900 3150 15400 3150
 $Comp
-L Device:R R2
+L Device:R R4
 U 1 1 5F968430
 P 15700 2850
-F 0 "R2" V 15700 2450 50  0000 C CNN
+F 0 "R4" V 15700 2450 50  0000 C CNN
 F 1 "10k" V 15700 2850 50  0000 C CNN
 F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.15x1.40mm_HandSolder" V 15630 2850 50  0001 C CNN
 F 3 "~" H 15700 2850 50  0001 C CNN
@@ -1348,8 +1340,6 @@ Text Label 8900 7900 0    50   ~ 0
 SER_CLK
 Wire Wire Line
 	8900 7900 9400 7900
-Text Label 8900 8200 0    50   ~ 0
-SER_LATCH
 Wire Wire Line
 	8900 8200 9400 8200
 Wire Wire Line
@@ -1362,8 +1352,6 @@ Text Label 8900 3900 0    50   ~ 0
 SER_CLK
 Wire Wire Line
 	8900 3900 9400 3900
-Text Label 8900 4200 0    50   ~ 0
-SER_LATCH
 Wire Wire Line
 	8900 4200 9400 4200
 Wire Wire Line
@@ -1706,7 +1694,7 @@ F 3 "~" H 6600 1750 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 Wire Wire Line
-	3550 3500 4500 3500
+	3550 3600 4500 3600
 Text Label 4500 2200 2    50   ~ 0
 RESET_BTN
 Text Notes 3600 3400 0    50   ~ 0
@@ -1779,7 +1767,7 @@ Wire Wire Line
 Wire Wire Line
 	3550 2000 4500 2000
 Text Label 4500 2000 2    50   ~ 0
-SER_LATCH
+DISP_LATCH
 Wire Wire Line
 	3550 2100 4500 2100
 Text Label 4500 3100 2    50   ~ 0
@@ -1792,7 +1780,7 @@ Wire Wire Line
 	3550 2400 4500 2400
 Text Label 4500 3300 2    50   ~ 0
 E3_SW
-Text Label 4500 3500 2    50   ~ 0
+Text Label 4500 3600 2    50   ~ 0
 E4_SW
 Text Label 4500 2700 2    50   ~ 0
 E2_SW
@@ -2134,7 +2122,7 @@ SER_MOSI
 Text Notes 3600 1800 0    50   ~ 0
 D12(MISO)
 Text Label 1500 8650 0    50   ~ 0
-SER_LATCH
+ENC_LATCH
 $Comp
 L mtg_life_counter:74HC165 U8
 U 1 1 603BF06B
@@ -2388,33 +2376,31 @@ Wire Wire Line
 Connection ~ 2500 9250
 NoConn ~ 3550 2500
 $Comp
-L Device:R R4
+L Device:R R3
 U 1 1 62408EA5
 P 1150 4200
-F 0 "R4" V 1250 4200 50  0000 C CNN
+F 0 "R3" V 1250 4200 50  0000 C CNN
 F 1 "10k" V 1150 4200 50  0000 C CNN
 F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.15x1.40mm_HandSolder" V 1080 4200 50  0001 C CNN
 F 3 "~" H 1150 4200 50  0001 C CNN
 	1    1150 4200
 	0    -1   -1   0   
 $EndComp
-Text Label 1800 4200 2    50   ~ 0
-SER_LATCH
 $Comp
 L power:+5V #PWR0117
 U 1 1 6240AF10
-P 800 4200
-F 0 "#PWR0117" H 800 4050 50  0001 C CNN
-F 1 "+5V" H 815 4373 50  0000 C CNN
-F 2 "" H 800 4200 50  0001 C CNN
-F 3 "" H 800 4200 50  0001 C CNN
-	1    800  4200
+P 750 3900
+F 0 "#PWR0117" H 750 3750 50  0001 C CNN
+F 1 "+5V" H 765 4073 50  0000 C CNN
+F 2 "" H 750 3900 50  0001 C CNN
+F 3 "" H 750 3900 50  0001 C CNN
+	1    750  3900
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
 	1800 4200 1300 4200
 Wire Wire Line
-	1000 4200 800  4200
+	1000 4200 750  4200
 Wire Wire Line
 	3300 4500 3800 4500
 $Comp
@@ -2431,7 +2417,6 @@ $EndComp
 Connection ~ 6900 2600
 Wire Wire Line
 	6900 2600 7300 2600
-NoConn ~ 3550 3200
 $Comp
 L mtg_life_counter:USB_C_Receptacle_USB2.0-Connector J1
 U 1 1 62769BF0
@@ -2462,10 +2447,10 @@ Connection ~ 2150 5550
 Wire Wire Line
 	2150 5550 2150 5650
 $Comp
-L Device:R R5
+L Device:R R60
 U 1 1 6286452B
 P 2300 5850
-F 0 "R5" V 2400 5850 50  0000 C CNN
+F 0 "R60" V 2400 5850 50  0000 C CNN
 F 1 "5.1k" V 2300 5850 50  0000 C CNN
 F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.15x1.40mm_HandSolder" V 2230 5850 50  0001 C CNN
 F 3 "~" H 2300 5850 50  0001 C CNN
@@ -2473,10 +2458,10 @@ F 3 "~" H 2300 5850 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L Device:R R6
+L Device:R R61
 U 1 1 62864ACD
 P 2300 5950
-F 0 "R6" V 2200 5950 50  0000 C CNN
+F 0 "R61" V 2200 5950 50  0000 C CNN
 F 1 "5.1k" V 2300 5950 50  0000 C CNN
 F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.15x1.40mm_HandSolder" V 2230 5950 50  0001 C CNN
 F 3 "~" H 2300 5950 50  0001 C CNN
@@ -2507,7 +2492,6 @@ Wire Wire Line
 	2150 5850 2050 5850
 Wire Wire Line
 	2150 5950 2050 5950
-NoConn ~ 3550 3600
 $Comp
 L power:GND #PWR0139
 U 1 1 62BDEA2D
@@ -2575,6 +2559,53 @@ NoConn ~ 4350 5650
 NoConn ~ 4600 5650
 NoConn ~ 4850 5650
 NoConn ~ 5100 5650
-Text Notes 600  4400 0    50   ~ 0
+Text Notes 600  4850 0    50   ~ 0
 TODO: Confirm latch pull-up/down direction
+Text Label 1800 4200 2    50   ~ 0
+DISP_LATCH
+Text Label 8900 2350 0    50   ~ 0
+DISP_LATCH
+Text Label 8900 4200 0    50   ~ 0
+DISP_LATCH
+Text Label 8900 6200 0    50   ~ 0
+DISP_LATCH
+Text Label 8900 8200 0    50   ~ 0
+DISP_LATCH
+Text Label 15900 6900 2    50   ~ 0
+DISP_LATCH
+Text Label 15900 3050 2    50   ~ 0
+DISP_LATCH
+Text Label 1800 3900 2    50   ~ 0
+ENC_LATCH
+$Comp
+L Device:R R2
+U 1 1 61DCE226
+P 1150 3900
+F 0 "R2" V 1250 3900 50  0000 C CNN
+F 1 "10k" V 1150 3900 50  0000 C CNN
+F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.15x1.40mm_HandSolder" V 1080 3900 50  0001 C CNN
+F 3 "~" H 1150 3900 50  0001 C CNN
+	1    1150 3900
+	0    -1   -1   0   
+$EndComp
+$Comp
+L power:GND #PWR012
+U 1 1 61DCE57C
+P 750 4200
+F 0 "#PWR012" H 750 3950 50  0001 C CNN
+F 1 "GND" H 755 4027 50  0000 C CNN
+F 2 "" H 750 4200 50  0001 C CNN
+F 3 "" H 750 4200 50  0001 C CNN
+	1    750  4200
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	750  3900 1000 3900
+Wire Wire Line
+	1300 3900 1800 3900
+Text Label 4500 3500 2    50   ~ 0
+ENC_LATCH
+Wire Wire Line
+	4500 3500 3550 3500
+NoConn ~ 3550 3200
 $EndSCHEMATC
