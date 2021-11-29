@@ -8,7 +8,7 @@ F0 "U" -300 550 50 H V C CNN
 F1 "74xx_74HC595" -300 -650 50 H V C CNN
 F2 "" 0 0 50 H I C CNN
 F3 "" 0 0 50 H I C CNN
-ALIAS 74LS595 74HCT595 74AHC595 74AHCT595
+ALIAS 74LS595 74HCT595
 $FPLIST
  DIP*W7.62mm*
  SOIC*3.9x9.9mm*P1.27mm*
@@ -34,6 +34,46 @@ X QG 6 400 -200 100 L 50 50 1 0 T
 X QH 7 400 -300 100 L 50 50 1 0 T
 X GND 8 0 -700 100 U 50 50 1 0 W
 X QH' 9 400 -500 100 L 50 50 1 0 O
+ENDDRAW
+ENDDEF
+#
+# Connector_Generic_Conn_01x02
+#
+DEF Connector_Generic_Conn_01x02 J 0 40 Y N 1 F N
+F0 "J" 0 100 50 H V C CNN
+F1 "Connector_Generic_Conn_01x02" 0 -200 50 H V C CNN
+F2 "" 0 0 50 H I C CNN
+F3 "" 0 0 50 H I C CNN
+$FPLIST
+ Connector*:*_1x??_*
+$ENDFPLIST
+DRAW
+S -50 -95 0 -105 1 1 6 N
+S -50 5 0 -5 1 1 6 N
+S -50 50 50 -150 1 1 10 f
+X Pin_1 1 -200 0 150 R 50 50 1 1 P
+X Pin_2 2 -200 -100 150 R 50 50 1 1 P
+ENDDRAW
+ENDDEF
+#
+# Connector_Generic_Conn_01x03
+#
+DEF Connector_Generic_Conn_01x03 J 0 40 Y N 1 F N
+F0 "J" 0 200 50 H V C CNN
+F1 "Connector_Generic_Conn_01x03" 0 -200 50 H V C CNN
+F2 "" 0 0 50 H I C CNN
+F3 "" 0 0 50 H I C CNN
+$FPLIST
+ Connector*:*_1x??_*
+$ENDFPLIST
+DRAW
+S -50 -95 0 -105 1 1 6 N
+S -50 5 0 -5 1 1 6 N
+S -50 105 0 95 1 1 6 N
+S -50 150 50 -150 1 1 10 f
+X Pin_1 1 -200 100 150 R 50 50 1 1 P
+X Pin_2 2 -200 0 150 R 50 50 1 1 P
+X Pin_3 3 -200 -100 150 R 50 50 1 1 P
 ENDDRAW
 ENDDEF
 #
@@ -189,6 +229,25 @@ X S2 S2 300 -100 100 L 50 50 1 1 P
 ENDDRAW
 ENDDEF
 #
+# Diode_1.5KExxA
+#
+DEF Diode_1.5KExxA D 0 40 N N 1 F N
+F0 "D" 0 100 50 H V C CNN
+F1 "Diode_1.5KExxA" 0 -100 50 H V C CNN
+F2 "Diode_THT:D_DO-201AE_P15.24mm_Horizontal" 0 -200 50 H I C CNN
+F3 "" -50 0 50 H I C CNN
+ALIAS 1N62xxA 1N630xA
+$FPLIST
+ D?DO?201AE*
+$ENDFPLIST
+DRAW
+P 3 0 1 8 -30 50 -50 50 -50 -50 N
+P 4 0 1 8 50 50 50 -50 -50 0 50 50 N
+X A1 1 -150 0 100 R 50 50 1 1 P
+X A2 2 150 0 100 L 50 50 1 1 P
+ENDDRAW
+ENDDEF
+#
 # Jumper_Jumper_2_Open
 #
 DEF Jumper_Jumper_2_Open JP 0 0 Y N 1 F N
@@ -197,9 +256,7 @@ F1 "Jumper_Jumper_2_Open" 0 -90 50 H V C CNN
 F2 "" 0 0 50 H I C CNN
 F3 "" 0 0 50 H I C CNN
 $FPLIST
- Jumper*
- TestPoint*2Pads*
- TestPoint*Bridge*
+ SolderJumper*Open*
 $ENDFPLIST
 DRAW
 A 0 -30 100 1269 531 0 1 0 N -60 50 60 50
