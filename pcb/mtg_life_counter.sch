@@ -6,7 +6,7 @@ $Descr USLedger 17000 11000
 encoding utf-8
 Sheet 1 1
 Title "Magic: The Gathering Life Counter"
-Date "2021-02-10"
+Date "2021-12-08"
 Rev "2.0"
 Comp "Max Proskauer"
 Comment1 ""

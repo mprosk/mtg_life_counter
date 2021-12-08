@@ -12,7 +12,7 @@
   (page USLetter)
   (title_block
     (title "Magic: The Gaterhing Life Counter")
-    (date 2020-09-02)
+    (date 2021-12-08)
     (rev 2.0)
     (company "Max Proskauer")
   )
@@ -5889,7 +5889,7 @@
   (segment (start 210.185 93.345) (end 216.535 93.345) (width 0.5) (layer B.Cu) (net 133))
   (segment (start 105.41 93.345) (end 201.295 93.345) (width 0.5) (layer B.Cu) (net 133) (tstamp 61B19C67))
 
-  (zone (net 1) (net_name GND) (layer B.Cu) (tstamp 61B127BA) (hatch edge 0.508)
+  (zone (net 1) (net_name GND) (layer B.Cu) (tstamp 61B1C131) (hatch edge 0.508)
     (connect_pads (clearance 0.508))
     (min_thickness 0.254)
     (fill yes (arc_segments 32) (thermal_gap 0.508) (thermal_bridge_width 0.508))
@@ -6933,7 +6933,7 @@
       )
     )
   )
-  (zone (net 1) (net_name GND) (layer F.Cu) (tstamp 61B127B7) (hatch edge 0.508)
+  (zone (net 1) (net_name GND) (layer F.Cu) (tstamp 61B1C12E) (hatch edge 0.508)
     (connect_pads (clearance 0.508))
     (min_thickness 0.254)
     (fill yes (arc_segments 32) (thermal_gap 0.508) (thermal_bridge_width 0.508))
