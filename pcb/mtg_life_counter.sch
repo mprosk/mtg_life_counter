@@ -2273,12 +2273,12 @@ Wire Wire Line
 $Comp
 L Jumper:Jumper_2_Open JP1
 U 1 1 61C0859C
-P 1750 6750
-F 0 "JP1" H 1750 6985 50  0000 C CNN
-F 1 "Jumper_2_Open" H 1750 6894 50  0000 C CNN
-F 2 "Jumper:SolderJumper-2_P1.3mm_Open_TrianglePad1.0x1.5mm" H 1750 6750 50  0001 C CNN
-F 3 "~" H 1750 6750 50  0001 C CNN
-	1    1750 6750
+P 1800 6500
+F 0 "JP1" H 1800 6735 50  0000 C CNN
+F 1 "Jumper_2_Open" H 1800 6644 50  0000 C CNN
+F 2 "Jumper:SolderJumper-2_P1.3mm_Open_TrianglePad1.0x1.5mm" H 1800 6500 50  0001 C CNN
+F 3 "~" H 1800 6500 50  0001 C CNN
+	1    1800 6500
 	1    0    0    -1  
 $EndComp
 NoConn ~ 3950 2800
@@ -2303,12 +2303,12 @@ Wire Wire Line
 	7050 3500 7150 3500
 Wire Wire Line
 	1600 8550 2100 8550
-Text Label 1000 6750 0    50   ~ 0
+Text Label 1050 6500 0    50   ~ 0
 SR_OUT
-Text Label 2500 6750 2    50   ~ 0
+Text Label 2550 6500 2    50   ~ 0
 SER_CIPO
 Wire Wire Line
-	1550 6750 1450 6750
+	1600 6500 1500 6500
 Wire Wire Line
 	2000 9250 2000 9550
 Wire Wire Line
@@ -2342,7 +2342,7 @@ Wire Wire Line
 Wire Wire Line
 	6500 4850 6250 4850
 Wire Wire Line
-	1950 6750 2050 6750
+	2000 6500 2100 6500
 $Comp
 L power:+5V #PWR0136
 U 1 1 6267FAA5
@@ -2681,28 +2681,24 @@ Wire Wire Line
 $Comp
 L Connector_Generic:Conn_01x02 JP2
 U 1 1 6304655D
-P 2350 6950
-F 0 "JP2" H 2430 6942 50  0000 L CNN
-F 1 "JP_SR" H 2430 6851 50  0000 L CNN
-F 2 "mtg_life_counter:TP_Edge_2" H 2350 6950 50  0001 C CNN
-F 3 "~" H 2350 6950 50  0001 C CNN
-	1    2350 6950
+P 2400 6750
+F 0 "JP2" H 2480 6742 50  0000 L CNN
+F 1 "JP_SR" H 2480 6651 50  0000 L CNN
+F 2 "mtg_life_counter:TP_Edge_2" H 2400 6750 50  0001 C CNN
+F 3 "~" H 2400 6750 50  0001 C CNN
+	1    2400 6750
 	1    0    0    -1  
 $EndComp
+Connection ~ 2100 6500
 Wire Wire Line
-	2050 6750 2050 6950
+	2100 6500 2550 6500
 Wire Wire Line
-	2050 6950 2150 6950
-Connection ~ 2050 6750
+	1500 6500 1500 6750
 Wire Wire Line
-	2050 6750 2500 6750
+	1500 6850 2200 6850
+Connection ~ 1500 6500
 Wire Wire Line
-	1450 6750 1450 7050
-Wire Wire Line
-	1450 7050 2150 7050
-Connection ~ 1450 6750
-Wire Wire Line
-	1450 6750 1000 6750
+	1500 6500 1050 6500
 Wire Wire Line
 	3550 8450 3550 8950
 Wire Wire Line
@@ -2736,10 +2732,10 @@ F 3 "~" H 6900 2300 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L power:+5V #PWR?
+L power:+5V #PWR0139
 U 1 1 63669CBE
 P 6300 2550
-F 0 "#PWR?" H 6300 2400 50  0001 C CNN
+F 0 "#PWR0139" H 6300 2400 50  0001 C CNN
 F 1 "+5V" H 6315 2723 50  0000 C CNN
 F 2 "" H 6300 2550 50  0001 C CNN
 F 3 "" H 6300 2550 50  0001 C CNN
@@ -2748,4 +2744,27 @@ F 3 "" H 6300 2550 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	6300 2550 6700 2550
+$Comp
+L Device:R R6
+U 1 1 63888C60
+P 1800 6750
+F 0 "R6" V 1700 6750 50  0000 C CNN
+F 1 "10k" V 1800 6750 50  0000 C CNN
+F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.15x1.40mm_HandSolder" V 1730 6750 50  0001 C CNN
+F 3 "~" H 1800 6750 50  0001 C CNN
+	1    1800 6750
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	1650 6750 1500 6750
+Connection ~ 1500 6750
+Wire Wire Line
+	1950 6750 2100 6750
+Wire Wire Line
+	2100 6500 2100 6750
+Connection ~ 2100 6750
+Wire Wire Line
+	2100 6750 2200 6750
+Wire Wire Line
+	1500 6750 1500 6850
 $EndSCHEMATC
