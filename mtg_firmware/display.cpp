@@ -263,15 +263,15 @@ ISR(TIMER1_COMPA_vect)
 {
     static uint8_t index = 0;
 
-    // Send the digit select mask to the two current sink chips
-    SPI.transfer(0x88 >> (index));
-    SPI.transfer(0x88 >> (index));
-
     // Send the segment data (reverse order)
     for (uint8_t bank = PLAYER_COUNT - 1; bank < PLAYER_COUNT; bank--)
     {
         SPI.transfer(display_buffer[bank][index % DISPLAY_WIDTH]);
     }
+
+    // Send the digit select mask to the two current sink chips
+    SPI.transfer(0x88 >> (index));
+    SPI.transfer(0x88 >> (index));
     
     // Strobe the latch line
     digitalWrite(DISPLAY_LATCH_PIN, HIGH);

@@ -82,15 +82,6 @@
 
 /*---------------------------------------------------------------------*
  *  NAME
- *      DISPLAY_PLAYERS_PER_BANK
- *
- *  DESCRIPTION
- *      Number of player displays in each multiplexed group
- *---------------------------------------------------------------------*/
-#define DISPLAY_PLAYERS_PER_BANK   (2)
-
-/*---------------------------------------------------------------------*
- *  NAME
  *      DISPLAY_MAX
  *
  *  DESCRIPTION
