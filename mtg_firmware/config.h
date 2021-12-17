@@ -148,7 +148,6 @@ static const uint8_t DIRECTION[4] = {
     B00011000,  // 3: Lower Left
 };
 
-
 /*---------------------------------------------------------------------*
  *  NAME
  *      CMDR_DMG_MAP        
@@ -165,14 +164,5 @@ static const uint8_t CMDR_DMG_MAP[PLAYER_COUNT][PLAYER_COUNT] = {
     {2, 1, 0, 3},
     {3, 0, 1, 2},
 };
-
-static const uint8_t ROLL_TEXT[][PLAYER_COUNT] = {
-    "PLAY", " GO ", " YOU", " YES", "GLHF"
-};
-
-static const uint8_t DEATH_TEXT[][PLAYER_COUNT] = {
-    "OUCH", " OOF", " GG ", " RIP", "DEAD", "DIED", "  F ", "SRRY", " BYE", "BOOP", " DED", "LOSE"
-};
-
 
 #endif /* !defined(INC_CONFIG_H) */

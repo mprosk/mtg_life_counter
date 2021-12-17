@@ -73,12 +73,12 @@
 
 /*---------------------------------------------------------------------*
  *  NAME
- *      DISPLAY_PLAYER_WIDTH
+ *      DISPLAY_WIDTH
  *
  *  DESCRIPTION
  *      Number of digits on each player's display
  *---------------------------------------------------------------------*/
-#define DISPLAY_PLAYER_WIDTH       (4)
+#define DISPLAY_WIDTH       (4)
 
 /*---------------------------------------------------------------------*
  *  NAME
@@ -91,30 +91,12 @@
 
 /*---------------------------------------------------------------------*
  *  NAME
- *      DISPLAY_MATRIX_DEPTH
- *
- *  DESCRIPTION
- *      Number of multiplexed groups (banks)
- *---------------------------------------------------------------------*/
-#define DISPLAY_MATRIX_DEPTH        (2)
-
-/*---------------------------------------------------------------------*
- *  NAME
- *      DISPLAY_MATRIX_WIDTH
- *
- *  DESCRIPTION
- *      Number of digits in each multiplexed group
- *---------------------------------------------------------------------*/
-#define DISPLAY_MATRIX_WIDTH        (DISPLAY_PLAYER_WIDTH * DISPLAY_PLAYERS_PER_BANK)
-
-/*---------------------------------------------------------------------*
- *  NAME
  *      DISPLAY_MAX
  *
  *  DESCRIPTION
  *      Maximum integer value that the counter can display
  *---------------------------------------------------------------------*/
-#define DISPLAY_MAX         (pow(10, DISPLAY_PLAYER_WIDTH) - 1)
+#define DISPLAY_MAX         (pow(10, DISPLAY_WIDTH) - 1)
 
 /*---------------------------------------------------------------------*
  *  NAME
@@ -123,7 +105,7 @@
  *  DESCRIPTION
  *      Minimum integer value that the counter can display
  *---------------------------------------------------------------------*/
-#define DISPLAY_MIN         (-(pow(10, DISPLAY_MATRIX_WIDTH - 1) - 1))
+#define DISPLAY_MIN         (-(pow(10, DISPLAY_WIDTH - 1) - 1))
 
 /*=====================================================================*
     Public Functions
@@ -146,8 +128,7 @@ void display_init(void);
  *      display_start
  *
  *  DESCRIPTION
- *      Starts the display updates and puts it into a power-on state
- *      Enables SPI bus and sets all DIO to outputs.
+ *      Enables the display update interrupt
  * 
  *  RETURNS
  *      None
@@ -159,8 +140,7 @@ void display_start(void);
  *      display_stop
  *
  *  DESCRIPTION
- *      Stops the display from updating and puts it into a power-off state
- *      Disables SPI bus and sets all DIO to floating inputs.
+ *      Disables the display update interrupt
  * 
  *  RETURNS
  *      None

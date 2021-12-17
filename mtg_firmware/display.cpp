@@ -29,7 +29,7 @@
  *  DESCRIPTION
  *      Pin number of the SPI MOSI line
  *---------------------------------------------------------------------*/
-static volatile uint8_t display_buffer[PLAYER_COUNT][DISPLAY_PLAYER_WIDTH];
+static volatile uint8_t display_buffer[PLAYER_COUNT][DISPLAY_WIDTH];
 
 
 /*=====================================================================*
@@ -42,18 +42,30 @@ static volatile uint8_t display_buffer[PLAYER_COUNT][DISPLAY_PLAYER_WIDTH];
  *
  *  DESCRIPTION
  *      Initializes the display hardware
+ *      Sets GPIO pin modes
+ *      Starts the SPI bus
+ *      Configures (but does not start) the timer interrupt
  * 
  *  RETURNS
  *      None
  *---------------------------------------------------------------------*/
 void display_init(void)
 {
+    // Set pin modes
+    pinMode(DISPLAY_DATA_PIN, OUTPUT);
+    pinMode(DISPLAY_CLOCK_PIN, OUTPUT);
+    pinMode(DISPLAY_LATCH_PIN, OUTPUT);
+
+    // Start SPI bus
+    SPI.begin();
+    SPI.beginTransaction(SPISettings(DISPLAY_SPI_CLK_HZ, LSBFIRST, SPI_MODE0));
+
     // Initialize timer1 (16-bit)
     TCCR1A = 0;   // set entire TCCR1A register to 0
     TCCR1B = 0;   // same for TCCR1B
     TCNT1  = 0;   //initialize counter value to 0
-    // set compare match register for 1hz increments
-    OCR1A = 1249;// = (16MHz) / (1600Hz * 8 prescale) - 1 (must be <65536)
+    // set compare match register for desired increment
+    OCR1A = 4999;// = (16MHz) / (400Hz * 8 prescale) - 1 (must be <65536)
     // turn on CTC mode
     TCCR1B |= (1 << WGM12);
     // Set CS11 bit for 8 prescaler
@@ -65,23 +77,13 @@ void display_init(void)
  *      display_start
  *
  *  DESCRIPTION
- *      Starts the display updates and puts it into a power-on state
- *      Enables SPI bus and sets all DIO to outputs.
+ *      Enables the display update interrupt
  * 
  *  RETURNS
  *      None
  *---------------------------------------------------------------------*/
 void display_start(void)
 {
-    // Set pin modes
-    pinMode(DISPLAY_DATA_PIN, OUTPUT);
-    pinMode(DISPLAY_CLOCK_PIN, OUTPUT);
-    pinMode(DISPLAY_LATCH_PIN, OUTPUT);
-
-    // Start SPI bus
-    SPI.begin();
-    SPI.beginTransaction(SPISettings(DISPLAY_SPI_CLK_HZ, LSBFIRST, SPI_MODE0));
-
     // Enable timer compare interrupt
     TIMSK1 |= (1 << OCIE1A);
 }
@@ -91,8 +93,7 @@ void display_start(void)
  *      display_stop
  *
  *  DESCRIPTION
- *      Stops the display from updating and puts it into a power-off state
- *      Disables SPI bus and sets all DIO to floating inputs.
+ *      Disables the display update interrupt
  * 
  *  RETURNS
  *      None
@@ -101,10 +102,6 @@ void display_stop(void)
 {
     // Disable timer compare interrupt
     TIMSK1 &= ~(1 << OCIE1A);
-
-    // Disable the SPI bus
-    SPI.endTransaction();
-    SPI.end();
 }
 
 /*---------------------------------------------------------------------*
@@ -123,7 +120,7 @@ void display_stop(void)
 void display_set_int(uint8_t player_id, int16_t integer)
 {
     // Clear buffer
-    for (uint8_t i = 0; i < DISPLAY_PLAYER_WIDTH; i++)
+    for (uint8_t i = 0; i < DISPLAY_WIDTH; i++)
     {
         display_buffer[player_id][i] = SEG[' '];
     }
@@ -131,7 +128,7 @@ void display_set_int(uint8_t player_id, int16_t integer)
     // Set each place
     uint16_t mag = abs(integer);
     uint16_t divisor = 1;
-    uint8_t pos = DISPLAY_PLAYER_WIDTH - 1;
+    uint8_t pos = DISPLAY_WIDTH - 1;
     do
     {
         display_buffer[player_id][pos] = SEG[(mag / divisor) % 10];
@@ -141,7 +138,7 @@ void display_set_int(uint8_t player_id, int16_t integer)
     while(mag >= divisor);
     
     // Add minus sign if applicable
-    if ((integer < 0) && (pos < DISPLAY_PLAYER_WIDTH))
+    if ((integer < 0) && (pos < DISPLAY_WIDTH))
     {
         display_buffer[player_id][pos] = SEG['-'];
     }
@@ -161,7 +158,7 @@ void display_set_int(uint8_t player_id, int16_t integer)
  *---------------------------------------------------------------------*/
 void display_set_string(uint8_t player_id, uint8_t *text)
 {
-    for (uint8_t i = 0; i < DISPLAY_PLAYER_WIDTH; i++)
+    for (uint8_t i = 0; i < DISPLAY_WIDTH; i++)
     {
         display_buffer[player_id][i] = SEG[text[i]];
     }
@@ -220,7 +217,7 @@ void display_set_char(uint8_t player_id, uint8_t pos, uint8_t chr)
  *---------------------------------------------------------------------*/
 void display_fill_pattern(uint8_t player_id, uint8_t pattern)
 {
-    for (uint8_t i = 0; i < DISPLAY_PLAYER_WIDTH; i++)
+    for (uint8_t i = 0; i < DISPLAY_WIDTH; i++)
     {
         display_buffer[player_id][i] = pattern;
     }
@@ -266,15 +263,14 @@ ISR(TIMER1_COMPA_vect)
 {
     static uint8_t index = 0;
 
-    // Send the digit select mask to the sink chips
-    // This is a hack to get the display order to go clockwise around the board
-    SPI.transfer(1 << (DISPLAY_MATRIX_WIDTH - ((index + DISPLAY_PLAYER_WIDTH) % 8) - 1));
-    SPI.transfer(1 << (DISPLAY_MATRIX_WIDTH - index - 1));
+    // Send the digit select mask to the two current sink chips
+    SPI.transfer(0x88 >> (index));
+    SPI.transfer(0x88 >> (index));
 
     // Send the segment data (reverse order)
-    for (uint8_t bank = DISPLAY_MATRIX_DEPTH - 1; bank < DISPLAY_MATRIX_DEPTH; bank--)
+    for (uint8_t bank = PLAYER_COUNT - 1; bank < PLAYER_COUNT; bank--)
     {
-        SPI.transfer(display_buffer[(bank * 2) + (index / DISPLAY_PLAYER_WIDTH)][index % DISPLAY_PLAYER_WIDTH]);
+        SPI.transfer(display_buffer[bank][index % DISPLAY_WIDTH]);
     }
     
     // Strobe the latch line
@@ -282,5 +278,5 @@ ISR(TIMER1_COMPA_vect)
     digitalWrite(DISPLAY_LATCH_PIN, LOW);
 
     // Increment the index
-    index = (index + 1) % DISPLAY_MATRIX_WIDTH;
+    index = (index + 1) % DISPLAY_WIDTH;
 }

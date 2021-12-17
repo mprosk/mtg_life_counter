@@ -166,7 +166,7 @@ void animate_roll(bool animate)
         // Update display buffer
         for (uint8_t i = 0; i < PLAYER_COUNT; i++)
         {
-            for (uint8_t j = 0; j < DISPLAY_PLAYER_WIDTH; j++)
+            for (uint8_t j = 0; j < DISPLAY_WIDTH; j++)
             {
                 display_set_digit(i, j, ANIMATIONS[animation][(x + j) % ANIMATION_LENGTH[animation]]);
             }
