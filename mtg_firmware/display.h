@@ -69,7 +69,7 @@
  *  DESCRIPTION
  *      Clock speed in Hertz of the SPI bus driving the shift register ICs
  *---------------------------------------------------------------------*/
-#define DISPLAY_SPI_CLK_HZ    (1e5)
+#define DISPLAY_SPI_CLK_HZ    (1e6)
 
 /*---------------------------------------------------------------------*
  *  NAME

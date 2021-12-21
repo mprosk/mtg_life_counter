@@ -304,7 +304,7 @@ void counter_reset_all(int16_t starting_life)
 
 void display_test(void)
 {
-    display_set_string(0, "ONE ");
+    display_set_string(0, "ONE_");
     display_set_string(1, "TWwO");
     display_set_string(2, "THRE");
     display_set_string(3, "FOUR");

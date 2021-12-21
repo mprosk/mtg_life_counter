@@ -65,11 +65,11 @@ void display_init(void)
     TCCR1B = 0;   // same for TCCR1B
     TCNT1  = 0;   //initialize counter value to 0
     // set compare match register for desired increment
-    OCR1A = 4999;// = (16MHz) / (400Hz * 8 prescale) - 1 (must be <65536)
+    OCR1A = 2499;// = (16MHz) / (400Hz * 8 prescale) - 1 (must be <65536)
     // turn on CTC mode
     TCCR1B |= (1 << WGM12);
     // Set CS11 bit for 8 prescaler
-    TCCR1B |=  (1 << CS11);
+    TCCR1B |=  (1 << CS10);
 }
 
 /*---------------------------------------------------------------------*
@@ -263,8 +263,8 @@ ISR(TIMER1_COMPA_vect)
 {
     static uint8_t index = 0;
 
-    // Send the segment data (reverse order)
-    for (uint8_t bank = PLAYER_COUNT - 1; bank < PLAYER_COUNT; bank--)
+    // Send the segment data (in order)
+    for (uint8_t bank = 0; bank < PLAYER_COUNT; bank++)
     {
         SPI.transfer(display_buffer[bank][index % DISPLAY_WIDTH]);
     }
