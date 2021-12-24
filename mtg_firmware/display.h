@@ -140,6 +140,18 @@ void display_stop(void);
 
 /*---------------------------------------------------------------------*
  *  NAME
+ *      display_park
+ *
+ *  DESCRIPTION
+ *      Puts the display in the park state and stops the interrupt
+ * 
+ *  RETURNS
+ *      None
+ *---------------------------------------------------------------------*/
+void display_park(void);
+
+/*---------------------------------------------------------------------*
+ *  NAME
  *      display_set_int
  *
  *  DESCRIPTION

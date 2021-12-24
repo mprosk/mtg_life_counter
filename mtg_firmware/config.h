@@ -37,21 +37,12 @@
 
 /*---------------------------------------------------------------------*
  *  NAME
- *      BUTTONS_PER_PLAYER
+ *      PLAYER_COUNT
  *
  *  DESCRIPTION
- *      Number of buttons each player has
+ *      Number of players the counter supports
  *---------------------------------------------------------------------*/
-#define BUTTONS_PER_PLAYER          (2)
-
-/*---------------------------------------------------------------------*
- *  NAME
- *      BUTTON_COUNT
- *
- *  DESCRIPTION
- *      Number of players
- *---------------------------------------------------------------------*/
-#define BUTTON_COUNT	            (PLAYER_COUNT * BUTTONS_PER_PLAYER)
+#define OPPONENT_COMMANDER_COUNT    ((PLAYER_COUNT - 1) * 2)
 
 /*---------------------------------------------------------------------*
  *  NAME
@@ -158,11 +149,11 @@ static const uint8_t DIRECTION[4] = {
  *      
  *      Input = Player index FROM, Commander damage index TO; Output = DIRECTION index
  *---------------------------------------------------------------------*/
-static const uint8_t CMDR_DMG_MAP[PLAYER_COUNT][PLAYER_COUNT] = {
-    {2, 1, 0, 3},
-    {3, 0, 1, 2},
-    {2, 1, 0, 3},
-    {3, 0, 1, 2},
+static const uint8_t CMDR_DMG_MAP[PLAYER_COUNT][OPPONENT_COMMANDER_COUNT] = {
+    {1, 2, 0, 0, 3, 3},
+    {0, 0, 1, 1, 2, 2},
+    {1, 1, 0, 0, 3, 3},
+    {0, 0, 1, 1, 2, 2},
 };
 
 #endif /* !defined(INC_CONFIG_H) */

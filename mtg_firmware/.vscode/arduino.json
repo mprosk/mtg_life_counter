@@ -1,7 +1,7 @@
 {
-    "programmer": "AVRISP mkII",
+    "programmer": "arduino:arduinoasisp",
     "board": "arduino:avr:nano",
     "configuration": "cpu=atmega328",
-    "port": "COM12",
+    "port": "COM3",
     "sketch": "mtg_firmware.ino"
 }

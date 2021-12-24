@@ -65,11 +65,15 @@ void display_init(void)
     TCCR1B = 0;   // same for TCCR1B
     TCNT1  = 0;   //initialize counter value to 0
     // set compare match register for desired increment
-    OCR1A = 2499;// = (16MHz) / (400Hz * 8 prescale) - 1 (must be <65536)
+    OCR1A = 4999;// = (16MHz) / (400Hz * 8 prescale) - 1 (must be <65536)
     // turn on CTC mode
     TCCR1B |= (1 << WGM12);
-    // Set CS11 bit for 8 prescaler
-    TCCR1B |=  (1 << CS10);
+    // Clear the prescaler setting
+    TCCR1B &= ~((1 << CS10) | (1 << CS11) | (1 << CS12));
+    // Set Clock Source bits to select prescaler
+//    TCCR1B |=  (1 << CS10);
+    TCCR1B |=  (1 << CS11);
+//    TCCR1B |=  (1 << CS12);
 }
 
 /*---------------------------------------------------------------------*
@@ -106,6 +110,36 @@ void display_stop(void)
 
 /*---------------------------------------------------------------------*
  *  NAME
+ *      display_park
+ *
+ *  DESCRIPTION
+ *      Disables the display update interrupt
+ * 
+ *  RETURNS
+ *      None
+ *---------------------------------------------------------------------*/
+void display_park(void)
+{
+    // Stop the display interrupt
+    display_stop();
+
+    // Turn on the decimal point on all displays
+    SPI.transfer(0x00);
+    SPI.transfer(0x00);
+    SPI.transfer(0x00);
+    SPI.transfer(0x00);
+
+    // Enable all digits
+    SPI.transfer(0xFF);
+    SPI.transfer(0xFF);
+
+    // Strobe the latch line
+    digitalWrite(DISPLAY_LATCH_PIN, HIGH);
+    digitalWrite(DISPLAY_LATCH_PIN, LOW);
+}
+
+/*---------------------------------------------------------------------*
+ *  NAME
  *      display_set_int
  *
  *  DESCRIPTION
@@ -119,6 +153,12 @@ void display_stop(void)
  *---------------------------------------------------------------------*/
 void display_set_int(uint8_t player_id, int16_t integer)
 {
+    // Don't update the display if the set point is out of range
+    if ((integer > DISPLAY_MAX) || (integer < DISPLAY_MIN))
+    {
+        return;
+    }
+
     // Clear buffer
     for (uint8_t i = 0; i < DISPLAY_WIDTH; i++)
     {
@@ -257,7 +297,7 @@ void display_fill(uint8_t player_id, uint8_t chr)
  *      40 us
  * 
  *  FREQUENCY
- *      1600 Hz
+ *      400 Hz
  *---------------------------------------------------------------------*/
 ISR(TIMER1_COMPA_vect)
 {
