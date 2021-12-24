@@ -63,7 +63,7 @@
  *      If enabled, causes roll results to never pick the player that
  *      won the previous roll
  *---------------------------------------------------------------------*/
-// #define ROLL_ADAPTIVE_MODE
+#define ROLL_ADAPTIVE_MODE
 
 
 /*=====================================================================*

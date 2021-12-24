@@ -160,4 +160,18 @@ static const uint8_t SEG[] = {
     0,          // 122: z
 };
 
+/*---------------------------------------------------------------------*
+ *  NAME
+ *      DIRECTION        
+ *
+ *  DESCRIPTION
+ *      Contains the 7-segment display pattern that points to the given direction
+ *---------------------------------------------------------------------*/
+static const uint8_t DIRECTION[4] = {
+    B10000100,  // 0: Upper Left
+    B11000000,  // 1: Upper Right
+    B00110000,  // 2: Lower Right
+    B00011000,  // 3: Lower Left
+};
+
 #endif /* !defined(INC_SEVENSEG_H) */
