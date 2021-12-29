@@ -59,12 +59,11 @@ void setup()
     pinMode(PIN_DEBUG_1, OUTPUT);
     pinMode(PIN_DEBUG_2, OUTPUT);
 
-    // Initialize counters
-    counter_init();
-    counter_reset_all(STARTING_LIFE[digitalRead(PIN_MODE_SWITCH)]);
-
     // Initialize encoders
     encoders_init();
+
+    // Initialize counters
+    counter_reset_all(STARTING_LIFE[digitalRead(PIN_MODE_SWITCH)]);
 
     // Initialize roll
     roll_init();
@@ -76,12 +75,12 @@ void setup()
     Serial.println("Initialization complete"); Serial.flush();
 
     // Tests
-    // display_test();
+//     display_test();
     // encoder_test();
 
     // Splash screen
-    // splash_screen();
-}
+//    splash_screen();
+  }
 
 /*=====================================================================*/
 
@@ -122,7 +121,7 @@ void loop()
     }
 
     // Process encoder changes
-    update_encoders();
+    update_encoders(&encoders);
 
     // Update the counters
     counter_update_all(&encoders);
@@ -145,7 +144,7 @@ void loop()
  *  RETURNS
  *      None
  *---------------------------------------------------------------------*/
-void update_encoders()
+void update_encoders(encoder_state_t * encoders)
 {
     // Stop the display interrupt
     display_stop();
@@ -159,7 +158,7 @@ void update_encoders()
     display_start();
 
     // Decode the encoder changes
-    encoders_update(state, &encoders);
+    encoders_update(state, encoders);
 }
 
 /*---------------------------------------------------------------------*
@@ -173,17 +172,22 @@ void splash_screen()
 {
     for (uint8_t i = 0; i < PLAYER_COUNT; i++)
     {
-        display_set_string(i, "COOL");
+        display_set_string(i, "MmEN");
     }
     delay(500);
     for (uint8_t i = 0; i < PLAYER_COUNT; i++)
     {
-        display_set_string(i, " GUY");
+        display_set_string(i, " TAL");
     }
     delay(500);
     for (uint8_t i = 0; i < PLAYER_COUNT; i++)
     {
-        display_set_string(i, "ALAN");
+        display_set_string(i, "MmIS");
+    }
+    delay(500);
+    for (uint8_t i = 0; i < PLAYER_COUNT; i++)
+    {
+        display_set_string(i, "PLAY");
     }
     delay(500);
     counter_redraw_all();
@@ -214,7 +218,7 @@ void encoder_test(void)
 
     while (1)
     {
-        update_encoders();
+        update_encoders(&encoders);
         if (encoders.changed)
         {
             for (uint8_t i = 0; i < PLAYER_COUNT; i++)

@@ -25,10 +25,7 @@
 /*=====================================================================*
     Public Defines
  *=====================================================================*/
-#define PIN_BUTTON_1       (A5)
-#define PIN_BUTTON_2       (A2)
-#define PIN_BUTTON_3       (5)
-#define PIN_BUTTON_4       (2)
+
 
 
 /*=====================================================================*
@@ -63,26 +60,19 @@ typedef struct life_counter_t
     uint8_t poison;
     uint8_t commander_dmg[OPPONENT_COMMANDER_COUNT];
     // State
-    display_mode_t  mode;        // Current display mode of the counter
+    display_mode_t  mode;       // Current display mode of the counter
     bool partner;               // Indicates the partner commander should be used
     uint8_t commander;          // Index of the opponent commander damage
     int16_t delta;              // The change in life that the user has entered
-    uint32_t last_changed;      // the millis timestamp that the counter was last adjusted
+    uint32_t last_changed;      // The millis timestamp that the counter was last adjusted
+    bool button;                // Current state of the button
+    bool button_last;           // Previous state of the button
 } life_counter_t;
 
 
 /*=====================================================================*
     Public Functions
  *=====================================================================*/
-
-/*---------------------------------------------------------------------*
- *  NAME
- *      counter_init
- *
- *  DESCRIPTION
- *      Initializes the button GPIO for the counters
- *---------------------------------------------------------------------*/
-void counter_init(void);
 
 /*---------------------------------------------------------------------*
  *  NAME

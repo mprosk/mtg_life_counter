@@ -49,9 +49,7 @@ void update_display(uint8_t player_id);
 /*=====================================================================*
     Private Constants
  *=====================================================================*/
-static const uint8_t BUTTON_PINS[PLAYER_COUNT] = {
-    PIN_BUTTON_1, PIN_BUTTON_2, PIN_BUTTON_3, PIN_BUTTON_4
-};
+
 
 
 /*=====================================================================*
@@ -63,21 +61,6 @@ static life_counter_t counters[PLAYER_COUNT];
 /*=====================================================================*
     Public Function Implementations
  *=====================================================================*/
-
-/*---------------------------------------------------------------------*
- *  NAME
- *      counter_init
- *
- *  DESCRIPTION
- *      Initializes the button GPIO for the counters
- *---------------------------------------------------------------------*/
-void counter_init(void)
-{
-    for (uint8_t i = 0; i < PLAYER_COUNT; i++)
-    {
-        pinMode(BUTTON_PINS[i], INPUT_PULLUP);
-    }
-}
 
 /*---------------------------------------------------------------------*
  *  NAME
@@ -133,53 +116,41 @@ void counter_reset_all(int16_t starting_life)
  *---------------------------------------------------------------------*/
 void counter_update_all(encoder_state_t *encoders)
 {
-    static uint8_t buttons_last[PLAYER_COUNT] = {1, 1, 1, 1};
-    uint8_t buttons_now[PLAYER_COUNT] = {1, 1, 1, 1};
-
-    // Read the current button states
     for (uint8_t i = 0; i < PLAYER_COUNT; i++)
     {
-        buttons_now[i] = digitalRead(BUTTON_PINS[i]);
-    }
+        bool update = false;
 
-    // Process changes
-    if (encoders->changed)
-    {
-        for (uint8_t i = 0; i < PLAYER_COUNT; i++)
+        // Process button presses (low = pressed)
+        counters[i].button_last = counters[i].button;
+        counters[i].button = !encoders->button[i];
+        update = (counters[i].button != counters[i].button_last);
+        
+
+        // Process rotary encoder changes
+        if (encoders->encoder[i] != 0)
         {
-            if (encoders->encoder[i] != 0)
-            {
-                counters[i].last_changed = millis();
-                // TODO: check bounds of life mode
-                counters[i].delta += (int16_t)encoders->encoder[i];
-                // TODO: increment correct mode
-                counters[i].life += (int16_t)encoders->encoder[i];
-                update_display(i);
+            counters[i].last_changed = millis();
+            // TODO: check bounds of life mode
+            counters[i].delta += (int16_t)encoders->encoder[i];
+            // TODO: increment correct mode
+            counters[i].life += (int16_t)encoders->encoder[i];
+            update = true;
+        }
 
-                // Print state
-                Serial.print(encoders->encoder[i]);
-                Serial.print(" ");
+        // Clear the delta display if the delay has expired
+        if (counters[i].delta != 0)
+        {
+            if ((millis() - counters[i].last_changed) > LIFE_CHANGE_DURATION_MS)
+            {
+                counters[i].delta = 0;
+                update = true;
             }
         }
-        Serial.println("");
-    }
 
-    // Store the current button state as the last button state
-    for (uint8_t i = 0; i < PLAYER_COUNT; i++)
-    {
-        buttons_last[i] = buttons_now[i];
-    }
-
-    // Handle clearing delta displays
-    for (uint8_t player_id = 0; player_id < PLAYER_COUNT; player_id++)
-    {
-        if (counters[player_id].delta != 0)
+        // Write changes to the screen
+        if (update)
         {
-            if ((millis() - counters[player_id].last_changed) > LIFE_CHANGE_DURATION_MS)
-            {
-                counters[player_id].delta = 0;
-                update_display(player_id);
-            }
+            update_display(i);
         }
     }
 }
@@ -212,25 +183,40 @@ void counter_redraw_all(void)
  *---------------------------------------------------------------------*/
 void update_display(uint8_t player_id)
 {
-    int16_t value = counters[player_id].life;
-
-    if (counters[player_id].delta != 0)
+    int16_t delta = counters[player_id].delta;
+    if (delta)
     {
-        value = counters[player_id].delta;
+        display_set_int(player_id, delta);
     }
 
     // Write the value to the screen and add any additional symbols
-    display_set_int(player_id, value);
     switch (counters[player_id].mode)
     {
         case SELF:
+            if (delta == 0)
+            {
+                display_set_int(player_id, counters[player_id].life);
+            }
+            if (counters[player_id].button)
+            {
+                display_set_direction(player_id, player_id);
+            }
             break;
 
         case POISON:
+            if (delta == 0)
+            {
+                display_set_int(player_id, counters[player_id].poison);    
+            }
             display_set_char(player_id, 0, 'P');
             break;
 
         case COMMANDER:
+            if (delta == 0)
+            {
+                uint8_t c = counters[player_id].commander;
+                display_set_int(player_id, counters[player_id].commander_dmg[c]);
+            }
             display_set_direction(player_id, counters[player_id].commander);
             break;
 

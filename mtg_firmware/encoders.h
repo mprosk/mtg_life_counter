@@ -25,6 +25,11 @@
  *=====================================================================*/
 #define ENCODERS_LATCH_PIN      (3)
 
+#define ENCODERS_BTN_1          (A5)
+#define ENCODERS_BTN_2          (A2)
+#define ENCODERS_BTN_3          (5)
+#define ENCODERS_BTN_4          (2)
+
 
 /*=====================================================================*
     Public Data Types
@@ -33,6 +38,7 @@ typedef struct encoder_state_t
 {
     bool changed;                   // Indicates if any encoders changed
     int8_t encoder[PLAYER_COUNT];   // Array of encoder changes since the last update
+    uint8_t button[PLAYER_COUNT];   // Array of button states
 } encoder_state_t;
 
 
