@@ -32,42 +32,7 @@
     Public Data Types
  *=====================================================================*/
 
-/*---------------------------------------------------------------------*
- *  NAME
- *      display_mode_t       
- *
- *  DESCRIPTION
- *      Enum listing the different display modes the counter can be in
- *---------------------------------------------------------------------*/
-typedef enum display_mode_t
-{
-    SELF,
-    COMMANDER,
-    POISON,
-} display_mode_t;
 
-/*---------------------------------------------------------------------*
- *  NAME
- *      life_counter_t       
- *
- *  DESCRIPTION
- *      Container struct for a single life counter and associated data
- *---------------------------------------------------------------------*/
-typedef struct life_counter_t
-{
-    // Counters
-    int16_t life;
-    uint8_t poison;
-    uint8_t commander_dmg[OPPONENT_COMMANDER_COUNT];
-    // State
-    display_mode_t  mode;       // Current display mode of the counter
-    bool partner;               // Indicates the partner commander should be used
-    uint8_t commander;          // Index of the opponent commander damage
-    int16_t delta;              // The change in life that the user has entered
-    uint32_t last_changed;      // The millis timestamp that the counter was last adjusted
-    bool button;                // Current state of the button
-    bool button_last;           // Previous state of the button
-} life_counter_t;
 
 
 /*=====================================================================*
@@ -91,6 +56,17 @@ void counter_reset(uint8_t player_id, int16_t starting_life);
  *      Resets all life counters and updates the display
  *---------------------------------------------------------------------*/
 void counter_reset_all(int16_t starting_life);
+
+/*---------------------------------------------------------------------*
+ *  NAME
+ *      counter_reset_on_button
+ *
+ *  DESCRIPTION
+ *      Resets an individual counter if its encoder button is pressed
+ *      Returns the number of counters that were reset.
+ *      Zero if no counters were changed
+ *---------------------------------------------------------------------*/
+uint8_t counter_reset_on_button(int16_t starting_life);
 
 /*---------------------------------------------------------------------*
  *  NAME

@@ -97,19 +97,32 @@ void loop()
     bool reset_pressed = (reset_state == 0) && (reset_state_last);
     bool mode_changed = (mode_state != mode_state_last);
 
-    // Reset the display if the reset button was pressed OR the mode switch was changed
-    if (reset_pressed || mode_changed)
+    // Handle a change in the mode switch
+    if (mode_changed)
     {
         uint8_t mode = mode_state;
-        if (reset_pressed && mode_changed)
+        if (reset_state == 0)
         {
             // Switch to 30 life mode if the reset button is held when the mode switch changes
             mode = 2;
         }
         counter_reset_all(STARTING_LIFE[mode]);
-        Serial.print("Counter reset. Mode ");
-        Serial.println(STARTING_LIFE[mode]);
     }
+
+    // Handle the reset button being pushed
+    else if (reset_pressed)
+    {
+        // Reset individual counters if their button is pressed
+        uint8_t num_reset = counter_reset_on_button(STARTING_LIFE[mode_state]);
+
+        // If no counters were individually reset, then reset all counters
+        if (num_reset == 0)
+        {
+            counter_reset_all(STARTING_LIFE[mode_state]);
+        }
+    }
+
+    // Store current state
     reset_state_last = reset_state;
     mode_state_last = mode_state;
 

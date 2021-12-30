@@ -96,10 +96,10 @@ static const int16_t STARTING_LIFE[3] = {20, 40, 30};
  *      Input = Player index FROM, Commander damage index TO; Output = DIRECTION index
  *---------------------------------------------------------------------*/
 static const uint8_t CMDR_DMG_MAP[PLAYER_COUNT][PLAYER_COUNT] = {
-    {2, 1, 0, 3},
-    {3, 3, 1, 2},
-    {2, 1, 2, 3},
-    {2, 0, 1, 3},
+    {3, 0, 1, 2},
+    {0, 1, 2, 3},
+    {3, 0, 1, 2},
+    {0, 1, 2, 3},
 };
 
 #endif /* !defined(INC_CONFIG_H) */
