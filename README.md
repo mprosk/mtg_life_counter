@@ -6,7 +6,7 @@ Four player life counter for *Magic: The Gathering*
 ## Features
 
 - Easily track the life of up to four players
-- Each player can track poison counters and commander damage from the other three players
+- Each player can track poison counters and commander damage from the other three players, including partner commanders
 - Supported life totals of -999 to 9999
 - Selectable starting life of 20, 30, or 40
 - "Roll" button for randomly selecting the starting player
@@ -15,17 +15,15 @@ Four player life counter for *Magic: The Gathering*
 
 - Arduino Nano (ATmega328P)
 - 4x common cathode 4-digit 7-segment displays
-- 4x SP5T rotary switches
-- 10x 12mm tactile switches
-- 2x 74HC595 for segment driving
+- 4x rotary encoders with switches and detents
+- 2x 12mm tactile switches
+- 4x 74HC595 for segment driving
 - 2x TPIC6B595 for sinking digit current
-- 3x 74HC151 for switch and button scanning
+- 1x 74HC165 for encoder capture
 
 ## Theory of Operation
 
 There are two main subsystems within the counter's design, the button and rotary switch input sensing, and the 7-segment display driving.
-
-
 
 # Operating Instructions
 
@@ -63,11 +61,11 @@ There are two main subsystems within the counter's design, the button and rotary
 
 The ROLL button on the counter allows you to quickly and easily select a player at random, useful for determining which player starts, or even for randomly selecting which player you should deal damage to.
 
-To activate this feature, press and hold the blue ROLL button in the middle of the counter. When you are ready, release the button, and the random output will be shown on the displays. It will automatically disappear after a few seconds.
+To activate this feature, press and hold the blue ROLL button in the middle of the counter. When you are ready, release the button, and the random output will be shown on the displays. The result disappears after a few seconds.
 
 #### Random Number Generation
 
-While the button is held, a counter is continuously incremented. When the button is released, the value of this counter is used to calculate which player won the roll. This counter increments approximately every 1/64,000th of a second, so it is virtually impossible for a human to actuate the button quickly enough or precisely enough to influence the output of the roll.
+While the button is held, a counter is continuously incremented. When the button is released, the value of this counter is used to calculate which player won the roll. This counter increments approximately every 1/64,000th of a second, so it is virtually impossible for a human to actuate the button with enough precision to influence the output of the roll.
 
 
 

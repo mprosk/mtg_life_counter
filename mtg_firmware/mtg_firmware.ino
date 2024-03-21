@@ -13,203 +13,131 @@
  ***********************************************************************/
 
 /* INCLUDES */
-#include <avr/sleep.h>
 #include "config.h"
 #include "display.h"
-#include "switches.h"
+#include "counter.h"
+#include "encoders.h"
 #include "roll.h"
 
 
 /* PIN DEFINES */
-#define PIN_POWER_SWITCH  (2)
-#define PIN_MODE_SWITCH   (A1)
-#define PIN_RESET_BTN     (7)
-#define PIN_RNG           (A0)
-
+#define PIN_MODE_SWITCH     (9)
+#define PIN_RESET_BTN       (8)
 
 /* CONFIG OPTIONS */
-//#define PLAY_TO_WIN           // Enables the PlayToWin easter egg
 
 
 /*=====================================================================*
     Private Data Types
  *=====================================================================*/
-typedef struct LifeCounter_t
-{
-  int16_t life[PLAYER_COUNT + 1];   // Life/Damage amounts (self, commander, poison)
-  uint8_t mode;                     // Indicates which display mode the counter is in
-  int16_t delta;                    // The change in life that the user has entered
-  uint32_t last_changed;            // the millis timestamp that the counter was last adjusted
-} LifeCounter_t;
-
-
-/*=====================================================================*
-    Private Function Prototypes
- *=====================================================================*/
-void process_rotary(void);
-void process_buttons(void);
-void update_display(uint8_t player_id);
-void update_display_all(void);
-void counter_reset(uint8_t player_id, int16_t starting_life);
-void counter_reset_all(int16_t starting_life);
-void counter_sleep(void);
-void play_to_win(void);
 
 
 /*=====================================================================*
     Private Constants
  *=====================================================================*/
 
-/*---------------------------------------------------------------------*
- *  NAME
- *      LIFE_MODE_MIN        
- *
- *  DESCRIPTION
- *      The minimum possible counter value for each display mode
- *      Self, Cmdr 1, Cmdr 2, Cmdr 3, Poison
- *---------------------------------------------------------------------*/
-static const int16_t LIFE_MODE_MIN[PLAYER_COUNT + 1] = {DISPLAY_MIN, 0, 0, 0, 0};
-
-/*---------------------------------------------------------------------*
- *  NAME
- *      LIFE_MODE_MAX       
- *
- *  DESCRIPTION
- *      The maximum possible counter value for each display mode
- *      Self, Cmdr 1, Cmdr 2, Cmdr 3, Poison
- *---------------------------------------------------------------------*/
-static const int16_t LIFE_MODE_MAX[PLAYER_COUNT + 1] = {
-    DISPLAY_MAX, COMMANDER_DAMAGE, COMMANDER_DAMAGE, COMMANDER_DAMAGE, POISON_COUNTERS
-};
-
 
 /*=====================================================================*
     Private Data
  *=====================================================================*/
-static LifeCounter_t counters[PLAYER_COUNT];
-static SwitchState_t switch_state;
+static encoder_state_t encoders;
 
 
 /*=====================================================================*
     Arduino Hooks
  *=====================================================================*/
 
-void setup() {
+void setup()
+{
     /* HARDWARE INITIALIZATION */
     Serial.begin(115200);
     Serial.println("Startup");
 
-    // Initialize Top-Level
-    pinMode(PIN_POWER_SWITCH, INPUT);
+    // Initialize top-level GPIO
     pinMode(PIN_MODE_SWITCH, INPUT_PULLUP);
     pinMode(PIN_RESET_BTN, INPUT_PULLUP);
     pinMode(PIN_DEBUG_1, OUTPUT);
     pinMode(PIN_DEBUG_2, OUTPUT);
 
-    // Initialize 7-segment display driver
-    display_init();
+    // Initialize encoders
+    encoders_init();
 
-    // Initialize switch sensing
-    switches_init();
+    // Initialize counters
+    counter_reset_all(STARTING_LIFE[digitalRead(PIN_MODE_SWITCH)]);
 
     // Initialize roll
     roll_init();
 
-    // Initialize counter
-    counter_reset_all(STARTING_LIFE[digitalRead(PIN_MODE_SWITCH)]);
-    // rotary_init();
-
-    // Turn on the display if power is on
-    if (digitalRead(PIN_POWER_SWITCH))
-    {
-        display_start();
-        switches_start();
-#ifdef PLAY_TO_WIN
-        play_to_win();
-#endif
-        update_display_all();
-    }
+    // Initialize display
+    display_init();
+    display_start();
 
     Serial.println("Initialization complete"); Serial.flush();
-}
+
+    // Tests
+//     display_test();
+    // encoder_test();
+
+    // Splash screen
+//    splash_screen();
+  }
 
 /*=====================================================================*/
 
-void loop() {
-
+void loop()
+{
     static uint8_t reset_state_last = digitalRead(PIN_RESET_BTN);
     static uint8_t mode_state_last = digitalRead(PIN_MODE_SWITCH);
 
     digitalWrite(PIN_DEBUG_2, HIGH);
 
-    // Check for a power-off state
-    if (digitalRead(PIN_POWER_SWITCH) == 0)
-    {
-        counter_sleep();
-    }
-    
-    // Check for reset button activation
+    // Read the current state of the reset button and mode switch
     uint8_t reset_state = digitalRead(PIN_RESET_BTN);
-    if ((reset_state == 0) && reset_state_last)
-    {
-        counter_reset_all(STARTING_LIFE[digitalRead(PIN_MODE_SWITCH)]);
-        update_display_all();
-        Serial.print("Counter reset. Mode ");
-        Serial.println(counters[0].life[0]);
-    }
-    reset_state_last = reset_state;
-    
-    // Check for a mode switch activation
     uint8_t mode_state = digitalRead(PIN_MODE_SWITCH);
-    if (mode_state != mode_state_last)
+    bool reset_pressed = (reset_state == 0) && (reset_state_last);
+    bool mode_changed = (mode_state != mode_state_last);
+
+    // Handle a change in the mode switch
+    if (mode_changed)
     {
-        uint8_t mode = digitalRead(PIN_MODE_SWITCH);
+        uint8_t mode = mode_state;
         if (reset_state == 0)
         {
             // Switch to 30 life mode if the reset button is held when the mode switch changes
             mode = 2;
         }
         counter_reset_all(STARTING_LIFE[mode]);
-        update_display_all();
-        Serial.print("Mode changed. Mode ");
-        Serial.println(counters[0].life[0]);
     }
+
+    // Handle the reset button being pushed
+    else if (reset_pressed)
+    {
+        // Reset individual counters if their button is pressed
+        uint8_t num_reset = counter_reset_on_button(STARTING_LIFE[mode_state]);
+
+        // If no counters were individually reset, then reset all counters
+        if (num_reset == 0)
+        {
+            counter_reset_all(STARTING_LIFE[mode_state]);
+        }
+    }
+
+    // Store current state
+    reset_state_last = reset_state;
     mode_state_last = mode_state;
-    
+
     // Handle roll button
     if(roll())
     {
         // Reset display after roll animation complete
-        update_display_all();
+        counter_redraw_all();
     }
 
-    // Get new switch states
-    switches_update(&switch_state);
+    // Process encoder changes
+    update_encoders(&encoders);
 
-    // Handle rotary changes
-    process_rotary();
-
-    // Handle button changes
-    process_buttons();
-
-    // Debug printout
-    if (switch_state.buttons_changed || switch_state.rotaries_changed)
-    {
-        switches_print(&switch_state);
-    }
-
-    // Handle delta displays
-    for (uint8_t player_id = 0; player_id < PLAYER_COUNT; player_id++)
-    {
-        if (counters[player_id].delta != 0)
-        {
-            if ((millis() - counters[player_id].last_changed) > LIFE_CHANGE_DURATION_MS)
-            {
-                counters[player_id].delta = 0;
-                update_display(player_id);
-            }
-        }
-    }
+    // Update the counters
+    counter_update_all(&encoders);
 
     digitalWrite(PIN_DEBUG_2, LOW);
 }
@@ -221,244 +149,100 @@ void loop() {
 
 /*---------------------------------------------------------------------*
  *  NAME
- *      process_rotary
+ *      update_encoders
  *
  *  DESCRIPTION
- *      Handles changes to the rotary switches by updating the mode
- *      setting of each player
+ *      Processes encoder 
  *
  *  RETURNS
  *      None
  *---------------------------------------------------------------------*/
-void process_rotary(void)
+void update_encoders(encoder_state_t * encoders)
 {
-    // Process rotary switch changes
-    for (uint8_t player_id = 0; player_id < PLAYER_COUNT; player_id++)
-    {
-        // Check if this rotary switch changed
-        if (switch_state.rotary_changes[player_id])
-        {
-            // Check if the reading is valid
-            int8_t setting = switch_state.rotary_state[player_id];
-            if (setting >= 0)
-            {
-                // Update the display mode for this player
-                counters[player_id].mode = (uint8_t)setting;
-                counters[player_id].delta = 0;
-                update_display(player_id);
-            }
-        }
-    }
-}
-
-/*---------------------------------------------------------------------*
- *  NAME
- *      process_buttons
- *
- *  DESCRIPTION
- *      Handles all button changes. Changes counter values or resets
- *      the counter
- *
- *  RETURNS
- *      None
- *---------------------------------------------------------------------*/
-void process_buttons(void)
-{
-    // Process button changes
-    for (uint8_t player_id = 0; player_id < PLAYER_COUNT; player_id++)
-    {
-        // Check if both buttons are held and that one of them changed states
-        bool both_held = (
-            switch_state.button_state[player_id][0]
-            && switch_state.button_state[player_id][1]);
-        bool either_changed = (
-            switch_state.button_changes[player_id][0]
-            || switch_state.button_changes[player_id][1]);
-        if (both_held && either_changed)
-        {
-            // Reset this display
-            counter_reset(player_id, STARTING_LIFE[digitalRead(PIN_MODE_SWITCH)]);
-            update_display(player_id);
-            continue;
-        }
-        
-        // Handle single button press
-        for (uint8_t button = 0; button < BUTTONS_PER_PLAYER; button++)
-        {
-            // Check if this button changed state and is now pressed
-            if (switch_state.button_changes[player_id][button]
-                && switch_state.button_state[player_id][button])
-            {
-                counters[player_id].last_changed = millis();
-                uint8_t mode = counters[player_id].mode;
-                int8_t increment = BUTTON_INCREMENT[button];
-                int16_t target = counters[player_id].life[mode] + increment;
-                if ((target >= LIFE_MODE_MIN[mode]) && (target <= LIFE_MODE_MAX[mode]))
-                {
-                    // Only change values if we're within the acceptable range for this display mode
-                    counters[player_id].life[mode] = target;
-                    counters[player_id].delta += increment;
-                    update_display(player_id);
-                }
-                break;
-            }
-        }
-    }
-}
-
-/*---------------------------------------------------------------------*
- *  NAME
- *      update_display
- *
- *  DESCRIPTION
- *      Updates the display buffer of the given player
- *
- *  RETURNS
- *      None
- *---------------------------------------------------------------------*/
-void update_display(uint8_t player_id)
-{
-    uint8_t mode = counters[player_id].mode;
-    int16_t value = counters[player_id].life[mode];
-    
-    if (counters[player_id].delta != 0)
-    {
-        value = counters[player_id].delta;
-    }
-    
-    // Write the value to the screen and add any additional symbols
-    display_set_int(player_id, value);
-    if (mode == PLAYER_COUNT)
-    {
-        // Poison counter mode
-        display_set_char(player_id, 0, 'P');
-    }
-    else if (mode)
-    {
-        // Commander damage mode
-        display_set_digit(player_id, 0, DIRECTION[CMDR_DMG_MAP[player_id][mode]]);
-    }
-}
-
-/*---------------------------------------------------------------------*
- *  NAME
- *      update_display_all
- *
- *  DESCRIPTION
- *      Updates the display buffer for all players
- *
- *  RETURNS
- *      None
- *---------------------------------------------------------------------*/
-void update_display_all(void)
-{
-    for (uint8_t player_id = 0; player_id < PLAYER_COUNT; player_id++)
-    {
-        update_display(player_id);
-    }
-}
-
-/*---------------------------------------------------------------------*
- *  NAME
- *      counter_reset
- *
- *  DESCRIPTION
- *      Resets the target life counter to the given starting life value
- *
- *  RETURNS
- *      None
- *---------------------------------------------------------------------*/
-void counter_reset(uint8_t player_id, int16_t starting_life)
-{
-    counters[player_id].life[0] = starting_life;
-    counters[player_id].delta = 0;
-    for (uint8_t i = 1; i < PLAYER_COUNT + 1; i++)
-    {
-        counters[player_id].life[i] = 0;
-    }
-}
-
-/*---------------------------------------------------------------------*
- *  NAME
- *      counter_reset_all
- *
- *  DESCRIPTION
- *      Resets all the life counters to the given starting life value
- *
- *  RETURNS
- *      None
- *---------------------------------------------------------------------*/
-void counter_reset_all(int16_t starting_life)
-{
-    for (uint8_t player_id = 0; player_id < PLAYER_COUNT; player_id++)
-    {
-        counter_reset(player_id, starting_life);
-    }
-}
-
-/*---------------------------------------------------------------------*
- *  NAME
- *      counter_sleep
- *
- *  DESCRIPTION
- *      Puts the system into a power-off safe state and polls the
- *      power switch readback line until power is restored
- *
- *  RETURNS
- *      None
- *---------------------------------------------------------------------*/
-void counter_sleep(void)
-{
+    // Stop the display interrupt
     display_stop();
-    switches_stop();
-    Serial.println("Going to sleep"); Serial.flush();
 
-    // Wait for the power to get switched back on
-    while(digitalRead(PIN_POWER_SWITCH) == 0)
-    {
-        delay(250);
-    };
+    // Read the current encoder state
+    digitalWrite(ENCODERS_LATCH_PIN, LOW);
+    digitalWrite(ENCODERS_LATCH_PIN, HIGH);
+    uint8_t state = SPI.transfer(0);
 
-    // Post-wakeup cleanup
-    Serial.println("Woke up");
-    counter_reset_all(STARTING_LIFE[digitalRead(PIN_MODE_SWITCH)]);
+    // Restart the display interrupt
     display_start();
-    switches_start();
-#ifdef PLAY_TO_WIN
-    play_to_win();
-#endif
-    update_display_all();
+
+    // Decode the encoder changes
+    encoders_update(state, encoders);
 }
 
 /*---------------------------------------------------------------------*
  *  NAME
- *      play_to_win
+ *      splash_screen
  *
  *  DESCRIPTION
- *      Play to Win Easter Egg
- *
- *  RETURNS
- *      None
+ *      Generates the startup message
  *---------------------------------------------------------------------*/
- #ifdef PLAY_TO_WIN
-void play_to_win(void)
+void splash_screen()
 {
+    for (uint8_t i = 0; i < PLAYER_COUNT; i++)
+    {
+        display_set_string(i, "MmEN");
+    }
+    delay(500);
+    for (uint8_t i = 0; i < PLAYER_COUNT; i++)
+    {
+        display_set_string(i, " TAL");
+    }
+    delay(500);
+    for (uint8_t i = 0; i < PLAYER_COUNT; i++)
+    {
+        display_set_string(i, "MmIS");
+    }
+    delay(500);
     for (uint8_t i = 0; i < PLAYER_COUNT; i++)
     {
         display_set_string(i, "PLAY");
     }
     delay(500);
-    for (uint8_t i = 0; i < PLAYER_COUNT; i++)
-    {
-        display_set_string(i, " TO ");
-    }
-    delay(500);
-    for (uint8_t i = 0; i < PLAYER_COUNT; i++)
-    {
-        display_set_string(i, "  IN");
-        display_set_digit(i, 0, B00111100);
-        display_set_digit(i, 1, B01111000);
-    }
-    delay(500);
+    counter_redraw_all();
 }
-#endif
+
+/*=====================================================================*
+    Tests
+ *=====================================================================*/
+
+void display_test(void)
+{
+    display_set_string(0, "ONE_");
+    display_set_string(1, "TWwO");
+    display_set_string(2, "THRE");
+    display_set_string(3, "FOUR");
+    uint8_t i = 0;
+    while (1)
+    {
+        Serial.println(i);
+        i++;
+        delay(1000);
+    }
+}
+
+void encoder_test(void)
+{
+    int16_t vals[PLAYER_COUNT] = {0, 0, 0, 0};
+
+    while (1)
+    {
+        update_encoders(&encoders);
+        if (encoders.changed)
+        {
+            for (uint8_t i = 0; i < PLAYER_COUNT; i++)
+            {
+                Serial.print(encoders.encoder[i]);
+                Serial.print(" ");
+                vals[i] += encoders.encoder[i];
+                display_set_int(i, vals[i]);
+            }
+            Serial.println("");
+        }
+        delayMicroseconds(100);
+    }
+}

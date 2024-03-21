@@ -37,6 +37,15 @@
 
 /*---------------------------------------------------------------------*
  *  NAME
+ *      DISPLAY_MISO_PIN
+ *
+ *  DESCRIPTION
+ *      Pin number of the SPI MISO line
+ *---------------------------------------------------------------------*/
+#define DISPLAY_MISO_PIN    (12)
+
+/*---------------------------------------------------------------------*
+ *  NAME
  *      DISPLAY_CLOCK_PIN
  *
  *  DESCRIPTION
@@ -51,17 +60,7 @@
  *  DESCRIPTION
  *      Pin number of the shift register IC latch line
  *---------------------------------------------------------------------*/
-#define DISPLAY_LATCH_PIN   (9)
-
-/*---------------------------------------------------------------------*
- *  NAME
- *      DISPLAY_NENABLE_PIN
- *
- *  DESCRIPTION
- *      Pin number of the shift register output enable line
- *      ACTIVE LOW
- *---------------------------------------------------------------------*/
-#define DISPLAY_NENABLE_PIN (8)     // ACTIVE LOW
+#define DISPLAY_LATCH_PIN   (10)
 
 /*---------------------------------------------------------------------*
  *  NAME
@@ -74,39 +73,12 @@
 
 /*---------------------------------------------------------------------*
  *  NAME
- *      DISPLAY_PLAYER_WIDTH
+ *      DISPLAY_WIDTH
  *
  *  DESCRIPTION
  *      Number of digits on each player's display
  *---------------------------------------------------------------------*/
-#define DISPLAY_PLAYER_WIDTH       (4)
-
-/*---------------------------------------------------------------------*
- *  NAME
- *      DISPLAY_PLAYERS_PER_BANK
- *
- *  DESCRIPTION
- *      Number of player displays in each multiplexed group
- *---------------------------------------------------------------------*/
-#define DISPLAY_PLAYERS_PER_BANK   (2)
-
-/*---------------------------------------------------------------------*
- *  NAME
- *      DISPLAY_MATRIX_DEPTH
- *
- *  DESCRIPTION
- *      Number of multiplexed groups (banks)
- *---------------------------------------------------------------------*/
-#define DISPLAY_MATRIX_DEPTH        (2)
-
-/*---------------------------------------------------------------------*
- *  NAME
- *      DISPLAY_MATRIX_WIDTH
- *
- *  DESCRIPTION
- *      Number of digits in each multiplexed group
- *---------------------------------------------------------------------*/
-#define DISPLAY_MATRIX_WIDTH        (DISPLAY_PLAYER_WIDTH * DISPLAY_PLAYERS_PER_BANK)
+#define DISPLAY_WIDTH       (4)
 
 /*---------------------------------------------------------------------*
  *  NAME
@@ -115,7 +87,7 @@
  *  DESCRIPTION
  *      Maximum integer value that the counter can display
  *---------------------------------------------------------------------*/
-#define DISPLAY_MAX         (pow(10, DISPLAY_PLAYER_WIDTH) - 1)
+#define DISPLAY_MAX         (pow(10, DISPLAY_WIDTH) - 1)
 
 /*---------------------------------------------------------------------*
  *  NAME
@@ -124,7 +96,7 @@
  *  DESCRIPTION
  *      Minimum integer value that the counter can display
  *---------------------------------------------------------------------*/
-#define DISPLAY_MIN         (-pow(10, DISPLAY_MATRIX_WIDTH - 1) + 1)
+#define DISPLAY_MIN         (-(pow(10, DISPLAY_WIDTH - 1) - 1))
 
 /*=====================================================================*
     Public Functions
@@ -144,25 +116,10 @@ void display_init(void);
 
 /*---------------------------------------------------------------------*
  *  NAME
- *      display_blank
- *
- *  DESCRIPTION
- *      Blanks or unblanks the display
- *      'blank_enable' = 0: un-blanks the display
- *      'blank_enable' = 0: blanks the display
- * 
- *  RETURNS
- *      None
- *---------------------------------------------------------------------*/
-void display_blank(bool blank_enable);
-
-/*---------------------------------------------------------------------*
- *  NAME
  *      display_start
  *
  *  DESCRIPTION
- *      Starts the display updates and puts it into a power-on state
- *      Enables SPI bus and sets all DIO to outputs.
+ *      Enables the display update interrupt
  * 
  *  RETURNS
  *      None
@@ -174,13 +131,24 @@ void display_start(void);
  *      display_stop
  *
  *  DESCRIPTION
- *      Stops the display from updating and puts it into a power-off state
- *      Disables SPI bus and sets all DIO to floating inputs.
+ *      Disables the display update interrupt
  * 
  *  RETURNS
  *      None
  *---------------------------------------------------------------------*/
 void display_stop(void);
+
+/*---------------------------------------------------------------------*
+ *  NAME
+ *      display_park
+ *
+ *  DESCRIPTION
+ *      Puts the display in the park state and stops the interrupt
+ * 
+ *  RETURNS
+ *      None
+ *---------------------------------------------------------------------*/
+void display_park(void);
 
 /*---------------------------------------------------------------------*
  *  NAME
@@ -242,6 +210,20 @@ void display_set_digit(uint8_t player_id, uint8_t pos, uint8_t pattern);
  *      None
  *---------------------------------------------------------------------*/
 void display_set_char(uint8_t player_id, uint8_t pos, uint8_t chr);
+
+/*---------------------------------------------------------------------*
+ *  NAME
+ *      display_set_direction
+ *
+ *  DESCRIPTION
+ *      Sets the direction indicated for the given player to the
+ *      given commander. Uses config.h/CMDR_DMG_MAP to determine
+ *      which glyph to display from sevenseg.h/DIRECTION
+ * 
+ *  RETURNS
+ *      None
+ *---------------------------------------------------------------------*/
+void display_set_direction(uint8_t player_id, uint8_t commander);
 
 /*---------------------------------------------------------------------*
  *  NAME

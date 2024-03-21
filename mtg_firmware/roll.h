@@ -35,7 +35,7 @@
  *  DESCRIPTION
  *      Pin number of the roll button
  *---------------------------------------------------------------------*/
-#define PIN_ROLL_BTN      (6)
+#define PIN_ROLL_BTN      (7)
 
 /*---------------------------------------------------------------------*
  *  NAME
@@ -54,6 +54,16 @@
  *      Time in ms that the roll result will be displayed
  *---------------------------------------------------------------------*/
 #define ROLL_RESULT_DURATION_MS     (2000)
+
+/*---------------------------------------------------------------------*
+ *  NAME
+ *      ROLL_ADAPTIVE_MODE
+ *
+ *  DESCRIPTION
+ *      If enabled, causes roll results to never pick the player that
+ *      won the previous roll
+ *---------------------------------------------------------------------*/
+#define ROLL_ADAPTIVE_MODE
 
 
 /*=====================================================================*
