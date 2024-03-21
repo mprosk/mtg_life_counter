@@ -1,4 +1,4 @@
-# MTG Life Counter
+# MTG Life Counter v1
 Four player life counter for *Magic: The Gathering*
 
 ![MTG Life Counter](https://raw.githubusercontent.com/mprosk/mtg_life_counter/master/img/counter.jpg)
@@ -28,8 +28,6 @@ There are two main subsystems within the counter's design, the button and rotary
 The input sensing is achieved using three 74HC151 multiplexers. The select bus for all three are connected together, allowing the Arduino to select from all three at once. The output lines from each multiplexer are sent back to the Arduino. This allows the firmware to monitor 24 digital lines using only 6 GPIO pins by scanning through the range of selections and monitoring all the readback lines.
 
 This project uses four 4-digit common cathode 7-segment displays. The displays are arranged into a matrix with 2 rows, and 8 digits each. For each row, a 74HC959 serial-in-parallel-out shift register acts as the segment driver, while a TPIC6B959 serial-in-parallel-out high-current sink illuminates each digit in turn. The serial bus of all four of these shift registers are cascaded together.
-
-
 
 # Operating Instructions
 
@@ -72,24 +70,3 @@ To activate this feature, press and hold the blue ROLL button in the middle of t
 #### Random Number Generation
 
 While the button is held, a counter is continuously incremented. When the button is released, the value of this counter is used to calculate which player won the roll. This counter increments approximately every 1/64,000th of a second, so it is virtually impossible for a human to actuate the button quickly enough or precisely enough to influence the output of the roll.
-
-
-
-#  Next Hardware Revision
-
-List of features and fixes that will be considered in the next hardware revision
-
-#### Fixes
-
-- No digital out on A6 and A7 on Nano
-- Remove resistor to ground on power switch
-
-#### Possible Features/Improvements
-
-- Add 30 as an option in the staring life selector
-- Use rotary encoders
-- Look into more economic displays
-- SMD components
-- Integrated microcontroller
-- Smaller form factor
-- Battery powered
