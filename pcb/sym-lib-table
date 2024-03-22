@@ -1,4 +1,5 @@
 (sym_lib_table
-  (lib (name mtg_life_counter)(type Legacy)(uri ${KIPRJMOD}/mtg_life_counter.lib)(options "")(descr ""))
-  (lib (name mtg_life_counter-rescue)(type Legacy)(uri ${KIPRJMOD}/mtg_life_counter-rescue.lib)(options "")(descr ""))
+  (version 7)
+  (lib (name "mtg_life_counter")(type "Legacy")(uri "${KIPRJMOD}/mtg_life_counter.lib")(options "")(descr ""))
+  (lib (name "mtg_life_counter-rescue")(type "KiCad")(uri "${KIPRJMOD}/mtg_life_counter-rescue.kicad_sym")(options "")(descr ""))
 )
