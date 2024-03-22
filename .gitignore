@@ -6,13 +6,17 @@
 *.bak
 *.bck
 *.kicad_pcb-bak
+*.kicad_sch-bak
 *.sch-bak
 *~
 _autosave-*
+\#auto_saved_files\#
 *.tmp
 *-save.pro
 *-save.kicad_pcb
 fp-info-cache
+*-backups
+*.lck
 
 # Netlist files (exported from Eeschema)
 *.net
@@ -24,3 +28,12 @@ fp-info-cache
 # Exported BOM files
 *.xml
 *.csv
+
+# LTSpice Files
+*.log
+*.plt
+*.raw
+
+# SketchUp Backups
+*.skb
+*AutoSave_*.skp

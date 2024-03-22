@@ -44,10 +44,11 @@ There are two main subsystems within the counter's design, the control input sen
 1. Plug a USB Type C cable into the connector and set the power switch to ON. The display will initialize to the selected starting life total
 5. To turn off the display, move the power switch to the OFF position or unplug the USB cable
 
-### Mode Select
+### Starting Life
 
-1. To switch the counter between different starting life totals, use the 20/40 switch to select the mode. Changing this switch will reset the counters
-2. To select a starting life of 30, press and hold the yellow reset button while changing the 20/40 mode switch. The setting of the switch does not matter so long as the reset button is held while it is changed
+Use the 20/40 switch to select the starting life totals. Changing this switch will reset the life counters!
+
+To select a starting life of 30, press and hold the yellow reset button while changing the 20/40 switch. The setting of the switch does not matter so long as the reset button is held while it is changed
 
 ### Tracking Life and Damage
 
@@ -59,13 +60,15 @@ TODO
 
 #### Changing the Value
 
-1. Once the desired mode has been selected, adjust that value by rotating the encoder
-2. When the encoder is adjusted, the counter will show the change in value that is being entered. After a brief timeout, the display will switch to showing the new updated value
+Once the desired mode has been selected, adjust that value by rotating the encoder
+
+When the encoder is adjusted, the counter will show the change in value that is being entered. After a brief timeout, the display will switch to showing the new updated value
 
 #### Resetting the Counters
 
-1. To reset **ALL** the counters, press the yellow reset button in the middle of the board
-2. You can also reset an individual counter by pressing both the directional buttons for that counter at the same time
+To reset **ALL** the counters, press the yellow reset button in the middle of the board
+
+You can also reset an individual counter by pressing both the directional buttons for that counter at the same time
 
 ### Roll Button
 
