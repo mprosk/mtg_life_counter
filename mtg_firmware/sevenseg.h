@@ -25,6 +25,8 @@
  * | |   |  _|  _| |_| |_  |_    | |_| |_|
  * |_|   | |_   _|   |  _| |_|   | |_|   |
  * 
+ *      https://jasonacox.github.io/TM1637TinyDisplay/examples/7-segment-animator.html
+ * 
  ***********************************************************************/
 
 #if !defined(INC_SEVENSEG_H)
@@ -34,7 +36,7 @@
     Public Data
  *=====================================================================*/
 static const uint8_t SEG[] = {
-//  abcdefg.
+//   abcdefg.
     B11111100,	// 0:  0
     B01100000,	// 1:  1
     B11011010,	// 2:  2

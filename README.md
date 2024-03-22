@@ -1,7 +1,19 @@
-# MTG Life Counter
+# MTG Life Counter v2
 Four player life counter for *Magic: The Gathering*
 
-![MTG Life Counter](https://raw.githubusercontent.com/mprosk/mtg_life_counter/master/img/counter.jpg)
+**Version 2 is still WIP**
+
+Check out the [Version 1 branch](https://github.com/mprosk/mtg_life_counter/tree/v1_tht) (pictured below)
+
+![counter_crop](img/counter_crop.jpg)
+
+## v2 To Do
+
+- Get photo of v2
+- Improve denounce of encoders
+- Change modes by clicking encoder button once
+- Allow Roll result be cleared by any input
+- Possibly use `micros()` for RNG
 
 ## Features
 
@@ -13,7 +25,7 @@ Four player life counter for *Magic: The Gathering*
 
 ## Hardware
 
-- Arduino Nano (ATmega328P)
+- ATmega328P (Arduino Nano)
 - 4x common cathode 4-digit 7-segment displays
 - 4x rotary encoders with switches and detents
 - 2x 12mm tactile switches
@@ -23,38 +35,36 @@ Four player life counter for *Magic: The Gathering*
 
 ## Theory of Operation
 
-There are two main subsystems within the counter's design, the button and rotary switch input sensing, and the 7-segment display driving.
+There are two main subsystems within the counter's design, the control input sensing, and the 7-segment display driver.
 
 # Operating Instructions
 
 ### Power
 
-1. Plug a mini USB cable into the connector and set the power switch to ON. The display will initialize to the selected starting life total
-5. To turn off the display, move the power switch to the OFF position or unplug the USB cable. The lights on the blue circuit board will remain lit if the USB cable is plugged in.
+1. Plug a USB Type C cable into the connector and set the power switch to ON. The display will initialize to the selected starting life total
+5. To turn off the display, move the power switch to the OFF position or unplug the USB cable
 
 ### Mode Select
 
 1. To switch the counter between different starting life totals, use the 20/40 switch to select the mode. Changing this switch will reset the counters
-2. To select a starting life of 30, press and hold the yellow reset button while changing the 20/40 mode switch. The setting of the switch does not matter so long as the reset button is held while it is changed.
+2. To select a starting life of 30, press and hold the yellow reset button while changing the 20/40 mode switch. The setting of the switch does not matter so long as the reset button is held while it is changed
 
 ### Tracking Life and Damage
 
-1. Each player uses one corner of the board, which contains the 7-segment display, two push buttons for changing the counter's value, and a rotary switch for selecting which value to adjust and show on the display
+Each player uses one corner of the board, which contains the 7-segment display, and a rotary encoder for changing the counter's value, and selecting the display mode
 
 #### Selecting Display Mode
 
-1. The rotary switch is used to select between the player's own life, the commander damage from their three opponents, and poison counters.
-2. Rotating the knob will immediately change the display. When the counter is displaying the player's life total, the number will appear in the screen alone. When the counter is set to commander damage, the corner of the leftmost digit of the display will points to the opponent from whom you are tracking commander damage. When the switch is set to poison counter mode, the leftmost digit of the display will show a `P`. 
+TODO
 
 #### Changing the Value
 
-1. Once the desired mode has been selected using the rotary switch, the player can adjust that value by pressing the up/down buttons on the edge of the board
-2. When the buttons are pressed, the counter will show the change in value that is being entered. After a brief timeout, the display will switch to showing the new updated value
-   1. EXAMPLE: If you wish to log a loss of two points off your starting total, press the bottom button twice. The display will first read `40` before any buttons are pressed. When you press the first button, the display will switch to `-1`,  then when the next button is pressed, it will display `-2`. After a brief timeout, the display
+1. Once the desired mode has been selected, adjust that value by rotating the encoder
+2. When the encoder is adjusted, the counter will show the change in value that is being entered. After a brief timeout, the display will switch to showing the new updated value
 
 #### Resetting the Counters
 
-1. To reset all the counters, press the yellow reset button in the middle of the board
+1. To reset **ALL** the counters, press the yellow reset button in the middle of the board
 2. You can also reset an individual counter by pressing both the directional buttons for that counter at the same time
 
 ### Roll Button
@@ -63,27 +73,20 @@ The ROLL button on the counter allows you to quickly and easily select a player 
 
 To activate this feature, press and hold the blue ROLL button in the middle of the counter. When you are ready, release the button, and the random output will be shown on the displays. The result disappears after a few seconds.
 
+For two-player games, simply use whichever half of the device the play lands on to determine starting player
+
 #### Random Number Generation
 
-While the button is held, a counter is continuously incremented. When the button is released, the value of this counter is used to calculate which player won the roll. This counter increments approximately every 1/64,000th of a second, so it is virtually impossible for a human to actuate the button with enough precision to influence the output of the roll.
+While the device is on, there is a counter being continuously incremented. When the ROLL button is released, the value of this counter `mod` 4 determines which player won the roll. This counter increments approximately  250,000 times per second, so it is virtually impossible for a human to actuate the button with enough precision to influence the output of the roll.
 
 
 
 #  Next Hardware Revision
 
-List of features and fixes that will be considered in the next hardware revision
+List of features and fixes that may be considered in the next hardware revision
 
-#### Fixes
-
-- No digital out on A6 and A7 on Nano
-- Remove resistor to ground on power switch
-
-#### Possible Features/Improvements
-
-- Add 30 as an option in the staring life selector
-- Use rotary encoders
-- Look into more economic displays
-- SMD components
-- Integrated microcontroller
-- Smaller form factor
-- Battery powered
+- SMD buttons, resonator
+- Replace encoders with buttons
+  - Remove 74HC165 - wire buttons direct to Atmega
+  - Use double button push to change modes
+- Battery power
