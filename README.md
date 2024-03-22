@@ -1,4 +1,5 @@
 # MTG Life Counter v2
+
 Four player life counter for *Magic: The Gathering*
 
 **Version 2 is still WIP**
@@ -37,7 +38,7 @@ Check out the [Version 1 branch](https://github.com/mprosk/mtg_life_counter/tree
 
 There are two main subsystems within the counter's design, the control input sensing, and the 7-segment display driver.
 
-# Operating Instructions
+## Operating Instructions
 
 ### Power
 
@@ -84,7 +85,7 @@ While the device is on, there is a counter being continuously incremented. When 
 
 
 
-#  Next Hardware Revision
+## Next Hardware Revision
 
 List of features and fixes that may be considered in the next hardware revision
 
@@ -93,3 +94,4 @@ List of features and fixes that may be considered in the next hardware revision
   - Remove 74HC165 - wire buttons direct to Atmega
   - Use double button push to change modes
 - Battery power
+- https://www.luckylight.cn/en/products/led-display/smd-7-segment-display/
