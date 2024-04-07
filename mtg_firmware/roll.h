@@ -18,7 +18,7 @@
 /*=====================================================================*
     Required Header Files
  *=====================================================================*/
-#include <arduino.h>
+#include <Arduino.h>
 #include "config.h"
 #include "animations.h"
 #include "display.h"

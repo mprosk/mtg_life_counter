@@ -17,7 +17,7 @@
 /*=====================================================================*
     Required Header Files
  *=====================================================================*/
-#include <arduino.h>
+#include <Arduino.h>
 #include <SPI.h>
 #include "config.h"
 #include "sevenseg.h"

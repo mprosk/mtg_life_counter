@@ -37,3 +37,6 @@ fp-info-cache
 # SketchUp Backups
 *.skb
 *AutoSave_*.skp
+
+# VSCode
+.vscode/

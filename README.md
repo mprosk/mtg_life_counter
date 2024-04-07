@@ -2,17 +2,21 @@
 
 Four player life counter for *Magic: The Gathering*
 
-**Version 2 is still WIP**
+**Version 2 software is still WIP, hardware is stable**
+
+![counter_crop](img/counter_v2_crop.jpg)
 
 Check out the [Version 1 branch](https://github.com/mprosk/mtg_life_counter/tree/v1_tht) (pictured below)
 
 ![counter_crop](img/counter_crop.jpg)
 
-## v2 To Do
+## v2 Software To Do
 
-- Get photo of v2
 - Improve denounce of encoders
 - Change modes by clicking encoder button once
+  - Clicking the button after changing a non-self value returns directly to self view
+
+- Do not show deltas on non-self values
 - Allow Roll result be cleared by any input
 - Possibly use `micros()` for RNG
 
@@ -87,7 +91,7 @@ While the device is on, there is a counter being continuously incremented. When 
 
 ## Next Hardware Revision
 
-List of features and fixes that may be considered in the next hardware revision
+List of features and fixes that may be considered in a potential next hardware revision
 
 - SMD buttons, resonator
 - Replace encoders with buttons
