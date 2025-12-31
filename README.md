@@ -1,4 +1,4 @@
-# MTG Life Counter v2
+# MTG Life Counter v3
 
 Four player life counter for *Magic: The Gathering*
 
@@ -99,3 +99,27 @@ List of features and fixes that may be considered in a potential next hardware r
   - Use double button push to change modes
 - Battery power
 - https://www.luckylight.cn/en/products/led-display/smd-7-segment-display/
+
+
+
+| Color | I<sub>F</sub> | V<sub>F</sub>                                 | R                                                            | Lum          |
+| ----- | ------------- | --------------------------------------------- | ------------------------------------------------------------ | ------------ |
+| Red   | 20mA          | 2.0V @ 20mA<br />1.9V @ 15mA<br />1.8V @ 10mA | (5V - 2.0V) / 20mA = 150R<br />(5V - 1.8V) / 10ma = ~**330R** | 26mcd @ 10mA |
+| Amber | 20mA          | 2.1V @ 20mA<br />2.0V @ 15mA<br />1.9V @ 10mA | (5V - 2.1V) / 20mA = ~150R<br />(5V - 1.9V) / 10mA = ~**330R** | 28mcd @ 10mA |
+| Green | 20mA          | 2.0V @ 20mA                                   | (5V - 2.0V) / 20mA = **150R**                                | 9mcd @ 10mA  |
+| Blue  | 10mA          | 2.9V @ 10mA<br />2.8V @ 7.5mA<br />2.7V @ 5mA | (5v - 2.9V) / 10mA = ~**220R**                               | 25mcd @ 10mA |
+
+ 160mA total per digit
+
+640mA total 
+
+'
+
+
+
+- Common Anode + 4x TPIC + high side switching FETs
+- Common cathode + 4x 595 + high side switching FETs + low side switching FETs
+
+TPIC = $1.31
+
+595 = $0.54

@@ -40,3 +40,6 @@ fp-info-cache
 
 # VSCode
 .vscode/
+
+# OS files
+.DS_Store
