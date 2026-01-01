@@ -3143,6 +3143,16 @@
 		)
 		(uuid "1a529b13-886b-4cad-9123-66521a3c20af")
 	)
+	(text "Player 2 Display Bank - Green"
+		(exclude_from_sim no)
+		(at 349.25 62.23 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "1fc13ebf-cd2e-4fb0-85b5-d33cba199f00")
+	)
 	(text "A5"
 		(exclude_from_sim no)
 		(at 101.6 60.96 0)
@@ -3153,6 +3163,16 @@
 			(justify left bottom)
 		)
 		(uuid "2a7fd523-11dd-4941-9968-acc7907d48a2")
+	)
+	(text "Player 3 Display Bank - Yellow"
+		(exclude_from_sim no)
+		(at 350.52 100.33 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "39ceb43e-60b9-464a-9570-892ffd9dbdbf")
 	)
 	(text "D12(CIPO)"
 		(exclude_from_sim no)
@@ -3267,6 +3287,16 @@
 		)
 		(uuid "a88dc60c-a874-4776-b502-aebd31349687")
 	)
+	(text "Player 4 Display Bank - Blue"
+		(exclude_from_sim no)
+		(at 350.52 138.43 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "aa916a4d-b033-4a4c-a636-77a8c5ae751b")
+	)
 	(text "D7"
 		(exclude_from_sim no)
 		(at 101.6 78.74 0)
@@ -3288,6 +3318,16 @@
 			(justify left bottom)
 		)
 		(uuid "b95a883b-d4e2-4bfe-b3bd-0f2edb8c5b6b")
+	)
+	(text "Player 1 Display Bank - Red"
+		(exclude_from_sim no)
+		(at 349.25 24.13 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "c20a32a7-cf95-4e37-a8c3-7ce9fc32b6b6")
 	)
 	(text "D10"
 		(exclude_from_sim no)
@@ -5255,7 +5295,7 @@
 		)
 		(uuid "21c254d6-f037-4a73-8133-fe044faf6c2c")
 	)
-	(label "D1(TX)"
+	(label "TX"
 		(at 124.46 93.98 180)
 		(effects
 			(font
@@ -5465,7 +5505,7 @@
 		)
 		(uuid "5297c095-3c5c-4457-98d6-7880f341d758")
 	)
-	(label "D1(TX)"
+	(label "TX"
 		(at 157.48 26.67 0)
 		(effects
 			(font
@@ -5854,16 +5894,6 @@
 			(justify left bottom)
 		)
 		(uuid "d91fb7ae-257c-4a07-8883-c99d0759a742")
-	)
-	(label "D0(RX)"
-		(at 157.48 24.13 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "dfc17275-4a58-4e85-96b0-a42c88043c13")
 	)
 	(label "BTN_P3_DN"
 		(at 124.46 78.74 180)
@@ -10780,7 +10810,7 @@
 			(color 0 0 0 0.0000)
 		)
 		(uuid "071d9a1a-c1d1-4831-ad0b-9d7b579fcd0c")
-		(property "Sheetname" "Player Two Display Bank - Green"
+		(property "Sheetname" "P2"
 			(at 330.2 62.7884 0)
 			(effects
 				(font
@@ -10902,7 +10932,7 @@
 			(color 0 0 0 0.0000)
 		)
 		(uuid "0915e7ce-f0a0-446b-99c3-b1ae0eab9275")
-		(property "Sheetname" "Player Four Display Bank - Blue"
+		(property "Sheetname" "P4"
 			(at 330.2 138.9884 0)
 			(effects
 				(font
@@ -11024,7 +11054,7 @@
 			(color 0 0 0 0.0000)
 		)
 		(uuid "783ca70e-2b43-402c-8078-60ba3aaea8cd")
-		(property "Sheetname" "Player One Display Bank - Red"
+		(property "Sheetname" "P1"
 			(at 330.2 24.6884 0)
 			(effects
 				(font
@@ -11146,7 +11176,7 @@
 			(color 0 0 0 0.0000)
 		)
 		(uuid "9592e857-eda4-4ed1-a70a-bb63f68d12f3")
-		(property "Sheetname" "Player Three Display Bank - Yellow"
+		(property "Sheetname" "P3"
 			(at 330.2 100.8884 0)
 			(effects
 				(font

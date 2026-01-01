@@ -1177,19 +1177,19 @@
     ],
     [
       "783ca70e-2b43-402c-8078-60ba3aaea8cd",
-      "Player One Display Bank - Red"
+      "P1"
     ],
     [
       "071d9a1a-c1d1-4831-ad0b-9d7b579fcd0c",
-      "Player Two Display Bank - Green"
+      "P2"
     ],
     [
       "9592e857-eda4-4ed1-a70a-bb63f68d12f3",
-      "Player Three Display Bank - Yellow"
+      "P3"
     ],
     [
       "0915e7ce-f0a0-446b-99c3-b1ae0eab9275",
-      "Player Four Display Bank - Blue"
+      "P4"
     ]
   ],
   "text_variables": {}
