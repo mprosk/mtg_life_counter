@@ -2349,16 +2349,6 @@
 	)
 	(wire
 		(pts
-			(xy 248.92 68.58) (xy 248.92 71.12)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "43f07ea9-4e62-4018-bdd7-bf8147c744e2")
-	)
-	(wire
-		(pts
 			(xy 93.98 43.18) (xy 93.98 78.74)
 		)
 		(stroke
@@ -2559,16 +2549,6 @@
 	)
 	(wire
 		(pts
-			(xy 248.92 78.74) (xy 248.92 81.28)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "7df765c6-7be8-47ce-ab91-4564ac7cc18e")
-	)
-	(wire
-		(pts
 			(xy 160.02 76.2) (xy 170.18 76.2)
 		)
 		(stroke
@@ -2629,7 +2609,7 @@
 	)
 	(wire
 		(pts
-			(xy 248.92 81.28) (xy 223.52 81.28)
+			(xy 246.38 81.28) (xy 223.52 81.28)
 		)
 		(stroke
 			(width 0)
@@ -3465,7 +3445,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "28b53acd-d852-46b9-b84a-da6b00490def")
-		(property "Reference" "R54"
+		(property "Reference" "R51"
 			(at 179.07 77.47 90)
 			(effects
 				(font
@@ -3517,7 +3497,7 @@
 		(instances
 			(project "mtg_life_counter"
 				(path "/1883df74-0bd5-446c-9076-f848bb3cfebf/0915e7ce-f0a0-446b-99c3-b1ae0eab9275"
-					(reference "R54")
+					(reference "R51")
 					(unit 1)
 				)
 			)
@@ -3532,7 +3512,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "390161b3-c7ca-4a0e-8291-c45f2c4065d2")
-		(property "Reference" "#PWR059"
+		(property "Reference" "#PWR067"
 			(at 210.82 69.85 0)
 			(effects
 				(font
@@ -3582,7 +3562,7 @@
 		(instances
 			(project "mtg_life_counter"
 				(path "/1883df74-0bd5-446c-9076-f848bb3cfebf/0915e7ce-f0a0-446b-99c3-b1ae0eab9275"
-					(reference "#PWR059")
+					(reference "#PWR067")
 					(unit 1)
 				)
 			)
@@ -3597,7 +3577,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "3a507c62-0583-4793-b34d-e2a7d946849c")
-		(property "Reference" "R58"
+		(property "Reference" "R55"
 			(at 179.07 97.79 90)
 			(effects
 				(font
@@ -3649,7 +3629,7 @@
 		(instances
 			(project "mtg_life_counter"
 				(path "/1883df74-0bd5-446c-9076-f848bb3cfebf/0915e7ce-f0a0-446b-99c3-b1ae0eab9275"
-					(reference "R58")
+					(reference "R55")
 					(unit 1)
 				)
 			)
@@ -3665,7 +3645,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "3e8c1dde-020f-44bf-be88-6d5560fb9324")
-		(property "Reference" "D5"
+		(property "Reference" "D4"
 			(at 132.08 66.04 0)
 			(effects
 				(font
@@ -3747,7 +3727,7 @@
 		(instances
 			(project "mtg_life_counter"
 				(path "/1883df74-0bd5-446c-9076-f848bb3cfebf/0915e7ce-f0a0-446b-99c3-b1ae0eab9275"
-					(reference "D5")
+					(reference "D4")
 					(unit 1)
 				)
 			)
@@ -3762,7 +3742,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "40abbb65-8257-49a5-8de7-a7a42be25e6b")
-		(property "Reference" "R53"
+		(property "Reference" "R50"
 			(at 179.07 72.39 90)
 			(effects
 				(font
@@ -3814,7 +3794,7 @@
 		(instances
 			(project "mtg_life_counter"
 				(path "/1883df74-0bd5-446c-9076-f848bb3cfebf/0915e7ce-f0a0-446b-99c3-b1ae0eab9275"
-					(reference "R53")
+					(reference "R50")
 					(unit 1)
 				)
 			)
@@ -3822,15 +3802,15 @@
 	)
 	(symbol
 		(lib_id "power:+5V")
-		(at 248.92 68.58 0)
+		(at 246.38 81.28 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
 		(uuid "4e517dfa-8b56-4c58-9144-31f16c210d67")
-		(property "Reference" "#PWR062"
-			(at 248.92 72.39 0)
+		(property "Reference" "#PWR069"
+			(at 246.38 85.09 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3839,7 +3819,7 @@
 			)
 		)
 		(property "Value" "+5V"
-			(at 248.92 64.77 0)
+			(at 246.38 77.47 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3847,7 +3827,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 248.92 68.58 0)
+			(at 246.38 81.28 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3856,7 +3836,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 248.92 68.58 0)
+			(at 246.38 81.28 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3865,7 +3845,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"+5V\""
-			(at 248.92 68.58 0)
+			(at 246.38 81.28 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3879,7 +3859,7 @@
 		(instances
 			(project "mtg_life_counter"
 				(path "/1883df74-0bd5-446c-9076-f848bb3cfebf/0915e7ce-f0a0-446b-99c3-b1ae0eab9275"
-					(reference "#PWR062")
+					(reference "#PWR069")
 					(unit 1)
 				)
 			)
@@ -3894,7 +3874,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "59e53170-146c-4ecc-a237-b73fbb14beb1")
-		(property "Reference" "R47"
+		(property "Reference" "R44"
 			(at 49.53 27.94 90)
 			(effects
 				(font
@@ -3946,7 +3926,7 @@
 		(instances
 			(project "mtg_life_counter"
 				(path "/1883df74-0bd5-446c-9076-f848bb3cfebf/0915e7ce-f0a0-446b-99c3-b1ae0eab9275"
-					(reference "R47")
+					(reference "R44")
 					(unit 1)
 				)
 			)
@@ -4074,7 +4054,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "5adadab4-1629-4f8d-a985-1fa3029debca")
-		(property "Reference" "#PWR069"
+		(property "Reference" "#PWR065"
 			(at 200.66 54.61 0)
 			(effects
 				(font
@@ -4124,7 +4104,7 @@
 		(instances
 			(project "mtg_life_counter"
 				(path "/1883df74-0bd5-446c-9076-f848bb3cfebf/0915e7ce-f0a0-446b-99c3-b1ae0eab9275"
-					(reference "#PWR069")
+					(reference "#PWR065")
 					(unit 1)
 				)
 			)
@@ -4139,7 +4119,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "643d0464-b425-4b62-b1ea-5ca802837b5b")
-		(property "Reference" "R50"
+		(property "Reference" "R47"
 			(at 49.53 119.38 90)
 			(effects
 				(font
@@ -4191,7 +4171,7 @@
 		(instances
 			(project "mtg_life_counter"
 				(path "/1883df74-0bd5-446c-9076-f848bb3cfebf/0915e7ce-f0a0-446b-99c3-b1ae0eab9275"
-					(reference "R50")
+					(reference "R47")
 					(unit 1)
 				)
 			)
@@ -4206,7 +4186,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "65a19525-2238-4afd-b5dd-6d80727dc3d6")
-		(property "Reference" "R49"
+		(property "Reference" "R46"
 			(at 49.53 88.9 90)
 			(effects
 				(font
@@ -4258,7 +4238,7 @@
 		(instances
 			(project "mtg_life_counter"
 				(path "/1883df74-0bd5-446c-9076-f848bb3cfebf/0915e7ce-f0a0-446b-99c3-b1ae0eab9275"
-					(reference "R49")
+					(reference "R46")
 					(unit 1)
 				)
 			)
@@ -4273,7 +4253,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "7606859f-2236-4205-9666-e1ddcf921642")
-		(property "Reference" "#PWR070"
+		(property "Reference" "#PWR066"
 			(at 200.66 67.31 0)
 			(effects
 				(font
@@ -4323,7 +4303,7 @@
 		(instances
 			(project "mtg_life_counter"
 				(path "/1883df74-0bd5-446c-9076-f848bb3cfebf/0915e7ce-f0a0-446b-99c3-b1ae0eab9275"
-					(reference "#PWR070")
+					(reference "#PWR066")
 					(unit 1)
 				)
 			)
@@ -4338,7 +4318,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "84253a78-fb2d-4450-9244-32e3fa231381")
-		(property "Reference" "R57"
+		(property "Reference" "R54"
 			(at 179.07 92.71 90)
 			(effects
 				(font
@@ -4390,7 +4370,7 @@
 		(instances
 			(project "mtg_life_counter"
 				(path "/1883df74-0bd5-446c-9076-f848bb3cfebf/0915e7ce-f0a0-446b-99c3-b1ae0eab9275"
-					(reference "R57")
+					(reference "R54")
 					(unit 1)
 				)
 			)
@@ -4405,7 +4385,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "88a4ae1c-ec81-40a9-aa30-46349c161cfb")
-		(property "Reference" "#PWR061"
+		(property "Reference" "#PWR070"
 			(at 246.38 95.25 0)
 			(effects
 				(font
@@ -4455,7 +4435,7 @@
 		(instances
 			(project "mtg_life_counter"
 				(path "/1883df74-0bd5-446c-9076-f848bb3cfebf/0915e7ce-f0a0-446b-99c3-b1ae0eab9275"
-					(reference "#PWR061")
+					(reference "#PWR070")
 					(unit 1)
 				)
 			)
@@ -4470,7 +4450,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "8c4baeb0-c3bb-4d4d-96ea-05738a17378b")
-		(property "Reference" "#PWR057"
+		(property "Reference" "#PWR063"
 			(at 63.5 90.17 0)
 			(effects
 				(font
@@ -4520,7 +4500,7 @@
 		(instances
 			(project "mtg_life_counter"
 				(path "/1883df74-0bd5-446c-9076-f848bb3cfebf/0915e7ce-f0a0-446b-99c3-b1ae0eab9275"
-					(reference "#PWR057")
+					(reference "#PWR063")
 					(unit 1)
 				)
 			)
@@ -4535,7 +4515,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "935e2943-8f49-4f6a-915b-f82de5f7726b")
-		(property "Reference" "R51"
+		(property "Reference" "R48"
 			(at 179.07 62.23 90)
 			(effects
 				(font
@@ -4587,7 +4567,7 @@
 		(instances
 			(project "mtg_life_counter"
 				(path "/1883df74-0bd5-446c-9076-f848bb3cfebf/0915e7ce-f0a0-446b-99c3-b1ae0eab9275"
-					(reference "R51")
+					(reference "R48")
 					(unit 1)
 				)
 			)
@@ -4602,7 +4582,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "b75367fc-6759-4ef6-9d24-dc8d559a52f2")
-		(property "Reference" "R55"
+		(property "Reference" "R52"
 			(at 179.07 82.55 90)
 			(effects
 				(font
@@ -4654,7 +4634,7 @@
 		(instances
 			(project "mtg_life_counter"
 				(path "/1883df74-0bd5-446c-9076-f848bb3cfebf/0915e7ce-f0a0-446b-99c3-b1ae0eab9275"
-					(reference "R55")
+					(reference "R52")
 					(unit 1)
 				)
 			)
@@ -4669,7 +4649,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "bdbb2297-1ad7-420c-b25c-d1d478485a2c")
-		(property "Reference" "R52"
+		(property "Reference" "R49"
 			(at 179.07 67.31 90)
 			(effects
 				(font
@@ -4721,7 +4701,7 @@
 		(instances
 			(project "mtg_life_counter"
 				(path "/1883df74-0bd5-446c-9076-f848bb3cfebf/0915e7ce-f0a0-446b-99c3-b1ae0eab9275"
-					(reference "R52")
+					(reference "R49")
 					(unit 1)
 				)
 			)
@@ -4736,7 +4716,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "c7ff61c8-ca53-49c1-a002-16fbf63a0cf0")
-		(property "Reference" "R48"
+		(property "Reference" "R45"
 			(at 49.53 58.42 90)
 			(effects
 				(font
@@ -4788,7 +4768,7 @@
 		(instances
 			(project "mtg_life_counter"
 				(path "/1883df74-0bd5-446c-9076-f848bb3cfebf/0915e7ce-f0a0-446b-99c3-b1ae0eab9275"
-					(reference "R48")
+					(reference "R45")
 					(unit 1)
 				)
 			)
@@ -4871,76 +4851,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:R")
-		(at 248.92 74.93 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "d310acec-f69f-4ce1-bf7a-40f5600d87e2")
-		(property "Reference" "R59"
-			(at 251.46 73.6599 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "10k"
-			(at 251.46 76.1999 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder"
-			(at 247.142 74.93 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 248.92 74.93 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 248.92 74.93 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "70aa8547-5677-4ca7-8f6f-cf292859bb6d")
-		)
-		(pin "2"
-			(uuid "a58760bb-0057-43a8-8531-8c3e9e9cf50d")
-		)
-		(instances
-			(project "mtg_life_counter"
-				(path "/1883df74-0bd5-446c-9076-f848bb3cfebf/0915e7ce-f0a0-446b-99c3-b1ae0eab9275"
-					(reference "R59")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "mtg_life_counter-rescue:+5V-power")
 		(at 63.5 25.4 0)
 		(unit 1)
@@ -4949,7 +4859,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "d49424ad-9bd7-4294-9e77-6fd5e1c2d24b")
-		(property "Reference" "#PWR055"
+		(property "Reference" "#PWR061"
 			(at 63.5 29.21 0)
 			(effects
 				(font
@@ -4999,7 +4909,7 @@
 		(instances
 			(project "mtg_life_counter"
 				(path "/1883df74-0bd5-446c-9076-f848bb3cfebf/0915e7ce-f0a0-446b-99c3-b1ae0eab9275"
-					(reference "#PWR055")
+					(reference "#PWR061")
 					(unit 1)
 				)
 			)
@@ -5014,7 +4924,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "d76f4fae-3fcc-485f-9fac-73e67cc51e9c")
-		(property "Reference" "R56"
+		(property "Reference" "R53"
 			(at 179.07 87.63 90)
 			(effects
 				(font
@@ -5066,7 +4976,7 @@
 		(instances
 			(project "mtg_life_counter"
 				(path "/1883df74-0bd5-446c-9076-f848bb3cfebf/0915e7ce-f0a0-446b-99c3-b1ae0eab9275"
-					(reference "R56")
+					(reference "R53")
 					(unit 1)
 				)
 			)
@@ -5081,7 +4991,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "eaef65e1-05a7-4788-88b6-3d089fb7c7b2")
-		(property "Reference" "#PWR058"
+		(property "Reference" "#PWR064"
 			(at 63.5 120.65 0)
 			(effects
 				(font
@@ -5131,7 +5041,7 @@
 		(instances
 			(project "mtg_life_counter"
 				(path "/1883df74-0bd5-446c-9076-f848bb3cfebf/0915e7ce-f0a0-446b-99c3-b1ae0eab9275"
-					(reference "#PWR058")
+					(reference "#PWR064")
 					(unit 1)
 				)
 			)
@@ -5146,7 +5056,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "f360ae7b-b829-41b0-8b44-c5c5301131a9")
-		(property "Reference" "#PWR056"
+		(property "Reference" "#PWR062"
 			(at 63.5 59.69 0)
 			(effects
 				(font
@@ -5196,7 +5106,7 @@
 		(instances
 			(project "mtg_life_counter"
 				(path "/1883df74-0bd5-446c-9076-f848bb3cfebf/0915e7ce-f0a0-446b-99c3-b1ae0eab9275"
-					(reference "#PWR056")
+					(reference "#PWR062")
 					(unit 1)
 				)
 			)
@@ -5211,7 +5121,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "f38e71b5-61df-4f8f-a19d-10db316562a3")
-		(property "Reference" "#PWR060"
+		(property "Reference" "#PWR068"
 			(at 210.82 110.49 0)
 			(effects
 				(font
@@ -5261,7 +5171,7 @@
 		(instances
 			(project "mtg_life_counter"
 				(path "/1883df74-0bd5-446c-9076-f848bb3cfebf/0915e7ce-f0a0-446b-99c3-b1ae0eab9275"
-					(reference "#PWR060")
+					(reference "#PWR068")
 					(unit 1)
 				)
 			)

@@ -1276,27 +1276,23 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Mechanical:MountingHole_Pad"
-			(pin_numbers
-				(hide yes)
-			)
+		(symbol "Mechanical:MountingHole"
 			(pin_names
 				(offset 1.016)
-				(hide yes)
 			)
-			(exclude_from_sim yes)
+			(exclude_from_sim no)
 			(in_bom no)
 			(on_board yes)
 			(property "Reference" "H"
-				(at 0 6.35 0)
+				(at 0 5.08 0)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
 				)
 			)
-			(property "Value" "MountingHole_Pad"
-				(at 0 4.445 0)
+			(property "Value" "MountingHole"
+				(at 0 3.175 0)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -1321,7 +1317,7 @@
 					(hide yes)
 				)
 			)
-			(property "Description" "Mounting Hole with connection"
+			(property "Description" "Mounting Hole without connection"
 				(at 0 0 0)
 				(effects
 					(font
@@ -1339,7 +1335,7 @@
 					(hide yes)
 				)
 			)
-			(property "ki_fp_filters" "MountingHole*Pad*"
+			(property "ki_fp_filters" "MountingHole*"
 				(at 0 0 0)
 				(effects
 					(font
@@ -1348,9 +1344,9 @@
 					(hide yes)
 				)
 			)
-			(symbol "MountingHole_Pad_0_1"
+			(symbol "MountingHole_0_1"
 				(circle
-					(center 0 1.27)
+					(center 0 0)
 					(radius 1.27)
 					(stroke
 						(width 1.27)
@@ -1358,26 +1354,6 @@
 					)
 					(fill
 						(type none)
-					)
-				)
-			)
-			(symbol "MountingHole_Pad_1_1"
-				(pin input line
-					(at 0 -2.54 90)
-					(length 2.54)
-					(name "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
 					)
 				)
 			)
@@ -3464,16 +3440,8 @@
 		(uuid "f3a6c47c-f826-44de-9f1f-53d37ffbaca7")
 	)
 	(no_connect
-		(at 243.84 255.27)
-		(uuid "01482bb3-5d4f-496f-bb28-6698e5ab696e")
-	)
-	(no_connect
 		(at 69.85 78.74)
 		(uuid "2bf47a84-0733-4d44-a366-e5f25c7e5aae")
-	)
-	(no_connect
-		(at 256.54 255.27)
-		(uuid "332120a9-e4be-4d09-9d1c-94b69db90365")
 	)
 	(no_connect
 		(at 69.85 76.2)
@@ -3484,16 +3452,8 @@
 		(uuid "7e0d24f7-5988-4d20-99b7-544d21dc9c86")
 	)
 	(no_connect
-		(at 237.49 255.27)
-		(uuid "827803ab-20ac-4edd-983c-227c066ed79a")
-	)
-	(no_connect
 		(at 69.85 66.04)
 		(uuid "ead7ece7-dcbb-4416-bb43-7470a68a6247")
-	)
-	(no_connect
-		(at 250.19 255.27)
-		(uuid "f57e5744-38ae-4ac5-88cf-d90dcc2002c8")
 	)
 	(wire
 		(pts
@@ -6033,11 +5993,11 @@
 		)
 	)
 	(symbol
-		(lib_id "Mechanical:MountingHole_Pad")
+		(lib_id "Mechanical:MountingHole")
 		(at 237.49 252.73 0)
 		(unit 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-00005f39ce52")
@@ -6060,7 +6020,7 @@
 				(hide yes)
 			)
 		)
-		(property "Footprint" "MountingHole:MountingHole_3.2mm_M3_Pad_Via"
+		(property "Footprint" "MountingHole:MountingHole_3.2mm_M3"
 			(at 237.49 252.73 0)
 			(effects
 				(font
@@ -6078,7 +6038,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Mounting Hole without connection"
 			(at 237.49 252.73 0)
 			(effects
 				(font
@@ -6086,9 +6046,6 @@
 				)
 				(hide yes)
 			)
-		)
-		(pin "1"
-			(uuid "86a876cd-8dc6-4d64-bc98-91b93719c546")
 		)
 		(instances
 			(project "mtg_life_counter"
@@ -6100,11 +6057,11 @@
 		)
 	)
 	(symbol
-		(lib_id "Mechanical:MountingHole_Pad")
+		(lib_id "Mechanical:MountingHole")
 		(at 256.54 252.73 0)
 		(unit 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-00005f39e86d")
@@ -6127,7 +6084,7 @@
 				(hide yes)
 			)
 		)
-		(property "Footprint" "MountingHole:MountingHole_3.2mm_M3_Pad_Via"
+		(property "Footprint" "MountingHole:MountingHole_3.2mm_M3"
 			(at 256.54 252.73 0)
 			(effects
 				(font
@@ -6145,7 +6102,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Mounting Hole without connection"
 			(at 256.54 252.73 0)
 			(effects
 				(font
@@ -6153,9 +6110,6 @@
 				)
 				(hide yes)
 			)
-		)
-		(pin "1"
-			(uuid "d8d5bd6f-5db7-438e-b2ad-6c373dea4aa8")
 		)
 		(instances
 			(project "mtg_life_counter"
@@ -6167,11 +6121,11 @@
 		)
 	)
 	(symbol
-		(lib_id "Mechanical:MountingHole_Pad")
+		(lib_id "Mechanical:MountingHole")
 		(at 250.19 252.73 0)
 		(unit 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-00005f39eb49")
@@ -6194,7 +6148,7 @@
 				(hide yes)
 			)
 		)
-		(property "Footprint" "MountingHole:MountingHole_3.2mm_M3_Pad_Via"
+		(property "Footprint" "MountingHole:MountingHole_3.2mm_M3"
 			(at 250.19 252.73 0)
 			(effects
 				(font
@@ -6212,7 +6166,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Mounting Hole without connection"
 			(at 250.19 252.73 0)
 			(effects
 				(font
@@ -6220,9 +6174,6 @@
 				)
 				(hide yes)
 			)
-		)
-		(pin "1"
-			(uuid "efd88409-a163-4a80-a23a-596567205163")
 		)
 		(instances
 			(project "mtg_life_counter"
@@ -6234,11 +6185,11 @@
 		)
 	)
 	(symbol
-		(lib_id "Mechanical:MountingHole_Pad")
+		(lib_id "Mechanical:MountingHole")
 		(at 243.84 252.73 0)
 		(unit 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-00005f39f052")
@@ -6261,7 +6212,7 @@
 				(hide yes)
 			)
 		)
-		(property "Footprint" "MountingHole:MountingHole_3.2mm_M3_Pad_Via"
+		(property "Footprint" "MountingHole:MountingHole_3.2mm_M3"
 			(at 243.84 252.73 0)
 			(effects
 				(font
@@ -6279,7 +6230,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Mounting Hole without connection"
 			(at 243.84 252.73 0)
 			(effects
 				(font
@@ -6287,9 +6238,6 @@
 				)
 				(hide yes)
 			)
-		)
-		(pin "1"
-			(uuid "296fba28-ca22-415f-bf10-c22e4ed4eb99")
 		)
 		(instances
 			(project "mtg_life_counter"
@@ -8671,7 +8619,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-0000627b23fe")
-		(property "Reference" "D1"
+		(property "Reference" "D5"
 			(at 80.7466 134.7216 90)
 			(effects
 				(font
@@ -8725,7 +8673,7 @@
 		(instances
 			(project "mtg_life_counter"
 				(path "/1883df74-0bd5-446c-9076-f848bb3cfebf"
-					(reference "D1")
+					(reference "D5")
 					(unit 1)
 				)
 			)
