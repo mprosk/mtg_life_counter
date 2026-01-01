@@ -3557,7 +3557,7 @@
 	)
 	(wire
 		(pts
-			(xy 157.48 162.56) (xy 170.18 162.56)
+			(xy 207.01 165.1) (xy 219.71 165.1)
 		)
 		(stroke
 			(width 0)
@@ -3787,7 +3787,7 @@
 	)
 	(wire
 		(pts
-			(xy 180.34 175.26) (xy 186.69 175.26)
+			(xy 229.87 177.8) (xy 236.22 177.8)
 		)
 		(stroke
 			(width 0)
@@ -3807,7 +3807,7 @@
 	)
 	(wire
 		(pts
-			(xy 180.34 149.86) (xy 186.69 149.86)
+			(xy 229.87 152.4) (xy 236.22 152.4)
 		)
 		(stroke
 			(width 0)
@@ -4067,7 +4067,7 @@
 	)
 	(wire
 		(pts
-			(xy 180.34 162.56) (xy 186.69 162.56)
+			(xy 229.87 165.1) (xy 236.22 165.1)
 		)
 		(stroke
 			(width 0)
@@ -4977,7 +4977,7 @@
 	)
 	(wire
 		(pts
-			(xy 157.48 149.86) (xy 170.18 149.86)
+			(xy 207.01 152.4) (xy 219.71 152.4)
 		)
 		(stroke
 			(width 0)
@@ -4987,7 +4987,7 @@
 	)
 	(wire
 		(pts
-			(xy 157.48 175.26) (xy 170.18 175.26)
+			(xy 207.01 177.8) (xy 219.71 177.8)
 		)
 		(stroke
 			(width 0)
@@ -5146,7 +5146,7 @@
 		(uuid "fd8c9a53-f6f3-4cd1-a75e-1370a5b95f80")
 	)
 	(label "BTN_ROLL"
-		(at 157.48 175.26 0)
+		(at 207.01 177.8 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -5176,7 +5176,7 @@
 		(uuid "1002789f-6fe6-498b-8000-038fa7d6ed8d")
 	)
 	(label "MODE_SW"
-		(at 157.48 149.86 0)
+		(at 207.01 152.4 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -5436,7 +5436,7 @@
 		(uuid "482d8f68-ea75-4d1f-97f5-d8c575dbda8d")
 	)
 	(label "BTN_RESET"
-		(at 157.48 162.56 0)
+		(at 207.01 165.1 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -5937,15 +5937,15 @@
 	)
 	(symbol
 		(lib_id "Switch:SW_Push")
-		(at 175.26 162.56 0)
+		(at 224.79 165.1 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-00005f28ce77")
-		(property "Reference" "B7"
-			(at 175.26 155.321 0)
+		(property "Reference" "B9"
+			(at 224.79 157.861 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5953,7 +5953,7 @@
 			)
 		)
 		(property "Value" "SW_Push"
-			(at 175.26 157.6324 0)
+			(at 224.79 160.1724 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5961,7 +5961,7 @@
 			)
 		)
 		(property "Footprint" "mtg_life_counter:B3F_12mm"
-			(at 175.26 157.48 0)
+			(at 224.79 160.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5970,7 +5970,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 175.26 157.48 0)
+			(at 224.79 160.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5979,7 +5979,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 175.26 162.56 0)
+			(at 224.79 165.1 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5996,7 +5996,7 @@
 		(instances
 			(project "mtg_life_counter"
 				(path "/1883df74-0bd5-446c-9076-f848bb3cfebf"
-					(reference "B7")
+					(reference "B9")
 					(unit 1)
 				)
 			)
@@ -6272,15 +6272,15 @@
 	)
 	(symbol
 		(lib_id "mtg_life_counter-rescue:GND-power")
-		(at 186.69 149.86 0)
+		(at 236.22 152.4 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-00005f50ec61")
-		(property "Reference" "#PWR022"
-			(at 186.69 156.21 0)
+		(property "Reference" "#PWR026"
+			(at 236.22 158.75 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6289,7 +6289,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 186.817 154.2542 0)
+			(at 236.347 156.7942 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6297,7 +6297,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 186.69 149.86 0)
+			(at 236.22 152.4 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6306,7 +6306,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 186.69 149.86 0)
+			(at 236.22 152.4 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6315,7 +6315,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 186.69 149.86 0)
+			(at 236.22 152.4 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6329,7 +6329,7 @@
 		(instances
 			(project "mtg_life_counter"
 				(path "/1883df74-0bd5-446c-9076-f848bb3cfebf"
-					(reference "#PWR022")
+					(reference "#PWR026")
 					(unit 1)
 				)
 			)
@@ -7550,15 +7550,15 @@
 	)
 	(symbol
 		(lib_id "mtg_life_counter-rescue:GND-power")
-		(at 186.69 162.56 0)
+		(at 236.22 165.1 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-000060993eb2")
-		(property "Reference" "#PWR023"
-			(at 186.69 168.91 0)
+		(property "Reference" "#PWR027"
+			(at 236.22 171.45 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7567,7 +7567,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 186.817 166.9542 0)
+			(at 236.347 169.4942 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7575,7 +7575,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 186.69 162.56 0)
+			(at 236.22 165.1 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7584,7 +7584,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 186.69 162.56 0)
+			(at 236.22 165.1 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7593,7 +7593,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 186.69 162.56 0)
+			(at 236.22 165.1 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7607,7 +7607,7 @@
 		(instances
 			(project "mtg_life_counter"
 				(path "/1883df74-0bd5-446c-9076-f848bb3cfebf"
-					(reference "#PWR023")
+					(reference "#PWR027")
 					(unit 1)
 				)
 			)
@@ -7615,15 +7615,15 @@
 	)
 	(symbol
 		(lib_id "mtg_life_counter-rescue:GND-power")
-		(at 186.69 175.26 0)
+		(at 236.22 177.8 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-0000609b5688")
-		(property "Reference" "#PWR024"
-			(at 186.69 181.61 0)
+		(property "Reference" "#PWR028"
+			(at 236.22 184.15 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7632,7 +7632,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 186.817 179.6542 0)
+			(at 236.347 182.1942 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7640,7 +7640,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 186.69 175.26 0)
+			(at 236.22 177.8 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7649,7 +7649,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 186.69 175.26 0)
+			(at 236.22 177.8 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7658,7 +7658,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 186.69 175.26 0)
+			(at 236.22 177.8 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7672,7 +7672,7 @@
 		(instances
 			(project "mtg_life_counter"
 				(path "/1883df74-0bd5-446c-9076-f848bb3cfebf"
-					(reference "#PWR024")
+					(reference "#PWR028")
 					(unit 1)
 				)
 			)
@@ -7824,7 +7824,7 @@
 	)
 	(symbol
 		(lib_id "Switch:SW_SPST")
-		(at 175.26 149.86 0)
+		(at 224.79 152.4 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -7832,7 +7832,7 @@
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-000060eef83b")
 		(property "Reference" "SW2"
-			(at 175.26 143.891 0)
+			(at 224.79 146.431 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7840,7 +7840,7 @@
 			)
 		)
 		(property "Value" "SW_SPST"
-			(at 175.26 146.2024 0)
+			(at 224.79 148.7424 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7848,7 +7848,7 @@
 			)
 		)
 		(property "Footprint" "Button_Switch_THT:SW_Slide_SPDT_Straight_CK_OS102011MS2Q"
-			(at 175.26 149.86 0)
+			(at 224.79 152.4 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7857,7 +7857,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 175.26 149.86 0)
+			(at 224.79 152.4 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7866,7 +7866,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 175.26 149.86 0)
+			(at 224.79 152.4 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8027,15 +8027,15 @@
 	)
 	(symbol
 		(lib_id "Switch:SW_Push")
-		(at 175.26 175.26 0)
+		(at 224.79 177.8 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-000061d06b21")
-		(property "Reference" "B8"
-			(at 175.26 168.021 0)
+		(property "Reference" "B10"
+			(at 224.79 170.561 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8043,7 +8043,7 @@
 			)
 		)
 		(property "Value" "SW_Push"
-			(at 175.26 170.3324 0)
+			(at 224.79 172.8724 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8051,7 +8051,7 @@
 			)
 		)
 		(property "Footprint" "mtg_life_counter:B3F_12mm"
-			(at 175.26 170.18 0)
+			(at 224.79 172.72 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8060,7 +8060,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 175.26 170.18 0)
+			(at 224.79 172.72 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8069,7 +8069,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 175.26 175.26 0)
+			(at 224.79 177.8 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8086,7 +8086,7 @@
 		(instances
 			(project "mtg_life_counter"
 				(path "/1883df74-0bd5-446c-9076-f848bb3cfebf"
-					(reference "B8")
+					(reference "B10")
 					(unit 1)
 				)
 			)
@@ -9244,7 +9244,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "02aada8f-db22-4869-90e6-8cbd965975c8")
-		(property "Reference" "#PWR025"
+		(property "Reference" "#PWR022"
 			(at 193.04 227.33 0)
 			(effects
 				(font
@@ -9294,7 +9294,7 @@
 		(instances
 			(project "mtg_life_counter"
 				(path "/1883df74-0bd5-446c-9076-f848bb3cfebf"
-					(reference "#PWR025")
+					(reference "#PWR022")
 					(unit 1)
 				)
 			)
@@ -9309,7 +9309,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "075c66bd-c7c1-43fc-ad9a-0a8022fb238d")
-		(property "Reference" "#PWR026"
+		(property "Reference" "#PWR023"
 			(at 193.04 240.03 0)
 			(effects
 				(font
@@ -9359,7 +9359,7 @@
 		(instances
 			(project "mtg_life_counter"
 				(path "/1883df74-0bd5-446c-9076-f848bb3cfebf"
-					(reference "#PWR026")
+					(reference "#PWR023")
 					(unit 1)
 				)
 			)
@@ -9579,7 +9579,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "4acc8c0d-16f9-4acf-9d10-62176dc997d2")
-		(property "Reference" "B9"
+		(property "Reference" "B7"
 			(at 180.34 213.741 0)
 			(effects
 				(font
@@ -9631,7 +9631,7 @@
 		(instances
 			(project "mtg_life_counter"
 				(path "/1883df74-0bd5-446c-9076-f848bb3cfebf"
-					(reference "B9")
+					(reference "B7")
 					(unit 1)
 				)
 			)
@@ -9975,7 +9975,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "7139c4ab-36ff-4e2e-a42b-839ec1dca228")
-		(property "Reference" "#PWR027"
+		(property "Reference" "#PWR024"
 			(at 228.6 52.07 0)
 			(effects
 				(font
@@ -10025,7 +10025,7 @@
 		(instances
 			(project "mtg_life_counter"
 				(path "/1883df74-0bd5-446c-9076-f848bb3cfebf"
-					(reference "#PWR027")
+					(reference "#PWR024")
 					(unit 1)
 				)
 			)
@@ -10241,7 +10241,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "92ca9125-131d-46e6-9013-be0a0c221c54")
-		(property "Reference" "#PWR028"
+		(property "Reference" "#PWR025"
 			(at 228.6 77.47 0)
 			(effects
 				(font
@@ -10291,7 +10291,7 @@
 		(instances
 			(project "mtg_life_counter"
 				(path "/1883df74-0bd5-446c-9076-f848bb3cfebf"
-					(reference "#PWR028")
+					(reference "#PWR025")
 					(unit 1)
 				)
 			)
@@ -10441,7 +10441,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "b80521b4-cdd9-4af3-8a7e-2241e8ab4da4")
-		(property "Reference" "B10"
+		(property "Reference" "B8"
 			(at 180.34 226.441 0)
 			(effects
 				(font
@@ -10493,7 +10493,7 @@
 		(instances
 			(project "mtg_life_counter"
 				(path "/1883df74-0bd5-446c-9076-f848bb3cfebf"
-					(reference "B10")
+					(reference "B8")
 					(unit 1)
 				)
 			)
@@ -10779,7 +10779,7 @@
 		(fill
 			(color 0 0 0 0.0000)
 		)
-		(uuid "1ec626be-6947-41e8-8e3a-a6dc6567e03e")
+		(uuid "071d9a1a-c1d1-4831-ad0b-9d7b579fcd0c")
 		(property "Sheetname" "Player Two Display Bank - Green"
 			(at 330.2 62.7884 0)
 			(effects
@@ -10800,7 +10800,7 @@
 		)
 		(pin "DIGIT_SEL_1" input
 			(at 330.2 78.74 180)
-			(uuid "2a4c2fe8-2c9e-4d47-9bee-857feeabeadd")
+			(uuid "15dc99d9-61c5-4294-b8a8-e94e51f306bf")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10810,7 +10810,7 @@
 		)
 		(pin "DIGIT_SEL_2" input
 			(at 330.2 81.28 180)
-			(uuid "53e3ade6-3dc0-474a-949e-8dd515d9c75a")
+			(uuid "8b5ff63c-916a-4240-bc2b-ba562ce425e7")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10820,7 +10820,7 @@
 		)
 		(pin "DIGIT_SEL_3" input
 			(at 330.2 83.82 180)
-			(uuid "de643a24-1d6d-4bd9-98e7-18ced90e4a21")
+			(uuid "0b15153f-216f-427f-99c7-753ebbda278b")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10830,7 +10830,7 @@
 		)
 		(pin "DIGIT_SEL_4" input
 			(at 330.2 86.36 180)
-			(uuid "05887f5a-6a60-404d-9a73-01a4ea476b7b")
+			(uuid "e6fe002a-4ec6-4342-9b1c-d669a095a5b1")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10840,7 +10840,7 @@
 		)
 		(pin "SHIFT_CLK" input
 			(at 330.2 68.58 180)
-			(uuid "a92d826b-a9b4-4afc-a6a0-17afddb1787d")
+			(uuid "3ab6e382-7a40-4298-b226-516a2528881e")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10850,7 +10850,7 @@
 		)
 		(pin "SHIFT_IN" input
 			(at 330.2 66.04 180)
-			(uuid "d5bddffc-2733-4883-8d01-f36874448b1e")
+			(uuid "fb4a4f30-050f-423a-a446-e127bb976571")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10860,7 +10860,7 @@
 		)
 		(pin "SHIFT_LATCH" input
 			(at 330.2 71.12 180)
-			(uuid "b2794f38-e7ca-45b4-8fda-8c2806fa4be8")
+			(uuid "a18d0fb2-6ae9-4446-833f-2108cbb77ca7")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10870,7 +10870,7 @@
 		)
 		(pin "SHIFT_OUT" output
 			(at 368.3 76.2 0)
-			(uuid "556aa933-9ebc-4b2b-8aaf-f402da7eebed")
+			(uuid "7cc3317c-a768-49c3-9703-c2e335d62121")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10882,6 +10882,128 @@
 			(project "mtg_life_counter"
 				(path "/1883df74-0bd5-446c-9076-f848bb3cfebf"
 					(page "3")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 330.2 139.7)
+		(size 38.1 25.4)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "0915e7ce-f0a0-446b-99c3-b1ae0eab9275")
+		(property "Sheetname" "Player Four Display Bank - Blue"
+			(at 330.2 138.9884 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "display4.kicad_sch"
+			(at 330.2 165.6846 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "DIGIT_SEL_1" input
+			(at 330.2 154.94 180)
+			(uuid "335a501d-e521-4b36-8a72-306145a0d33f")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "DIGIT_SEL_2" input
+			(at 330.2 157.48 180)
+			(uuid "5cf90389-362b-464e-80f6-34d3267e1c5f")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "DIGIT_SEL_3" input
+			(at 330.2 160.02 180)
+			(uuid "59f447f8-bf1d-46d3-9c10-d7ffe027aeb9")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "DIGIT_SEL_4" input
+			(at 330.2 162.56 180)
+			(uuid "a3af1264-2102-4225-89bc-2cd2ff2f492f")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "SHIFT_CLK" input
+			(at 330.2 144.78 180)
+			(uuid "171068e8-5d68-4c17-b658-63a15d5ababe")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "SHIFT_IN" input
+			(at 330.2 142.24 180)
+			(uuid "cd44d7a3-300d-42c9-8b96-c8468c7a2e02")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "SHIFT_LATCH" input
+			(at 330.2 147.32 180)
+			(uuid "b508e660-510c-48f3-9939-f220fee4e40d")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "SHIFT_OUT" output
+			(at 368.3 152.4 0)
+			(uuid "e6cd2272-edab-4c37-8861-87dd7fc61c15")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(instances
+			(project "mtg_life_counter"
+				(path "/1883df74-0bd5-446c-9076-f848bb3cfebf"
+					(page "5")
 				)
 			)
 		)
@@ -11009,128 +11131,6 @@
 		)
 	)
 	(sheet
-		(at 330.2 139.7)
-		(size 38.1 25.4)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(stroke
-			(width 0.1524)
-			(type solid)
-		)
-		(fill
-			(color 0 0 0 0.0000)
-		)
-		(uuid "b2ab5fc2-0c0c-44cf-9fa2-bdb46a97c5b2")
-		(property "Sheetname" "Player Four Display Bank - Blue"
-			(at 330.2 138.9884 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left bottom)
-			)
-		)
-		(property "Sheetfile" "display4.kicad_sch"
-			(at 330.2 165.6846 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-			)
-		)
-		(pin "DIGIT_SEL_1" input
-			(at 330.2 154.94 180)
-			(uuid "d9f77b11-3c59-4117-8e19-c24352bbe47f")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(pin "DIGIT_SEL_2" input
-			(at 330.2 157.48 180)
-			(uuid "22c9f37c-a051-4176-bdba-c4ce72bd7647")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(pin "DIGIT_SEL_3" input
-			(at 330.2 160.02 180)
-			(uuid "49965583-f401-4a7b-ace1-fd3040c0740e")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(pin "DIGIT_SEL_4" input
-			(at 330.2 162.56 180)
-			(uuid "261e4b20-8f7c-4900-ba81-ee8271ed269a")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(pin "SHIFT_CLK" input
-			(at 330.2 144.78 180)
-			(uuid "46c8d04d-2a28-4602-9880-98085332a6f5")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(pin "SHIFT_IN" input
-			(at 330.2 142.24 180)
-			(uuid "ab0c7602-b1b8-4533-9e65-8875446f6dc9")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(pin "SHIFT_LATCH" input
-			(at 330.2 147.32 180)
-			(uuid "4fda4a6f-7a31-43d3-bddd-25d7ae255b05")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(pin "SHIFT_OUT" output
-			(at 368.3 152.4 0)
-			(uuid "c6a55111-867b-4a32-80d0-97cdb9c62250")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(instances
-			(project "mtg_life_counter"
-				(path "/1883df74-0bd5-446c-9076-f848bb3cfebf"
-					(page "7")
-				)
-			)
-		)
-	)
-	(sheet
 		(at 330.2 101.6)
 		(size 38.1 25.4)
 		(exclude_from_sim no)
@@ -11145,7 +11145,7 @@
 		(fill
 			(color 0 0 0 0.0000)
 		)
-		(uuid "bae19e33-b759-449c-8a96-642345b67844")
+		(uuid "9592e857-eda4-4ed1-a70a-bb63f68d12f3")
 		(property "Sheetname" "Player Three Display Bank - Yellow"
 			(at 330.2 100.8884 0)
 			(effects
@@ -11166,7 +11166,7 @@
 		)
 		(pin "DIGIT_SEL_1" input
 			(at 330.2 116.84 180)
-			(uuid "a24160c8-a954-45db-b698-3277574a2d57")
+			(uuid "f8ce509c-b745-488d-b71d-51de0d2ab5e5")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11176,7 +11176,7 @@
 		)
 		(pin "DIGIT_SEL_2" input
 			(at 330.2 119.38 180)
-			(uuid "48722b09-a87d-4a22-9ead-f59b9d2c7268")
+			(uuid "ff89548d-0e5e-403e-9a17-1420ef4f6d08")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11186,7 +11186,7 @@
 		)
 		(pin "DIGIT_SEL_3" input
 			(at 330.2 121.92 180)
-			(uuid "bc400f11-3f42-44a4-a93a-5f72e96b6348")
+			(uuid "c19f2815-552e-4bf8-afdd-967696803640")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11196,7 +11196,7 @@
 		)
 		(pin "DIGIT_SEL_4" input
 			(at 330.2 124.46 180)
-			(uuid "072bb7d3-a3a6-48bd-8376-4f0850b6fe55")
+			(uuid "5ced1a4f-5de0-4f75-9864-106961590bb5")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11206,7 +11206,7 @@
 		)
 		(pin "SHIFT_CLK" input
 			(at 330.2 106.68 180)
-			(uuid "4521734b-72a1-4835-9c2a-01eb891a1917")
+			(uuid "2627e14b-f0b2-4c5d-aa6d-1f0a149c8725")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11216,7 +11216,7 @@
 		)
 		(pin "SHIFT_IN" input
 			(at 330.2 104.14 180)
-			(uuid "c9ab981b-912f-42ba-ab68-c37994fdbaa5")
+			(uuid "20ab4250-3f4f-4e14-9975-703fe3e05148")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11226,7 +11226,7 @@
 		)
 		(pin "SHIFT_LATCH" input
 			(at 330.2 109.22 180)
-			(uuid "d0f157cd-fd01-4ce3-aa0c-089d0bb4122f")
+			(uuid "238a5262-d1a6-489f-8d58-2c129e2eb3c1")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11236,7 +11236,7 @@
 		)
 		(pin "SHIFT_OUT" output
 			(at 368.3 114.3 0)
-			(uuid "bd30ddce-3f4e-408c-8d48-d434b2627757")
+			(uuid "3176373b-873d-42a7-8e0b-11364365fcd0")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11247,7 +11247,7 @@
 		(instances
 			(project "mtg_life_counter"
 				(path "/1883df74-0bd5-446c-9076-f848bb3cfebf"
-					(page "6")
+					(page "4")
 				)
 			)
 		)
