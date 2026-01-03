@@ -1,0 +1,223 @@
+(footprint "SW_SPST_WE_WS-TASV_12mm_Tac"
+	(version 20241229)
+	(generator "pcbnew")
+	(generator_version "9.0")
+	(layer "F.Cu")
+	(descr "12mm SMD Tact Switch Wurth Elektronik")
+	(property "Reference" "REF**"
+		(at 0 -0.5 0)
+		(unlocked yes)
+		(layer "F.SilkS")
+		(uuid "478a23b7-d81e-4f47-985a-93d321d6561d")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.1)
+			)
+		)
+	)
+	(property "Value" "SW_SPST_WE_WS-TASV_12mm_Tac"
+		(at 0 1 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(uuid "6f88121f-2861-427c-a4d7-4b70f27eef89")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" "https://www.we-online.com/components/products/datasheet/430162043826.pdf"
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "c5625f4b-d6f2-47d3-b305-9a101ec9c042")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Description" ""
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "4210837c-8086-4096-864b-614a74f999ff")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(attr smd)
+	(fp_line
+		(start -6.5 -6.5)
+		(end 6.5 -6.5)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "87b55cc7-b351-4309-ad24-42448dfc9a71")
+	)
+	(fp_line
+		(start -6.5 -4)
+		(end -6.5 -6.5)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "5c3f3e63-6c3c-477c-87e0-b1bf24d10494")
+	)
+	(fp_line
+		(start -6.5 -1)
+		(end -6.5 1)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "101035af-c2ab-4f92-82f0-52e963cd0419")
+	)
+	(fp_line
+		(start -6.5 6.5)
+		(end -6.5 4)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "2eb05f21-4285-4f6f-bf44-a9b71d38697c")
+	)
+	(fp_line
+		(start 6.5 -6.5)
+		(end 6.5 -4)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "fb286051-3918-4175-ab76-d38dc1b09a2b")
+	)
+	(fp_line
+		(start 6.5 -1)
+		(end 6.5 1)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "a6b4562c-2105-4f0c-b7a1-3e733fc9a932")
+	)
+	(fp_line
+		(start 6.5 4)
+		(end 6.5 6.5)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "04dceb31-9b3a-40c5-8c25-5af27df083d8")
+	)
+	(fp_line
+		(start 6.5 6.5)
+		(end -6.5 6.5)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "e685dc9a-0eea-4412-b870-e51b9b389db3")
+	)
+	(fp_circle
+		(center 0 0)
+		(end 3.5 0)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(fill no)
+		(layer "F.SilkS")
+		(uuid "2730d544-02d6-4b89-be4b-78b8a0002ca2")
+	)
+	(fp_rect
+		(start -8.5 -7)
+		(end 8.5 7)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(fill no)
+		(layer "F.CrtYd")
+		(uuid "e29c6e40-c25c-4f06-81d1-ec1c3f92c858")
+	)
+	(fp_rect
+		(start -6 -6)
+		(end 6 6)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(fill no)
+		(layer "F.Fab")
+		(uuid "1b998028-4e2d-4bfa-80d1-6d0fcb08cba1")
+	)
+	(fp_text user "${REFERENCE}"
+		(at 0 2.5 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(uuid "da7c3c03-cdf4-4e37-b5c5-6be5ccfb1306")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(pad "1" smd roundrect
+		(at -7 -2.5)
+		(size 2 1.8)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(roundrect_rratio 0.25)
+		(uuid "acc27461-b491-4d1c-94be-d522deead89b")
+	)
+	(pad "1" smd roundrect
+		(at 7 -2.5)
+		(size 2 1.8)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(roundrect_rratio 0.25)
+		(uuid "902f55b6-8655-4b83-ad0d-9f144d962ebf")
+	)
+	(pad "2" smd roundrect
+		(at -7 2.5)
+		(size 2 1.8)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(roundrect_rratio 0.25)
+		(uuid "e9bc2080-90dd-4b29-bbea-b08f49c71805")
+	)
+	(pad "2" smd roundrect
+		(at 7 2.5)
+		(size 2 1.8)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(roundrect_rratio 0.25)
+		(uuid "f6c4b9c0-0312-449c-8d62-e48062c9593c")
+	)
+	(embedded_fonts no)
+	(model "${KIPRJMOD}/mtg_life_counter.pretty/430172043816.step"
+		(offset
+			(xyz -0.3 0 1.8)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz -0 -0 -0)
+		)
+	)
+)

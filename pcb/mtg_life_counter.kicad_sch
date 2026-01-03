@@ -1509,7 +1509,7 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Switch:SW_SPST"
+		(symbol "Switch:SW_SPDT"
 			(pin_names
 				(offset 0)
 				(hide yes)
@@ -1518,15 +1518,15 @@
 			(in_bom yes)
 			(on_board yes)
 			(property "Reference" "SW"
-				(at 0 3.175 0)
+				(at 0 5.08 0)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
 				)
 			)
-			(property "Value" "SW_SPST"
-				(at 0 -2.54 0)
+			(property "Value" "SW_SPDT"
+				(at 0 -5.08 0)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -1543,6 +1543,15 @@
 				)
 			)
 			(property "Datasheet" "~"
+				(at 0 -7.62 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Switch, single pole double throw"
 				(at 0 0 0)
 				(effects
 					(font
@@ -1551,7 +1560,7 @@
 					(hide yes)
 				)
 			)
-			(property "Description" "Single Pole Single Throw (SPST) switch"
+			(property "ki_keywords" "switch single-pole double-throw spdt ON-ON"
 				(at 0 0 0)
 				(effects
 					(font
@@ -1560,19 +1569,10 @@
 					(hide yes)
 				)
 			)
-			(property "ki_keywords" "switch lever"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(symbol "SW_SPST_0_0"
+			(symbol "SW_SPDT_0_1"
 				(circle
 					(center -2.032 0)
-					(radius 0.508)
+					(radius 0.4572)
 					(stroke
 						(width 0)
 						(type default)
@@ -1583,7 +1583,7 @@
 				)
 				(polyline
 					(pts
-						(xy -1.524 0.254) (xy 1.524 1.778)
+						(xy -1.651 0.254) (xy 1.651 2.286)
 					)
 					(stroke
 						(width 0)
@@ -1594,8 +1594,19 @@
 					)
 				)
 				(circle
-					(center 2.032 0)
-					(radius 0.508)
+					(center 2.032 2.54)
+					(radius 0.4572)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(circle
+					(center 2.032 -2.54)
+					(radius 0.4572)
 					(stroke
 						(width 0)
 						(type default)
@@ -1605,9 +1616,38 @@
 					)
 				)
 			)
-			(symbol "SW_SPST_1_1"
+			(symbol "SW_SPDT_1_1"
+				(rectangle
+					(start -3.175 3.81)
+					(end 3.175 -3.81)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
 				(pin passive line
 					(at -5.08 0 0)
+					(length 2.54)
+					(name "B"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 5.08 2.54 180)
 					(length 2.54)
 					(name "A"
 						(effects
@@ -1625,16 +1665,16 @@
 					)
 				)
 				(pin passive line
-					(at 5.08 0 180)
+					(at 5.08 -2.54 180)
 					(length 2.54)
-					(name "B"
+					(name "C"
 						(effects
 							(font
 								(size 1.27 1.27)
 							)
 						)
 					)
-					(number "2"
+					(number "3"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -3350,13 +3390,19 @@
 		(uuid "eb28bda4-ff75-47dc-90e1-98b0071825c6")
 	)
 	(junction
-		(at 97.79 127)
+		(at 97.79 124.46)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "0a9e65da-7d0d-400b-ac9d-0f4dcc52ed90")
 	)
 	(junction
-		(at 107.95 127)
+		(at 83.82 144.78)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "1445eda3-138a-4c3b-9efb-2a68170647c1")
+	)
+	(junction
+		(at 107.95 124.46)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "15806ae0-9773-4961-87bc-ea7c059e75ae")
@@ -3380,7 +3426,7 @@
 		(uuid "45bb8491-98f1-4441-bef0-d215d1bd45bf")
 	)
 	(junction
-		(at 78.74 127)
+		(at 69.85 127)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "49ebee8e-5818-4fde-9c0e-1529651899b6")
@@ -3390,12 +3436,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "54b6970a-890e-4f15-9832-0aec150675e4")
-	)
-	(junction
-		(at 97.79 144.78)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "6737ad7b-703b-4232-b9b9-858b1391d812")
 	)
 	(junction
 		(at 62.23 144.78)
@@ -3410,6 +3450,12 @@
 		(uuid "8c1dd257-5898-41dc-88d6-6b154ee15fc0")
 	)
 	(junction
+		(at 107.95 127)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "99be2022-468b-45e0-a970-af4c729fe0d0")
+	)
+	(junction
 		(at 67.31 96.52)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -3420,6 +3466,18 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "a00a02f7-eb51-4fdb-a1b3-599e92f47c02")
+	)
+	(junction
+		(at 78.74 127)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "a175ad88-1924-4438-af47-ec33ed6ec089")
+	)
+	(junction
+		(at 97.79 144.78)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "ab8e4f57-0f23-428c-a130-8f7bbe24a3eb")
 	)
 	(junction
 		(at 40.64 44.45)
@@ -3444,12 +3502,20 @@
 		(uuid "2bf47a84-0733-4d44-a366-e5f25c7e5aae")
 	)
 	(no_connect
+		(at 93.98 129.54)
+		(uuid "3594473b-0e82-4a90-8089-2c60c33fca16")
+	)
+	(no_connect
 		(at 69.85 76.2)
 		(uuid "5838d0fc-9936-49cd-987e-3138415db913")
 	)
 	(no_connect
 		(at 375.92 38.1)
 		(uuid "7e0d24f7-5988-4d20-99b7-544d21dc9c86")
+	)
+	(no_connect
+		(at 229.87 146.05)
+		(uuid "da07efaf-3f5b-4f0b-912f-069801518312")
 	)
 	(no_connect
 		(at 69.85 66.04)
@@ -3667,7 +3733,7 @@
 	)
 	(wire
 		(pts
-			(xy 107.95 138.43) (xy 107.95 144.78)
+			(xy 107.95 137.16) (xy 107.95 144.78)
 		)
 		(stroke
 			(width 0)
@@ -3687,7 +3753,7 @@
 	)
 	(wire
 		(pts
-			(xy 62.23 127) (xy 78.74 127)
+			(xy 62.23 127) (xy 69.85 127)
 		)
 		(stroke
 			(width 0)
@@ -3777,7 +3843,7 @@
 	)
 	(wire
 		(pts
-			(xy 78.74 124.46) (xy 78.74 127)
+			(xy 69.85 124.46) (xy 69.85 127)
 		)
 		(stroke
 			(width 0)
@@ -3797,7 +3863,7 @@
 	)
 	(wire
 		(pts
-			(xy 78.74 127) (xy 78.74 132.08)
+			(xy 78.74 127) (xy 78.74 133.35)
 		)
 		(stroke
 			(width 0)
@@ -3807,7 +3873,7 @@
 	)
 	(wire
 		(pts
-			(xy 229.87 152.4) (xy 236.22 152.4)
+			(xy 229.87 140.97) (xy 236.22 140.97)
 		)
 		(stroke
 			(width 0)
@@ -3884,6 +3950,16 @@
 			(type default)
 		)
 		(uuid "3ed66f07-613b-457d-a731-aa1bb4477ff8")
+	)
+	(wire
+		(pts
+			(xy 78.74 127) (xy 69.85 127)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "407da615-607e-48b8-b05a-5e9686aa07c8")
 	)
 	(wire
 		(pts
@@ -4007,7 +4083,7 @@
 	)
 	(wire
 		(pts
-			(xy 93.98 127) (xy 97.79 127)
+			(xy 93.98 124.46) (xy 97.79 124.46)
 		)
 		(stroke
 			(width 0)
@@ -4367,7 +4443,7 @@
 	)
 	(wire
 		(pts
-			(xy 97.79 127) (xy 107.95 127)
+			(xy 97.79 124.46) (xy 107.95 124.46)
 		)
 		(stroke
 			(width 0)
@@ -4447,6 +4523,16 @@
 	)
 	(wire
 		(pts
+			(xy 107.95 127) (xy 107.95 132.08)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a1c7d282-64fc-4199-afc2-883456c36ed6")
+	)
+	(wire
+		(pts
 			(xy 59.69 68.58) (xy 69.85 68.58)
 		)
 		(stroke
@@ -4517,16 +4603,6 @@
 	)
 	(wire
 		(pts
-			(xy 78.74 127) (xy 83.82 127)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "aa9000e0-9c49-4774-8009-21c3e00dc357")
-	)
-	(wire
-		(pts
 			(xy 314.96 162.56) (xy 330.2 162.56)
 		)
 		(stroke
@@ -4567,7 +4643,7 @@
 	)
 	(wire
 		(pts
-			(xy 107.95 124.46) (xy 107.95 127)
+			(xy 107.95 121.92) (xy 107.95 124.46)
 		)
 		(stroke
 			(width 0)
@@ -4727,7 +4803,17 @@
 	)
 	(wire
 		(pts
-			(xy 97.79 138.43) (xy 97.79 144.78)
+			(xy 83.82 144.78) (xy 78.74 144.78)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c73e2ca4-f4b8-4a91-879f-14af2813f78b")
+	)
+	(wire
+		(pts
+			(xy 97.79 137.16) (xy 97.79 144.78)
 		)
 		(stroke
 			(width 0)
@@ -4907,7 +4993,7 @@
 	)
 	(wire
 		(pts
-			(xy 97.79 127) (xy 97.79 133.35)
+			(xy 97.79 124.46) (xy 97.79 132.08)
 		)
 		(stroke
 			(width 0)
@@ -4917,7 +5003,7 @@
 	)
 	(wire
 		(pts
-			(xy 97.79 144.78) (xy 78.74 144.78)
+			(xy 97.79 144.78) (xy 83.82 144.78)
 		)
 		(stroke
 			(width 0)
@@ -4977,7 +5063,7 @@
 	)
 	(wire
 		(pts
-			(xy 207.01 152.4) (xy 219.71 152.4)
+			(xy 207.01 143.51) (xy 219.71 143.51)
 		)
 		(stroke
 			(width 0)
@@ -4994,6 +5080,16 @@
 			(type default)
 		)
 		(uuid "e6536471-9bbe-4d61-8468-3879d275c3e9")
+	)
+	(wire
+		(pts
+			(xy 78.74 127) (xy 83.82 127)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e7065391-c17a-45cd-9146-8f10a9c66bc1")
 	)
 	(wire
 		(pts
@@ -5057,7 +5153,7 @@
 	)
 	(wire
 		(pts
-			(xy 107.95 127) (xy 107.95 133.35)
+			(xy 107.95 124.46) (xy 107.95 127)
 		)
 		(stroke
 			(width 0)
@@ -5097,7 +5193,7 @@
 	)
 	(wire
 		(pts
-			(xy 78.74 144.78) (xy 78.74 147.32)
+			(xy 83.82 144.78) (xy 83.82 147.32)
 		)
 		(stroke
 			(width 0)
@@ -5137,7 +5233,7 @@
 	)
 	(wire
 		(pts
-			(xy 78.74 139.7) (xy 78.74 144.78)
+			(xy 78.74 140.97) (xy 78.74 144.78)
 		)
 		(stroke
 			(width 0)
@@ -5176,7 +5272,7 @@
 		(uuid "1002789f-6fe6-498b-8000-038fa7d6ed8d")
 	)
 	(label "MODE_SW"
-		(at 207.01 152.4 0)
+		(at 207.01 143.51 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -5950,7 +6046,7 @@
 				)
 			)
 		)
-		(property "Footprint" "mtg_life_counter:B3F_12mm"
+		(property "Footprint" "mtg_life_counter:SW_SPST_WE_WS-TASV_12mm_Tac"
 			(at 224.79 160.02 0)
 			(effects
 				(font
@@ -6250,7 +6346,7 @@
 	)
 	(symbol
 		(lib_id "mtg_life_counter-rescue:GND-power")
-		(at 236.22 152.4 0)
+		(at 236.22 140.97 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -6258,7 +6354,7 @@
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-00005f50ec61")
 		(property "Reference" "#PWR026"
-			(at 236.22 158.75 0)
+			(at 236.22 147.32 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6267,7 +6363,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 236.347 156.7942 0)
+			(at 236.347 145.3642 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6275,7 +6371,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 236.22 152.4 0)
+			(at 236.22 140.97 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6284,7 +6380,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 236.22 152.4 0)
+			(at 236.22 140.97 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6293,7 +6389,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 236.22 152.4 0)
+			(at 236.22 140.97 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6473,7 +6569,7 @@
 	)
 	(symbol
 		(lib_id "mtg_life_counter-rescue:GND-power")
-		(at 78.74 147.32 0)
+		(at 83.82 147.32 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -6481,7 +6577,7 @@
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-00005f537739")
 		(property "Reference" "#PWR011"
-			(at 78.74 153.67 0)
+			(at 83.82 153.67 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6490,7 +6586,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 78.867 151.7142 0)
+			(at 83.947 151.7142 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6498,7 +6594,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 78.74 147.32 0)
+			(at 83.82 147.32 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6507,7 +6603,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 78.74 147.32 0)
+			(at 83.82 147.32 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6516,7 +6612,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 78.74 147.32 0)
+			(at 83.82 147.32 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6667,73 +6763,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Switch:SW_SPST")
-		(at 88.9 127 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "00000000-0000-0000-0000-00005f6c1609")
-		(property "Reference" "SW1"
-			(at 88.9 121.031 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "SW_SPST"
-			(at 88.9 123.3424 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Button_Switch_THT:SW_Slide_SPDT_Straight_CK_OS102011MS2Q"
-			(at 88.9 127 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 88.9 127 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 88.9 127 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "f77dab20-1976-4e2f-8a79-f7ae367754c6")
-		)
-		(pin "2"
-			(uuid "29d64819-6555-441a-a294-4b8762d37664")
-		)
-		(instances
-			(project "mtg_life_counter"
-				(path "/1883df74-0bd5-446c-9076-f848bb3cfebf"
-					(reference "SW1")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "mtg_life_counter-rescue:+5V-power")
 		(at 67.31 43.18 0)
 		(unit 1)
@@ -6865,7 +6894,7 @@
 	)
 	(symbol
 		(lib_id "mtg_life_counter-rescue:+5V-power")
-		(at 107.95 124.46 0)
+		(at 107.95 127 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -6873,7 +6902,7 @@
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-00005f917f3a")
 		(property "Reference" "#PWR014"
-			(at 107.95 128.27 0)
+			(at 107.95 130.81 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6882,7 +6911,7 @@
 			)
 		)
 		(property "Value" "+5V"
-			(at 108.331 120.0658 0)
+			(at 108.331 122.6058 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6890,7 +6919,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 107.95 124.46 0)
+			(at 107.95 127 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6899,7 +6928,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 107.95 124.46 0)
+			(at 107.95 127 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6908,7 +6937,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 107.95 124.46 0)
+			(at 107.95 127 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7463,7 +7492,7 @@
 	)
 	(symbol
 		(lib_id "mtg_life_counter-rescue:VBUS-power")
-		(at 78.74 124.46 0)
+		(at 69.85 124.46 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -7471,7 +7500,7 @@
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-00006058cb52")
 		(property "Reference" "#PWR010"
-			(at 78.74 128.27 0)
+			(at 69.85 128.27 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7480,7 +7509,7 @@
 			)
 		)
 		(property "Value" "VBUS"
-			(at 79.121 120.0658 0)
+			(at 70.231 120.0658 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7488,7 +7517,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 78.74 124.46 0)
+			(at 69.85 124.46 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7497,7 +7526,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 78.74 124.46 0)
+			(at 69.85 124.46 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7506,7 +7535,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 78.74 124.46 0)
+			(at 69.85 124.46 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7801,75 +7830,8 @@
 		)
 	)
 	(symbol
-		(lib_id "Switch:SW_SPST")
-		(at 224.79 152.4 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "00000000-0000-0000-0000-000060eef83b")
-		(property "Reference" "SW2"
-			(at 224.79 146.431 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "SW_SPST"
-			(at 224.79 148.7424 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Button_Switch_THT:SW_Slide_SPDT_Straight_CK_OS102011MS2Q"
-			(at 224.79 152.4 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 224.79 152.4 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 224.79 152.4 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "2de5d448-7eb8-49c0-af18-f8328eacae71")
-		)
-		(pin "2"
-			(uuid "a01c7969-2e25-4491-89cc-59838b9c1aa6")
-		)
-		(instances
-			(project "mtg_life_counter"
-				(path "/1883df74-0bd5-446c-9076-f848bb3cfebf"
-					(reference "SW2")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Device:C_Small")
-		(at 97.79 135.89 0)
+		(at 97.79 134.62 0)
 		(mirror x)
 		(unit 1)
 		(exclude_from_sim no)
@@ -7878,7 +7840,7 @@
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-000061a0cf2a")
 		(property "Reference" "C4"
-			(at 101.6 134.62 0)
+			(at 101.6 133.35 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7886,7 +7848,7 @@
 			)
 		)
 		(property "Value" "1uF"
-			(at 101.6 137.16 0)
+			(at 101.6 135.89 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7894,7 +7856,7 @@
 			)
 		)
 		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder"
-			(at 97.79 135.89 0)
+			(at 97.79 134.62 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7903,7 +7865,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 97.79 135.89 0)
+			(at 97.79 134.62 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7912,7 +7874,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 97.79 135.89 0)
+			(at 97.79 134.62 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7937,7 +7899,7 @@
 	)
 	(symbol
 		(lib_id "Device:C_Small")
-		(at 107.95 135.89 0)
+		(at 107.95 134.62 0)
 		(mirror x)
 		(unit 1)
 		(exclude_from_sim no)
@@ -7946,7 +7908,7 @@
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-000061aa776d")
 		(property "Reference" "C5"
-			(at 111.76 134.62 0)
+			(at 111.76 133.35 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7954,7 +7916,7 @@
 			)
 		)
 		(property "Value" "10uF"
-			(at 111.76 137.16 0)
+			(at 111.76 135.89 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7962,7 +7924,7 @@
 			)
 		)
 		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder"
-			(at 107.95 135.89 0)
+			(at 107.95 134.62 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7971,7 +7933,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 107.95 135.89 0)
+			(at 107.95 134.62 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7980,7 +7942,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 107.95 135.89 0)
+			(at 107.95 134.62 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8028,7 +7990,7 @@
 				)
 			)
 		)
-		(property "Footprint" "mtg_life_counter:B3F_12mm"
+		(property "Footprint" "mtg_life_counter:SW_SPST_WE_WS-TASV_12mm_Tac"
 			(at 224.79 172.72 0)
 			(effects
 				(font
@@ -8548,7 +8510,7 @@
 				)
 			)
 		)
-		(property "Value" "USB C 4907"
+		(property "Value" "GCT USB-4135-GF-A"
 			(at 44.45 121.92 0)
 			(effects
 				(font
@@ -8556,7 +8518,7 @@
 				)
 			)
 		)
-		(property "Footprint" "mtg_life_counter:4907_USB_C_PowerOnly"
+		(property "Footprint" "Connector_USB:USB_C_Receptacle_GCT_USB4135-GF-A_6P_TopMnt_Horizontal"
 			(at 48.26 135.89 0)
 			(effects
 				(font
@@ -8612,7 +8574,7 @@
 	)
 	(symbol
 		(lib_id "Diode:1.5KExxA")
-		(at 78.74 135.89 270)
+		(at 78.74 137.16 270)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -8620,7 +8582,7 @@
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-0000627b23fe")
 		(property "Reference" "D5"
-			(at 80.7466 134.7216 90)
+			(at 80.7466 135.9916 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8629,7 +8591,7 @@
 			)
 		)
 		(property "Value" "PJSD05W_R1_00001"
-			(at 80.7466 137.033 90)
+			(at 80.7466 138.303 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8638,7 +8600,7 @@
 			)
 		)
 		(property "Footprint" "Diode_SMD:D_SOD-323_HandSoldering"
-			(at 73.66 135.89 0)
+			(at 73.66 137.16 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8647,7 +8609,7 @@
 			)
 		)
 		(property "Datasheet" "https://www.vishay.com/docs/88301/15ke.pdf"
-			(at 78.74 134.62 0)
+			(at 78.74 135.89 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8656,7 +8618,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 78.74 135.89 0)
+			(at 78.74 137.16 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9171,7 +9133,7 @@
 				)
 			)
 		)
-		(property "Footprint" "mtg_life_counter:B3F_12mm"
+		(property "Footprint" "mtg_life_counter:SW_SPST_WE_WS-TASV_12mm_Tac"
 			(at 50.8 215.9 0)
 			(effects
 				(font
@@ -9573,7 +9535,7 @@
 				)
 			)
 		)
-		(property "Footprint" "mtg_life_counter:B3F_12mm"
+		(property "Footprint" "mtg_life_counter:SW_SPST_WE_WS-TASV_12mm_Tac"
 			(at 180.34 215.9 0)
 			(effects
 				(font
@@ -9640,7 +9602,7 @@
 				)
 			)
 		)
-		(property "Footprint" "mtg_life_counter:B3F_12mm"
+		(property "Footprint" "mtg_life_counter:SW_SPST_WE_WS-TASV_12mm_Tac"
 			(at 93.98 228.6 0)
 			(effects
 				(font
@@ -9902,7 +9864,7 @@
 				)
 			)
 		)
-		(property "Footprint" "mtg_life_counter:B3F_12mm"
+		(property "Footprint" "mtg_life_counter:SW_SPST_WE_WS-TASV_12mm_Tac"
 			(at 93.98 215.9 0)
 			(effects
 				(font
@@ -10034,7 +9996,7 @@
 				)
 			)
 		)
-		(property "Footprint" "mtg_life_counter:B3F_12mm"
+		(property "Footprint" "mtg_life_counter:SW_SPST_WE_WS-TASV_12mm_Tac"
 			(at 137.16 215.9 0)
 			(effects
 				(font
@@ -10101,7 +10063,7 @@
 				)
 			)
 		)
-		(property "Footprint" "mtg_life_counter:B3F_12mm"
+		(property "Footprint" "mtg_life_counter:SW_SPST_WE_WS-TASV_12mm_Tac"
 			(at 137.16 228.6 0)
 			(effects
 				(font
@@ -10168,7 +10130,7 @@
 				)
 			)
 		)
-		(property "Footprint" "mtg_life_counter:B3F_12mm"
+		(property "Footprint" "mtg_life_counter:SW_SPST_WE_WS-TASV_12mm_Tac"
 			(at 50.8 228.6 0)
 			(effects
 				(font
@@ -10346,6 +10308,84 @@
 		)
 	)
 	(symbol
+		(lib_id "Switch:SW_SPDT")
+		(at 224.79 143.51 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "9ef3d581-9955-4a7f-a02e-3e570d0e691e")
+		(property "Reference" "SW2"
+			(at 224.79 132.08 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "MODE SW"
+			(at 224.79 134.62 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "mtg_life_counter:SW_SPDT_CK_JS102011JCQN"
+			(at 224.79 143.51 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 224.79 151.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Switch, single pole double throw"
+			(at 224.79 143.51 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Part" "CK JS102011JCQN"
+			(at 224.79 137.16 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "5a0e61d3-180e-46ea-9014-da5e6c2a572c")
+		)
+		(pin "2"
+			(uuid "4693e987-3c7c-44cd-8e27-963640637819")
+		)
+		(pin "3"
+			(uuid "bc0279c5-e992-403d-9f61-0d12fe215cfa")
+		)
+		(instances
+			(project ""
+				(path "/1883df74-0bd5-446c-9076-f848bb3cfebf"
+					(reference "SW2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "mtg_life_counter-rescue:GND-power")
 		(at 149.86 233.68 0)
 		(unit 1)
@@ -10435,7 +10475,7 @@
 				)
 			)
 		)
-		(property "Footprint" "mtg_life_counter:B3F_12mm"
+		(property "Footprint" "mtg_life_counter:SW_SPST_WE_WS-TASV_12mm_Tac"
 			(at 180.34 228.6 0)
 			(effects
 				(font
@@ -10602,6 +10642,84 @@
 			(project "mtg_life_counter"
 				(path "/1883df74-0bd5-446c-9076-f848bb3cfebf"
 					(reference "#PWR07")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Switch:SW_SPDT")
+		(at 88.9 127 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "c927dc25-7787-47de-9bf0-94d4f5215abb")
+		(property "Reference" "SW1"
+			(at 88.9 115.57 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "MODE SW"
+			(at 88.9 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "mtg_life_counter:SW_SPDT_CK_JS102011JCQN"
+			(at 88.9 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 88.9 134.62 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Switch, single pole double throw"
+			(at 88.9 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Part" "CK JS102011JCQN"
+			(at 88.9 120.65 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "2f14c053-1b32-499e-90bb-c03128391e52")
+		)
+		(pin "2"
+			(uuid "8b083ec9-7971-4690-bd40-95eea1a84fd8")
+		)
+		(pin "3"
+			(uuid "9f03f035-60fe-4fd9-a1bf-ebd481d184bd")
+		)
+		(instances
+			(project "mtg_life_counter"
+				(path "/1883df74-0bd5-446c-9076-f848bb3cfebf"
+					(reference "SW1")
 					(unit 1)
 				)
 			)
