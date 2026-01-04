@@ -5292,7 +5292,7 @@
 		(uuid "11ec0a15-c35b-4b53-85f9-148d1858023e")
 	)
 	(label "BTN_P1_DN"
-		(at 124.46 88.9 180)
+		(at 124.46 96.52 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -5442,7 +5442,7 @@
 		(uuid "32b2356f-095d-479a-bf73-9beb337b0526")
 	)
 	(label "BTN_P2_UP"
-		(at 124.46 86.36 180)
+		(at 124.46 63.5 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -5472,7 +5472,7 @@
 		(uuid "3d68e566-88a8-4ea1-b427-9810cafeebe5")
 	)
 	(label "DIGIT_SEL_3"
-		(at 124.46 63.5 180)
+		(at 124.46 68.58 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -5552,7 +5552,7 @@
 		(uuid "5273142b-e365-4b36-bf53-d1d3027619d3")
 	)
 	(label "BTN_P4_DN"
-		(at 124.46 71.12 180)
+		(at 124.46 86.36 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -5582,7 +5582,7 @@
 		(uuid "53ce317e-4d1e-4f5e-acaf-379e35136ef8")
 	)
 	(label "DIGIT_SEL_1"
-		(at 124.46 68.58 180)
+		(at 124.46 73.66 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -5621,6 +5621,16 @@
 		)
 		(uuid "5d467873-62a6-445f-974c-008150c17520")
 	)
+	(label "XTAL2"
+		(at 66.04 58.42 0)
+		(effects
+			(font
+				(size 0.762 0.762)
+			)
+			(justify left bottom)
+		)
+		(uuid "65a47290-0d69-494c-b249-65e3653102a6")
+	)
 	(label "LATCH"
 		(at 314.96 147.32 0)
 		(effects
@@ -5642,7 +5652,7 @@
 		(uuid "67e8ff13-e57a-4743-9d0c-0e42048c9a1a")
 	)
 	(label "DIGIT_SEL_4"
-		(at 124.46 60.96 180)
+		(at 124.46 66.04 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -5751,6 +5761,16 @@
 		)
 		(uuid "97a8fca6-b930-487a-a816-67636d7274c5")
 	)
+	(label "XTAL1"
+		(at 66.04 53.34 0)
+		(effects
+			(font
+				(size 0.762 0.762)
+			)
+			(justify left bottom)
+		)
+		(uuid "98bd3550-2373-4222-b3d1-ee507e8e5b85")
+	)
 	(label "BTN_P4_DN"
 		(at 162.56 233.68 0)
 		(effects
@@ -5782,7 +5802,7 @@
 		(uuid "a589658d-c732-4679-ae7e-7acc77292a7b")
 	)
 	(label "BTN_ROLL"
-		(at 124.46 96.52 180)
+		(at 124.46 78.74 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -5882,7 +5902,7 @@
 		(uuid "c98d46fc-c412-420e-933a-12efc34299e3")
 	)
 	(label "BTN_P4_UP"
-		(at 124.46 73.66 180)
+		(at 124.46 88.9 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -5952,7 +5972,7 @@
 		(uuid "d91fb7ae-257c-4a07-8883-c99d0759a742")
 	)
 	(label "BTN_P3_DN"
-		(at 124.46 78.74 180)
+		(at 124.46 83.82 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -5972,7 +5992,7 @@
 		(uuid "e833c3a2-e90c-491b-bb5e-fd8ff30a2dda")
 	)
 	(label "BTN_P2_DN"
-		(at 124.46 83.82 180)
+		(at 124.46 60.96 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -5982,7 +6002,7 @@
 		(uuid "eba3f49a-7b04-43d5-bc54-2ff030a72d3f")
 	)
 	(label "DIGIT_SEL_2"
-		(at 124.46 66.04 180)
+		(at 124.46 71.12 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -7229,7 +7249,7 @@
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-0000604eef5e")
 		(property "Reference" "Y1"
-			(at 60.96 48.133 90)
+			(at 60.96 46.99 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7237,14 +7257,14 @@
 			)
 		)
 		(property "Value" "16MHz"
-			(at 60.96 50.4444 90)
+			(at 60.96 49.53 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "Footprint" "Crystal:Resonator_SMD-3Pin_7.2x3.0mm"
+		(property "Footprint" "Crystal:Resonator_SMD_Murata_CSTxExxV-3Pin_3.0x1.1mm_HandSoldering"
 			(at 62.23 55.245 0)
 			(effects
 				(font

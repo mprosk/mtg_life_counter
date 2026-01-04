@@ -1,4 +1,4 @@
-(footprint "KW4-S561xxB_SMD"
+(footprint "KW4-S561xVB_SMD"
 	(version 20241229)
 	(generator "pcbnew")
 	(generator_version "9.0")
@@ -16,7 +16,7 @@
 			)
 		)
 	)
-	(property "Value" "KW4-S561xxB_SMD"
+	(property "Value" "KW4-S561xVB_SMD"
 		(at 0 1.27 180)
 		(layer "F.Fab")
 		(uuid "7479445d-962c-407f-b28f-b5cc48d5480d")
@@ -492,7 +492,7 @@
 		(uuid "213f2478-cec6-407b-9cdf-f0d477172a4f")
 	)
 	(embedded_fonts no)
-	(model "${KISYS3DMOD}/Display_7Segment.3dshapes/CA56-12EWA.wrl"
+	(model "${KICAD9_3DMODEL_DIR}/Display_7Segment.3dshapes/CA56-12EWA.step"
 		(offset
 			(xyz -6.35 -7.874 -4)
 		)

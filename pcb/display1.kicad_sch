@@ -3572,7 +3572,7 @@
 				)
 			)
 		)
-		(property "Footprint" "mtg_life_counter:KW4-S561xxB_SMD"
+		(property "Footprint" "mtg_life_counter:KW4-S561xVB_SMD"
 			(at 132.08 95.25 0)
 			(effects
 				(font
