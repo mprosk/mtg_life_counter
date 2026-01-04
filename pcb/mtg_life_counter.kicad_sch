@@ -6058,7 +6058,7 @@
 				)
 			)
 		)
-		(property "Value" "SW_Push"
+		(property "Value" "RESET"
 			(at 224.79 160.1724 0)
 			(effects
 				(font
@@ -8002,7 +8002,7 @@
 				)
 			)
 		)
-		(property "Value" "SW_Push"
+		(property "Value" "ROLL"
 			(at 224.79 172.8724 0)
 			(effects
 				(font
@@ -10008,7 +10008,7 @@
 				)
 			)
 		)
-		(property "Value" "P3 Up"
+		(property "Value" "P3 UP"
 			(at 137.16 216.0524 0)
 			(effects
 				(font
