@@ -5422,7 +5422,7 @@
 		(uuid "307ebdb0-5a81-4771-add5-9b4ec690481f")
 	)
 	(label "LATCH"
-		(at 124.46 50.8 180)
+		(at 124.46 78.74 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -5452,7 +5452,7 @@
 		(uuid "384fd68a-6c7b-48c8-8e69-4e8d14af1b00")
 	)
 	(label "MODE_SW"
-		(at 124.46 53.34 180)
+		(at 124.46 50.8 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -5642,7 +5642,7 @@
 		(uuid "67c2346b-e7c5-4ad8-a729-e4741142593a")
 	)
 	(label "BTN_RESET"
-		(at 124.46 55.88 180)
+		(at 124.46 53.34 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -5802,7 +5802,7 @@
 		(uuid "a589658d-c732-4679-ae7e-7acc77292a7b")
 	)
 	(label "BTN_ROLL"
-		(at 124.46 78.74 180)
+		(at 124.46 55.88 180)
 		(effects
 			(font
 				(size 1.27 1.27)
