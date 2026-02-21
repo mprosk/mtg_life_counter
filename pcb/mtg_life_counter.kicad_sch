@@ -3180,7 +3180,7 @@
 		)
 		(uuid "2a7fd523-11dd-4941-9968-acc7907d48a2")
 	)
-	(text "Player 3 Display Bank - Yellow"
+	(text "Player 3 Display Bank - Amber"
 		(exclude_from_sim no)
 		(at 350.52 100.33 0)
 		(effects
@@ -4163,7 +4163,7 @@
 	)
 	(wire
 		(pts
-			(xy 100.33 96.52) (xy 124.46 96.52)
+			(xy 100.33 96.52) (xy 132.08 96.52)
 		)
 		(stroke
 			(width 0)
@@ -5240,6 +5240,16 @@
 			(type default)
 		)
 		(uuid "fd8c9a53-f6f3-4cd1-a75e-1370a5b95f80")
+	)
+	(label "RX"
+		(at 132.08 96.52 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "0379ab40-c56e-4f65-9334-a1a3b68563e8")
 	)
 	(label "BTN_ROLL"
 		(at 207.01 177.8 0)

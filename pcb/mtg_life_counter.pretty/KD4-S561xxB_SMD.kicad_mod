@@ -1,4 +1,4 @@
-(footprint "KW4-S561xAB_SMD"
+(footprint "KD4-S561xxB_SMD"
 	(version 20241229)
 	(generator "pcbnew")
 	(generator_version "9.0")
@@ -16,7 +16,7 @@
 			)
 		)
 	)
-	(property "Value" "KW4-S561xAB_SMD"
+	(property "Value" "KD4-S561xxB_SMD"
 		(at 0 1.27 180)
 		(layer "F.Fab")
 		(uuid "7479445d-962c-407f-b28f-b5cc48d5480d")

@@ -2056,7 +2056,7 @@
 			(embedded_fonts no)
 		)
 	)
-	(text "I_{F}_TARGET = 10mA\nV_{F} = 1.8V @ 10mA\n(5V - 1.8V) / 0.010A = 330R"
+	(text "I_{F}_TARGET = 12.5mA\nV_{F} = 1.85V @ 12.5mA\n(5V - 1.85V) / 0.0125A = 270R"
 		(exclude_from_sim no)
 		(at 119.38 104.14 0)
 		(effects
@@ -3297,7 +3297,7 @@
 				)
 			)
 		)
-		(property "Value" "330R"
+		(property "Value" "270R"
 			(at 179.07 80.01 90)
 			(effects
 				(font
@@ -3496,7 +3496,7 @@
 				)
 			)
 		)
-		(property "Value" "330R"
+		(property "Value" "270R"
 			(at 179.07 95.25 90)
 			(effects
 				(font
@@ -3564,7 +3564,7 @@
 				)
 			)
 		)
-		(property "Value" "KW4-S561AVB"
+		(property "Value" "KD4-S561AVB"
 			(at 132.08 68.58 0)
 			(effects
 				(font
@@ -3572,7 +3572,7 @@
 				)
 			)
 		)
-		(property "Footprint" "mtg_life_counter:KW4-S561xVB_SMD"
+		(property "Footprint" "mtg_life_counter:KD4-S561xxB_SMD_Slim"
 			(at 132.08 95.25 0)
 			(effects
 				(font
@@ -4205,7 +4205,7 @@
 				)
 			)
 		)
-		(property "Value" "330R"
+		(property "Value" "270R"
 			(at 179.07 74.93 90)
 			(effects
 				(font
@@ -4658,7 +4658,7 @@
 				)
 			)
 		)
-		(property "Value" "330R"
+		(property "Value" "270R"
 			(at 179.07 85.09 90)
 			(effects
 				(font
@@ -4939,7 +4939,7 @@
 				)
 			)
 		)
-		(property "Value" "330R"
+		(property "Value" "270R"
 			(at 179.07 90.17 90)
 			(effects
 				(font
@@ -5006,7 +5006,7 @@
 				)
 			)
 		)
-		(property "Value" "330R"
+		(property "Value" "270R"
 			(at 179.07 64.77 90)
 			(effects
 				(font
@@ -5138,7 +5138,7 @@
 				)
 			)
 		)
-		(property "Value" "330R"
+		(property "Value" "270R"
 			(at 179.07 69.85 90)
 			(effects
 				(font
@@ -5205,7 +5205,7 @@
 				)
 			)
 		)
-		(property "Value" "330R"
+		(property "Value" "270R"
 			(at 179.07 100.33 90)
 			(effects
 				(font

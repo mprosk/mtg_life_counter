@@ -2056,7 +2056,7 @@
 			(embedded_fonts no)
 		)
 	)
-	(text "I_{F}_TARGET = 10mA\nV_{F} = 2.9V @ 10mA\n(5V - 2.9) / 0.010A = 220R"
+	(text "I_{F}_TARGET = 15mA\nV_{F} = 2.95V @ 15mA\n(5V - 2.95) / 0.015A = 150R"
 		(exclude_from_sim no)
 		(at 119.38 104.14 0)
 		(effects
@@ -3453,7 +3453,7 @@
 				)
 			)
 		)
-		(property "Value" "220R"
+		(property "Value" "150R"
 			(at 179.07 80.01 90)
 			(effects
 				(font
@@ -3585,7 +3585,7 @@
 				)
 			)
 		)
-		(property "Value" "220R"
+		(property "Value" "150R"
 			(at 179.07 100.33 90)
 			(effects
 				(font
@@ -3653,7 +3653,7 @@
 				)
 			)
 		)
-		(property "Value" "KW4-S561ABB"
+		(property "Value" "KD4-S561ABB"
 			(at 132.08 68.58 0)
 			(effects
 				(font
@@ -3661,7 +3661,7 @@
 				)
 			)
 		)
-		(property "Footprint" "mtg_life_counter:KW4-S561xBB_SMD"
+		(property "Footprint" "mtg_life_counter:KD4-S561xxB_SMD_Slim"
 			(at 132.08 95.25 0)
 			(effects
 				(font
@@ -3750,7 +3750,7 @@
 				)
 			)
 		)
-		(property "Value" "220R"
+		(property "Value" "150R"
 			(at 179.07 74.93 90)
 			(effects
 				(font
@@ -4326,7 +4326,7 @@
 				)
 			)
 		)
-		(property "Value" "220R"
+		(property "Value" "150R"
 			(at 179.07 95.25 90)
 			(effects
 				(font
@@ -4523,7 +4523,7 @@
 				)
 			)
 		)
-		(property "Value" "220R"
+		(property "Value" "150R"
 			(at 179.07 64.77 90)
 			(effects
 				(font
@@ -4590,7 +4590,7 @@
 				)
 			)
 		)
-		(property "Value" "220R"
+		(property "Value" "150R"
 			(at 179.07 85.09 90)
 			(effects
 				(font
@@ -4657,7 +4657,7 @@
 				)
 			)
 		)
-		(property "Value" "220R"
+		(property "Value" "150R"
 			(at 179.07 69.85 90)
 			(effects
 				(font
@@ -4932,7 +4932,7 @@
 				)
 			)
 		)
-		(property "Value" "220R"
+		(property "Value" "150R"
 			(at 179.07 90.17 90)
 			(effects
 				(font
