@@ -1,4 +1,4 @@
-(footprint "TP_Edge_3"
+(footprint "TP_Edge_6"
 	(version 20241229)
 	(generator "pcbnew")
 	(generator_version "9.0")
@@ -14,7 +14,7 @@
 			)
 		)
 	)
-	(property "Value" "TP_Edge_3"
+	(property "Value" "TP_Edge_6"
 		(at 1.905 -0.5 0)
 		(layer "F.Fab")
 		(uuid "41fa3649-25fc-4fda-9801-6438a9cefee7")
@@ -68,5 +68,34 @@
 		(layers "F.Cu" "F.Mask")
 		(uuid "9d487915-30c0-4096-a568-205b3141efc6")
 	)
+	(pad "4" smd rect
+		(at 1.905 7.62)
+		(size 3.81 1.778)
+		(layers "F.Cu" "F.Mask")
+		(uuid "128c732d-95ff-40dc-acf7-a19ed229b7b0")
+	)
+	(pad "5" smd rect
+		(at 1.905 10.16)
+		(size 3.81 1.778)
+		(layers "F.Cu" "F.Mask")
+		(uuid "08029a2e-c677-4c35-8a3e-82906bf67ef1")
+	)
+	(pad "6" smd rect
+		(at 1.905 12.7)
+		(size 3.81 1.778)
+		(layers "F.Cu" "F.Mask")
+		(uuid "41627b8b-267b-4670-8251-0ed5eb6469a1")
+	)
 	(embedded_fonts no)
+	(model "${KICAD9_3DMODEL_DIR}/Connector_PinHeader_2.54mm.3dshapes/PinHeader_1x06_P2.54mm_Vertical.step"
+		(offset
+			(xyz 3.81 0 0.3175)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz -0 -90 -0)
+		)
+	)
 )
