@@ -26,7 +26,7 @@
  *      display_buffer
  *
  *  DESCRIPTION
- *      Pin number of the SPI MOSI line
+ *      Segment patterns for each player digit, read by the refresh ISR
  *---------------------------------------------------------------------*/
 static volatile uint8_t display_buffer[PLAYER_COUNT][DISPLAY_WIDTH];
 
@@ -83,7 +83,7 @@ void display_init(void) {
  *  RETURNS
  *      None
  *---------------------------------------------------------------------*/
-void display_start(void) {
+inline void display_start(void) {
     // Enable timer compare interrupt
     TIMSK1 |= (1 << OCIE1A);
 }
@@ -98,7 +98,7 @@ void display_start(void) {
  *  RETURNS
  *      None
  *---------------------------------------------------------------------*/
-void display_stop(void) {
+inline void display_stop(void) {
     // Disable timer compare interrupt
     TIMSK1 &= ~(1 << OCIE1A);
 }
@@ -151,6 +151,8 @@ void display_set_int(uint8_t player_id, int16_t integer) {
         return;
     }
 
+    display_stop();
+
     // Clear buffer
     for (uint8_t i = 0; i < DISPLAY_WIDTH; i++) {
         display_buffer[player_id][i] = SEG[' '];
@@ -170,6 +172,8 @@ void display_set_int(uint8_t player_id, int16_t integer) {
     if ((integer < 0) && (pos < DISPLAY_WIDTH)) {
         display_buffer[player_id][pos] = SEG['-'];
     }
+
+    display_start();
 }
 
 /*---------------------------------------------------------------------*
@@ -185,9 +189,13 @@ void display_set_int(uint8_t player_id, int16_t integer) {
  *      None
  *---------------------------------------------------------------------*/
 void display_set_string(uint8_t player_id, uint8_t* text) {
+    display_stop();
+
     for (uint8_t i = 0; i < DISPLAY_WIDTH; i++) {
         display_buffer[player_id][i] = SEG[text[i]];
     }
+
+    display_start();
 }
 
 /*---------------------------------------------------------------------*
@@ -205,7 +213,9 @@ void display_set_string(uint8_t player_id, uint8_t* text) {
  *      None
  *---------------------------------------------------------------------*/
 void display_set_digit(uint8_t player_id, uint8_t pos, uint8_t pattern) {
+    display_stop();
     display_buffer[player_id][pos] = pattern;
+    display_start();
 }
 
 /*---------------------------------------------------------------------*
@@ -240,9 +250,13 @@ void display_set_char(uint8_t player_id, uint8_t pos, uint8_t chr) {
  *      None
  *---------------------------------------------------------------------*/
 void display_fill_pattern(uint8_t player_id, uint8_t pattern) {
+    display_stop();
+
     for (uint8_t i = 0; i < DISPLAY_WIDTH; i++) {
         display_buffer[player_id][i] = pattern;
     }
+
+    display_start();
 }
 
 /*---------------------------------------------------------------------*
