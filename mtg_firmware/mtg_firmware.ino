@@ -5,7 +5,7 @@
  *      Four player life counter for Magic: The Gathering
  *      Life totals are displayed on 7-segement displays
  *      Players adjust life using up/down buttons, and can
- *      track commander damage and poison counters using a 
+ *      track commander damage and poison counters using a
  *      rotary switch to change display modes.
  *
  *  REFERENCES
@@ -14,41 +14,32 @@
 
 /* INCLUDES */
 #include "config.h"
-#include "display.h"
 #include "counter.h"
+#include "display.h"
 #include "encoders.h"
+#include "pins.h"
 #include "roll.h"
 
-
-/* PIN DEFINES */
-#define PIN_MODE_SWITCH     (9)
-#define PIN_RESET_BTN       (8)
-
 /* CONFIG OPTIONS */
-
 
 /*=====================================================================*
     Private Data Types
  *=====================================================================*/
 
-
 /*=====================================================================*
     Private Constants
  *=====================================================================*/
-
 
 /*=====================================================================*
     Private Data
  *=====================================================================*/
 static encoder_state_t encoders;
 
-
 /*=====================================================================*
     Arduino Hooks
  *=====================================================================*/
 
-void setup()
-{
+void setup() {
     /* HARDWARE INITIALIZATION */
     Serial.begin(115200);
     Serial.println("Startup");
@@ -72,20 +63,20 @@ void setup()
     display_init();
     display_start();
 
-    Serial.println("Initialization complete"); Serial.flush();
+    Serial.println("Initialization complete");
+    Serial.flush();
 
     // Tests
-//     display_test();
+    //     display_test();
     // encoder_test();
 
     // Splash screen
-//    splash_screen();
-  }
+    //    splash_screen();
+}
 
 /*=====================================================================*/
 
-void loop()
-{
+void loop() {
     static uint8_t reset_state_last = digitalRead(PIN_RESET_BTN);
     static uint8_t mode_state_last = digitalRead(PIN_MODE_SWITCH);
 
@@ -98,26 +89,23 @@ void loop()
     bool mode_changed = (mode_state != mode_state_last);
 
     // Handle a change in the mode switch
-    if (mode_changed)
-    {
+    if (mode_changed) {
         uint8_t mode = mode_state;
-        if (reset_state == 0)
-        {
-            // Switch to 30 life mode if the reset button is held when the mode switch changes
+        if (reset_state == 0) {
+            // Switch to 30 life mode if the reset button is held when the mode switch
+            // changes
             mode = 2;
         }
         counter_reset_all(STARTING_LIFE[mode]);
     }
 
     // Handle the reset button being pushed
-    else if (reset_pressed)
-    {
+    else if (reset_pressed) {
         // Reset individual counters if their button is pressed
         uint8_t num_reset = counter_reset_on_button(STARTING_LIFE[mode_state]);
 
         // If no counters were individually reset, then reset all counters
-        if (num_reset == 0)
-        {
+        if (num_reset == 0) {
             counter_reset_all(STARTING_LIFE[mode_state]);
         }
     }
@@ -127,14 +115,13 @@ void loop()
     mode_state_last = mode_state;
 
     // Handle roll button
-    if(roll())
-    {
+    if (roll()) {
         // Reset display after roll animation complete
         counter_redraw_all();
     }
 
     // Process encoder changes
-    update_encoders(&encoders);
+    encoders_poll(&encoders);
 
     // Update the counters
     counter_update_all(&encoders);
@@ -142,37 +129,9 @@ void loop()
     digitalWrite(PIN_DEBUG_2, LOW);
 }
 
-
 /*=====================================================================*
     Private Function Implementations
  *=====================================================================*/
-
-/*---------------------------------------------------------------------*
- *  NAME
- *      update_encoders
- *
- *  DESCRIPTION
- *      Processes encoder 
- *
- *  RETURNS
- *      None
- *---------------------------------------------------------------------*/
-void update_encoders(encoder_state_t * encoders)
-{
-    // Stop the display interrupt
-    display_stop();
-
-    // Read the current encoder state
-    digitalWrite(ENCODERS_LATCH_PIN, LOW);
-    digitalWrite(ENCODERS_LATCH_PIN, HIGH);
-    uint8_t state = SPI.transfer(0);
-
-    // Restart the display interrupt
-    display_start();
-
-    // Decode the encoder changes
-    encoders_update(state, encoders);
-}
 
 /*---------------------------------------------------------------------*
  *  NAME
@@ -181,25 +140,20 @@ void update_encoders(encoder_state_t * encoders)
  *  DESCRIPTION
  *      Generates the startup message
  *---------------------------------------------------------------------*/
-void splash_screen()
-{
-    for (uint8_t i = 0; i < PLAYER_COUNT; i++)
-    {
+void splash_screen() {
+    for (uint8_t i = 0; i < PLAYER_COUNT; i++) {
         display_set_string(i, "MmEN");
     }
     delay(500);
-    for (uint8_t i = 0; i < PLAYER_COUNT; i++)
-    {
+    for (uint8_t i = 0; i < PLAYER_COUNT; i++) {
         display_set_string(i, " TAL");
     }
     delay(500);
-    for (uint8_t i = 0; i < PLAYER_COUNT; i++)
-    {
+    for (uint8_t i = 0; i < PLAYER_COUNT; i++) {
         display_set_string(i, "MmIS");
     }
     delay(500);
-    for (uint8_t i = 0; i < PLAYER_COUNT; i++)
-    {
+    for (uint8_t i = 0; i < PLAYER_COUNT; i++) {
         display_set_string(i, "PLAY");
     }
     delay(500);
@@ -210,32 +164,26 @@ void splash_screen()
     Tests
  *=====================================================================*/
 
-void display_test(void)
-{
+void display_test(void) {
     display_set_string(0, "ONE_");
     display_set_string(1, "TWwO");
     display_set_string(2, "THRE");
     display_set_string(3, "FOUR");
     uint8_t i = 0;
-    while (1)
-    {
+    while (1) {
         Serial.println(i);
         i++;
         delay(1000);
     }
 }
 
-void encoder_test(void)
-{
+void encoder_test(void) {
     int16_t vals[PLAYER_COUNT] = {0, 0, 0, 0};
 
-    while (1)
-    {
-        update_encoders(&encoders);
-        if (encoders.changed)
-        {
-            for (uint8_t i = 0; i < PLAYER_COUNT; i++)
-            {
+    while (1) {
+        encoders_poll(&encoders);
+        if (encoders.changed) {
+            for (uint8_t i = 0; i < PLAYER_COUNT; i++) {
                 Serial.print(encoders.encoder[i]);
                 Serial.print(" ");
                 vals[i] += encoders.encoder[i];

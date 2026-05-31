@@ -4,7 +4,7 @@
  *  DESCRIPTION
  *      This module provides functions for enabling the roll feature
  *      of the counter. This feature allows players to randomly select
- *      one of the players (for randomly select first player or 
+ *      one of the players (for randomly select first player or
  *      damage targets). The result of the roll is shown on the display
  *
  *  REFERENCES
@@ -14,28 +14,17 @@
 #if !defined(INC_ROLL_H)
 #define INC_ROLL_H
 
-
 /*=====================================================================*
     Required Header Files
  *=====================================================================*/
-#include <Arduino.h>
-#include "config.h"
 #include "animations.h"
+#include "config.h"
 #include "display.h"
-
+#include <Arduino.h>
 
 /*=====================================================================*
     Public Defines
  *=====================================================================*/
-
-/*---------------------------------------------------------------------*
- *  NAME
- *      PIN_ROLL_BTN
- *
- *  DESCRIPTION
- *      Pin number of the roll button
- *---------------------------------------------------------------------*/
-#define PIN_ROLL_BTN      (7)
 
 /*---------------------------------------------------------------------*
  *  NAME
@@ -44,7 +33,7 @@
  *  DESCRIPTION
  *      Delay in ms between frames of the roll animations
  *---------------------------------------------------------------------*/
-#define ANIMATION_SPEED_MS          (50)
+#define ANIMATION_SPEED_MS (50)
 
 /*---------------------------------------------------------------------*
  *  NAME
@@ -53,7 +42,7 @@
  *  DESCRIPTION
  *      Time in ms that the roll result will be displayed
  *---------------------------------------------------------------------*/
-#define ROLL_RESULT_DURATION_MS     (2000)
+#define ROLL_RESULT_DURATION_MS (2000)
 
 /*---------------------------------------------------------------------*
  *  NAME
@@ -64,7 +53,6 @@
  *      won the previous roll
  *---------------------------------------------------------------------*/
 #define ROLL_ADAPTIVE_MODE
-
 
 /*=====================================================================*
     Public Functions
@@ -93,6 +81,5 @@ void roll_init(void);
  *      True if the roll animation occurred
  *---------------------------------------------------------------------*/
 bool roll(void);
-
 
 #endif /* !defined(INC_ROLL_H) */

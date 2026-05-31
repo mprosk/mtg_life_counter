@@ -1,0 +1,47 @@
+---
+Language: Cpp
+BasedOnStyle: LLVM
+
+# Match mtg_firmware conventions: 4-space indent, 80 columns, K&R braces.
+IndentWidth: 4
+TabWidth: 4
+UseTab: Never
+ColumnLimit: 80
+
+BreakBeforeBraces: Attach
+AllowShortFunctionsOnASingleLine: None
+AllowShortIfStatementsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
+AllowShortBlocksOnASingleLine: Empty
+
+PointerAlignment: Left
+DerivePointerAlignment: false
+
+SpaceBeforeParens: ControlStatements
+SpacesInParentheses: false
+SpaceAfterCStyleCast: false
+Cpp11BracedListStyle: true
+
+IndentCaseLabels: true
+IndentWrappedFunctionNames: false
+
+# Preserve manual include order and section groupings in headers.
+SortIncludes: false
+IncludeBlocks: Preserve
+
+# Keep banner / doc-block comment layout intact.
+ReflowComments: false
+
+# Align #define values within each consecutive group (e.g. pins.h blocks).
+AlignConsecutiveMacros: Consecutive
+
+BinPackParameters: false
+BinPackArguments: false
+AllowAllParametersOfDeclarationOnNextLine: true
+PenaltyBreakBeforeFirstCallParameter: 19
+PenaltyReturnTypeOnItsOwnLine: 1000
+
+MaxEmptyLinesToKeep: 1
+KeepEmptyLinesAtTheStartOfBlocks: false
+
+FixNamespaceComments: false

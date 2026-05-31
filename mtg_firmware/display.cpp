@@ -11,15 +11,11 @@
  *      MTG Life Counter Schematic
  ***********************************************************************/
 
-
 /*=====================================================================*
     Local Header Files
  *=====================================================================*/
 #include "display.h"
-
-
-
-
+#include "pins.h"
 
 /*=====================================================================*
     Private Data
@@ -34,7 +30,6 @@
  *---------------------------------------------------------------------*/
 static volatile uint8_t display_buffer[PLAYER_COUNT][DISPLAY_WIDTH];
 
-
 /*=====================================================================*
     Public Function Implementations
  *=====================================================================*/
@@ -48,12 +43,11 @@ static volatile uint8_t display_buffer[PLAYER_COUNT][DISPLAY_WIDTH];
  *      Sets GPIO pin modes
  *      Starts the SPI bus
  *      Configures (but does not start) the timer interrupt
- * 
+ *
  *  RETURNS
  *      None
  *---------------------------------------------------------------------*/
-void display_init(void)
-{
+void display_init(void) {
     // Set pin modes
     pinMode(DISPLAY_DATA_PIN, OUTPUT);
     pinMode(DISPLAY_CLOCK_PIN, OUTPUT);
@@ -64,19 +58,19 @@ void display_init(void)
     SPI.beginTransaction(SPISettings(DISPLAY_SPI_CLK_HZ, LSBFIRST, SPI_MODE0));
 
     // Initialize timer1 (16-bit)
-    TCCR1A = 0;   // set entire TCCR1A register to 0
-    TCCR1B = 0;   // same for TCCR1B
-    TCNT1  = 0;   //initialize counter value to 0
+    TCCR1A = 0; // set entire TCCR1A register to 0
+    TCCR1B = 0; // same for TCCR1B
+    TCNT1 = 0;  // initialize counter value to 0
     // set compare match register for desired increment
-    OCR1A = 4999;// = (16MHz) / (400Hz * 8 prescale) - 1 (must be <65536)
+    OCR1A = 4999; // = (16MHz) / (400Hz * 8 prescale) - 1 (must be <65536)
     // turn on CTC mode
     TCCR1B |= (1 << WGM12);
     // Clear the prescaler setting
     TCCR1B &= ~((1 << CS10) | (1 << CS11) | (1 << CS12));
     // Set Clock Source bits to select prescaler
-//    TCCR1B |=  (1 << CS10);
-    TCCR1B |=  (1 << CS11);
-//    TCCR1B |=  (1 << CS12);
+    //    TCCR1B |=  (1 << CS10);
+    TCCR1B |= (1 << CS11);
+    //    TCCR1B |=  (1 << CS12);
 }
 
 /*---------------------------------------------------------------------*
@@ -85,12 +79,11 @@ void display_init(void)
  *
  *  DESCRIPTION
  *      Enables the display update interrupt
- * 
+ *
  *  RETURNS
  *      None
  *---------------------------------------------------------------------*/
-void display_start(void)
-{
+void display_start(void) {
     // Enable timer compare interrupt
     TIMSK1 |= (1 << OCIE1A);
 }
@@ -101,12 +94,11 @@ void display_start(void)
  *
  *  DESCRIPTION
  *      Disables the display update interrupt
- * 
+ *
  *  RETURNS
  *      None
  *---------------------------------------------------------------------*/
-void display_stop(void)
-{
+void display_stop(void) {
     // Disable timer compare interrupt
     TIMSK1 &= ~(1 << OCIE1A);
 }
@@ -117,12 +109,11 @@ void display_stop(void)
  *
  *  DESCRIPTION
  *      Disables the display update interrupt
- * 
+ *
  *  RETURNS
  *      None
  *---------------------------------------------------------------------*/
-void display_park(void)
-{
+void display_park(void) {
     // Stop the display interrupt
     display_stop();
 
@@ -150,21 +141,18 @@ void display_park(void)
  *      Must be between DISPLAY_MIN and DISPLAY_MAX, inclusive
  *      uint8_t player: index of the player display to update
  *      int16_t value: integer value to show on the display
- * 
+ *
  *  RETURNS
  *      None
  *---------------------------------------------------------------------*/
-void display_set_int(uint8_t player_id, int16_t integer)
-{
+void display_set_int(uint8_t player_id, int16_t integer) {
     // Don't update the display if the set point is out of range
-    if ((integer > DISPLAY_MAX) || (integer < DISPLAY_MIN))
-    {
+    if ((integer > DISPLAY_MAX) || (integer < DISPLAY_MIN)) {
         return;
     }
 
     // Clear buffer
-    for (uint8_t i = 0; i < DISPLAY_WIDTH; i++)
-    {
+    for (uint8_t i = 0; i < DISPLAY_WIDTH; i++) {
         display_buffer[player_id][i] = SEG[' '];
     }
 
@@ -172,17 +160,14 @@ void display_set_int(uint8_t player_id, int16_t integer)
     uint16_t mag = abs(integer);
     uint16_t divisor = 1;
     uint8_t pos = DISPLAY_WIDTH - 1;
-    do
-    {
+    do {
         display_buffer[player_id][pos] = SEG[(mag / divisor) % 10];
         divisor *= 10;
         pos--;
-    }
-    while(mag >= divisor);
-    
+    } while (mag >= divisor);
+
     // Add minus sign if applicable
-    if ((integer < 0) && (pos < DISPLAY_WIDTH))
-    {
+    if ((integer < 0) && (pos < DISPLAY_WIDTH)) {
         display_buffer[player_id][pos] = SEG['-'];
     }
 }
@@ -195,14 +180,12 @@ void display_set_int(uint8_t player_id, int16_t integer)
  *      Sets the given player's display to the given character array
  *      uint8_t player: index of the player display to update
  *      uint8_t *text: pointer to the character array to display
- * 
+ *
  *  RETURNS
  *      None
  *---------------------------------------------------------------------*/
-void display_set_string(uint8_t player_id, uint8_t *text)
-{
-    for (uint8_t i = 0; i < DISPLAY_WIDTH; i++)
-    {
+void display_set_string(uint8_t player_id, uint8_t* text) {
+    for (uint8_t i = 0; i < DISPLAY_WIDTH; i++) {
         display_buffer[player_id][i] = SEG[text[i]];
     }
 }
@@ -212,17 +195,16 @@ void display_set_string(uint8_t player_id, uint8_t *text)
  *      display_set_digit
  *
  *  DESCRIPTION
- *      Sets a specific digit within a given player's display to 
+ *      Sets a specific digit within a given player's display to
  *      the given seven-sgement pattern
  *      uint8_t player: index of the player display to update
  *      uint8_t pos: index of the digit to update
  *      int16_t pattern: binary seven-segment pattern to display
- * 
+ *
  *  RETURNS
  *      None
  *---------------------------------------------------------------------*/
-void display_set_digit(uint8_t player_id, uint8_t pos, uint8_t pattern)
-{
+void display_set_digit(uint8_t player_id, uint8_t pos, uint8_t pattern) {
     display_buffer[player_id][pos] = pattern;
 }
 
@@ -231,17 +213,16 @@ void display_set_digit(uint8_t player_id, uint8_t pos, uint8_t pattern)
  *      display_set_char
  *
  *  DESCRIPTION
- *      Sets a specific digit within a given player's display to 
+ *      Sets a specific digit within a given player's display to
  *      the given character
  *      uint8_t player: index of the player display to update
  *      uint8_t pos: index of the digit to update
  *      int16_t chr: the character to display in the digit
- * 
+ *
  *  RETURNS
  *      None
  *---------------------------------------------------------------------*/
-void display_set_char(uint8_t player_id, uint8_t pos, uint8_t chr)
-{
+void display_set_char(uint8_t player_id, uint8_t pos, uint8_t chr) {
     display_set_digit(player_id, pos, SEG[chr]);
 }
 
@@ -253,12 +234,11 @@ void display_set_char(uint8_t player_id, uint8_t pos, uint8_t chr)
  *      Sets the direction indicated for the given player to the
  *      given commander. Uses config.h/CMDR_DMG_MAP to determine
  *      which glyph to display from sevenseg.h/DIRECTION
- * 
+ *
  *  RETURNS
  *      None
  *---------------------------------------------------------------------*/
-void display_set_direction(uint8_t player_id, uint8_t commander)
-{
+void display_set_direction(uint8_t player_id, uint8_t commander) {
     uint8_t glyph = DIRECTION[CMDR_DMG_MAP[player_id][commander]];
     display_buffer[player_id][0] = glyph;
 }
@@ -272,14 +252,12 @@ void display_set_direction(uint8_t player_id, uint8_t commander)
  *      with the given seven-segment pattern
  *      uint8_t player: index of the player display to update
  *      uint8_t pattern: binary seven-segment pattern to display
- * 
+ *
  *  RETURNS
  *      None
  *---------------------------------------------------------------------*/
-void display_fill_pattern(uint8_t player_id, uint8_t pattern)
-{
-    for (uint8_t i = 0; i < DISPLAY_WIDTH; i++)
-    {
+void display_fill_pattern(uint8_t player_id, uint8_t pattern) {
+    for (uint8_t i = 0; i < DISPLAY_WIDTH; i++) {
         display_buffer[player_id][i] = pattern;
     }
 }
@@ -293,12 +271,11 @@ void display_fill_pattern(uint8_t player_id, uint8_t pattern)
  *      with the given character
  *      uint8_t player: index of the player display to update
  *      uint8_t chr: character to fill display
- * 
+ *
  *  RETURNS
  *      None
  *---------------------------------------------------------------------*/
-void display_fill(uint8_t player_id, uint8_t chr)
-{
+void display_fill(uint8_t player_id, uint8_t chr) {
     display_fill_pattern(player_id, SEG[chr]);
 }
 
@@ -316,24 +293,22 @@ void display_fill(uint8_t player_id, uint8_t chr)
  *
  *  DURATION
  *      40 us
- * 
+ *
  *  FREQUENCY
  *      400 Hz
  *---------------------------------------------------------------------*/
-ISR(TIMER1_COMPA_vect)
-{
+ISR(TIMER1_COMPA_vect) {
     static uint8_t index = 0;
 
     // Send the segment data (in order)
-    for (uint8_t bank = 0; bank < PLAYER_COUNT; bank++)
-    {
+    for (uint8_t bank = 0; bank < PLAYER_COUNT; bank++) {
         SPI.transfer(display_buffer[bank][index % DISPLAY_WIDTH]);
     }
 
     // Send the digit select mask to the two current sink chips
     SPI.transfer(0x88 >> (index));
     SPI.transfer(0x88 >> (index));
-    
+
     // Strobe the latch line
     digitalWrite(DISPLAY_LATCH_PIN, HIGH);
     digitalWrite(DISPLAY_LATCH_PIN, LOW);

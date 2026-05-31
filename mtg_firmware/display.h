@@ -17,50 +17,14 @@
 /*=====================================================================*
     Required Header Files
  *=====================================================================*/
-#include <Arduino.h>
-#include <SPI.h>
 #include "config.h"
 #include "sevenseg.h"
+#include <Arduino.h>
+#include <SPI.h>
 
 /*=====================================================================*
     Public Defines
  *=====================================================================*/
-
-/*---------------------------------------------------------------------*
- *  NAME
- *      DISPLAY_DATA_PIN
- *
- *  DESCRIPTION
- *      Pin number of the SPI MOSI line
- *---------------------------------------------------------------------*/
-#define DISPLAY_DATA_PIN    (11)
-
-/*---------------------------------------------------------------------*
- *  NAME
- *      DISPLAY_MISO_PIN
- *
- *  DESCRIPTION
- *      Pin number of the SPI MISO line
- *---------------------------------------------------------------------*/
-#define DISPLAY_MISO_PIN    (12)
-
-/*---------------------------------------------------------------------*
- *  NAME
- *      DISPLAY_CLOCK_PIN
- *
- *  DESCRIPTION
- *      Pin number of the SPI SCK (Clock) line
- *---------------------------------------------------------------------*/
-#define DISPLAY_CLOCK_PIN   (13)
-
-/*---------------------------------------------------------------------*
- *  NAME
- *      DISPLAY_LATCH_PIN
- *
- *  DESCRIPTION
- *      Pin number of the shift register IC latch line
- *---------------------------------------------------------------------*/
-#define DISPLAY_LATCH_PIN   (10)
 
 /*---------------------------------------------------------------------*
  *  NAME
@@ -69,7 +33,7 @@
  *  DESCRIPTION
  *      Clock speed in Hertz of the SPI bus driving the shift register ICs
  *---------------------------------------------------------------------*/
-#define DISPLAY_SPI_CLK_HZ    (1e6)
+#define DISPLAY_SPI_CLK_HZ (1e6)
 
 /*---------------------------------------------------------------------*
  *  NAME
@@ -78,7 +42,7 @@
  *  DESCRIPTION
  *      Number of digits on each player's display
  *---------------------------------------------------------------------*/
-#define DISPLAY_WIDTH       (4)
+#define DISPLAY_WIDTH (4)
 
 /*---------------------------------------------------------------------*
  *  NAME
@@ -87,7 +51,7 @@
  *  DESCRIPTION
  *      Maximum integer value that the counter can display
  *---------------------------------------------------------------------*/
-#define DISPLAY_MAX         (pow(10, DISPLAY_WIDTH) - 1)
+#define DISPLAY_MAX (9999)
 
 /*---------------------------------------------------------------------*
  *  NAME
@@ -96,7 +60,7 @@
  *  DESCRIPTION
  *      Minimum integer value that the counter can display
  *---------------------------------------------------------------------*/
-#define DISPLAY_MIN         (-(pow(10, DISPLAY_WIDTH - 1) - 1))
+#define DISPLAY_MIN (-999)
 
 /*=====================================================================*
     Public Functions
@@ -108,7 +72,7 @@
  *
  *  DESCRIPTION
  *      Initializes the display hardware
- * 
+ *
  *  RETURNS
  *      None
  *---------------------------------------------------------------------*/
@@ -120,7 +84,7 @@ void display_init(void);
  *
  *  DESCRIPTION
  *      Enables the display update interrupt
- * 
+ *
  *  RETURNS
  *      None
  *---------------------------------------------------------------------*/
@@ -132,7 +96,7 @@ void display_start(void);
  *
  *  DESCRIPTION
  *      Disables the display update interrupt
- * 
+ *
  *  RETURNS
  *      None
  *---------------------------------------------------------------------*/
@@ -144,7 +108,7 @@ void display_stop(void);
  *
  *  DESCRIPTION
  *      Puts the display in the park state and stops the interrupt
- * 
+ *
  *  RETURNS
  *      None
  *---------------------------------------------------------------------*/
@@ -159,7 +123,7 @@ void display_park(void);
  *      Must be between DISPLAY_MIN and DISPLAY_MAX, inclusive
  *      uint8_t player: index of the player display to update
  *      int16_t value: integer value to show on the display
- * 
+ *
  *  RETURNS
  *      None
  *---------------------------------------------------------------------*/
@@ -173,23 +137,23 @@ void display_set_int(uint8_t player_id, int16_t integer);
  *      Sets the given player's display to the given character array
  *      uint8_t player: index of the player display to update
  *      uint8_t *text: pointer to the character array to display
- * 
+ *
  *  RETURNS
  *      None
  *---------------------------------------------------------------------*/
-void display_set_string(uint8_t player_id, uint8_t *text);
+void display_set_string(uint8_t player_id, uint8_t* text);
 
 /*---------------------------------------------------------------------*
  *  NAME
  *      display_set_digit
  *
  *  DESCRIPTION
- *      Sets a specific digit within a given player's display to 
+ *      Sets a specific digit within a given player's display to
  *      the given seven-sgement pattern
  *      uint8_t player: index of the player display to update
  *      uint8_t pos: index of the digit to update
  *      int16_t pattern: binary seven-segment pattern to display
- * 
+ *
  *  RETURNS
  *      None
  *---------------------------------------------------------------------*/
@@ -200,12 +164,12 @@ void display_set_digit(uint8_t player_id, uint8_t pos, uint8_t pattern);
  *      display_set_char
  *
  *  DESCRIPTION
- *      Sets a specific digit within a given player's display to 
+ *      Sets a specific digit within a given player's display to
  *      the given character
  *      uint8_t player: index of the player display to update
  *      uint8_t pos: index of the digit to update
  *      int16_t chr: the character to display in the digit
- * 
+ *
  *  RETURNS
  *      None
  *---------------------------------------------------------------------*/
@@ -219,7 +183,7 @@ void display_set_char(uint8_t player_id, uint8_t pos, uint8_t chr);
  *      Sets the direction indicated for the given player to the
  *      given commander. Uses config.h/CMDR_DMG_MAP to determine
  *      which glyph to display from sevenseg.h/DIRECTION
- * 
+ *
  *  RETURNS
  *      None
  *---------------------------------------------------------------------*/
@@ -234,7 +198,7 @@ void display_set_direction(uint8_t player_id, uint8_t commander);
  *      with the given character
  *      uint8_t player: index of the player display to update
  *      uint8_t chr: character to fill display
- * 
+ *
  *  RETURNS
  *      None
  *---------------------------------------------------------------------*/
@@ -249,11 +213,10 @@ void display_fill(uint8_t player_id, uint8_t fill_char);
  *      with the given seven-segment pattern
  *      uint8_t player: index of the player display to update
  *      uint8_t pattern: binary seven-segment pattern to display
- * 
+ *
  *  RETURNS
  *      None
  *---------------------------------------------------------------------*/
 void display_fill_pattern(uint8_t player_id, uint8_t pattern);
-
 
 #endif /* !defined(INC_DISPLAY_H) */

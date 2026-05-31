@@ -1,52 +1,39 @@
 /***********************************************************************
- *  Project Reference <<TODO>>
+ *  MTG Life Counter - Rotary Encoder Input
  *
  *  DESCRIPTION
- *      <<TODO>> Tells you what the code in the file does.
+ *      Reads encoder rotation and button state for each player
  *
  *  REFERENCES
- *      <<TODO>> Requirements Specification
- *      <<TODO>> Software Specification
+ *      MTG Life Counter Schematic
  ***********************************************************************/
 
 #if !defined(INC_ENCODERS_H)
 #define INC_ENCODERS_H
 
-
 /*=====================================================================*
     Required Header Files
  *=====================================================================*/
-#include <Arduino.h>
 #include "config.h"
-
-
-/*=====================================================================*
-    Public Defines
- *=====================================================================*/
-#define ENCODERS_LATCH_PIN      (3)
-
-#define ENCODERS_BTN_1          (A5)
-#define ENCODERS_BTN_2          (A2)
-#define ENCODERS_BTN_3          (5)
-#define ENCODERS_BTN_4          (2)
-
+#include <Arduino.h>
 
 /*=====================================================================*
     Public Data Types
  *=====================================================================*/
-typedef struct encoder_state_t
-{
-    bool changed;                   // Indicates if any encoders changed
-    int8_t encoder[PLAYER_COUNT];   // Array of encoder changes since the last update
-    uint8_t button[PLAYER_COUNT];   // Array of button states
+
+/*---------------------------------------------------------------------*
+ *  NAME
+ *      encoder_state_t
+ *
+ *  DESCRIPTION
+ *      Snapshot of encoder and button input for all players
+ *---------------------------------------------------------------------*/
+typedef struct encoder_state_t {
+    bool changed; // Indicates if any encoders changed
+    int8_t
+        encoder[PLAYER_COUNT]; // Array of encoder changes since the last update
+    uint8_t button[PLAYER_COUNT]; // Array of button states
 } encoder_state_t;
-
-
-/*=====================================================================*
-    Public Data
- *=====================================================================*/
-/* REMOVE THIS SECTION IF NO PUBLIC DATA IS DEFINED */
-
 
 /*=====================================================================*
     Public Functions
@@ -63,13 +50,13 @@ void encoders_init(void);
 
 /*---------------------------------------------------------------------*
  *  NAME
- *      encoders_update
+ *      encoders_poll
  *
  *  DESCRIPTION
- *      Reads the current encoder state from the shift register
- *      WARNING: the display interrupt MUST be stopped
- *              before running this function
+ *      Reads encoder shift-register state over SPI and updates the
+ *      given encoder_state_t. Stops and restarts the display interrupt
+ *      internally so callers do not need to coordinate SPI access.
  *---------------------------------------------------------------------*/
-void encoders_update(uint8_t state, encoder_state_t *encoders);
+void encoders_poll(encoder_state_t* encoders);
 
 #endif /* !defined(INC_ENCODERS_H) */

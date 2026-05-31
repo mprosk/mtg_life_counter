@@ -14,14 +14,6 @@
  *=====================================================================*/
 #include "Arduino.h"
 
-
-/*=====================================================================*
-    Public Pin Assignments
- *=====================================================================*/
-#define PIN_DEBUG_1       (4)
-#define PIN_DEBUG_2       (6)
-
-
 /*=====================================================================*
     Public Defines
  *=====================================================================*/
@@ -33,16 +25,16 @@
  *  DESCRIPTION
  *      Number of players the counter supports
  *---------------------------------------------------------------------*/
-#define PLAYER_COUNT                (4)
+#define PLAYER_COUNT (4)
 
 /*---------------------------------------------------------------------*
  *  NAME
- *      PLAYER_COUNT
+ *      OPPONENT_COMMANDER_COUNT
  *
  *  DESCRIPTION
- *      Number of players the counter supports
+ *      Number of opponent commander slots tracked per player
  *---------------------------------------------------------------------*/
-#define OPPONENT_COMMANDER_COUNT    ((PLAYER_COUNT - 1) * 2)
+#define OPPONENT_COMMANDER_COUNT ((PLAYER_COUNT - 1) * 2)
 
 /*---------------------------------------------------------------------*
  *  NAME
@@ -51,7 +43,7 @@
  *  DESCRIPTION
  *      Maximum amount of commander damage a player can receive
  *---------------------------------------------------------------------*/
-#define COMMANDER_DAMAGE            (21)
+#define COMMANDER_DAMAGE (21)
 
 /*---------------------------------------------------------------------*
  *  NAME
@@ -60,7 +52,7 @@
  *  DESCRIPTION
  *      Maximum amount of poison counters a player can receive
  *---------------------------------------------------------------------*/
-#define POISON_COUNTERS             (10)
+#define POISON_COUNTERS (10)
 
 /*---------------------------------------------------------------------*
  *  NAME
@@ -69,8 +61,7 @@
  *  DESCRIPTION
  *      Time in ms that the change in life total will be displayed
  *---------------------------------------------------------------------*/
-#define LIFE_CHANGE_DURATION_MS     (1000)
-
+#define LIFE_CHANGE_DURATION_MS (1000)
 
 /*=====================================================================*
     Public Constants
@@ -78,28 +69,24 @@
 
 /*---------------------------------------------------------------------*
  *  NAME
- *      STARTING_LIFE        
+ *      STARTING_LIFE
  *
  *  DESCRIPTION
  *      Starting life totals for the different gamemodes
  *---------------------------------------------------------------------*/
-static const int16_t STARTING_LIFE[3] = {20, 40, 30};
+extern const int16_t STARTING_LIFE[3];
 
 /*---------------------------------------------------------------------*
  *  NAME
- *      CMDR_DMG_MAP        
+ *      CMDR_DMG_MAP
  *
  *  DESCRIPTION
  *      Contains the DIRECTION index that points from a given player
  *      to another given player. Adjusted to use the commander damage index
- *      
- *      Input = Player index FROM, Commander damage index TO; Output = DIRECTION index
+ *
+ *      Input = Player index FROM, Commander damage index TO; Output = DIRECTION
+ * index
  *---------------------------------------------------------------------*/
-static const uint8_t CMDR_DMG_MAP[PLAYER_COUNT][PLAYER_COUNT] = {
-    {3, 0, 1, 2},
-    {0, 1, 2, 3},
-    {3, 0, 1, 2},
-    {0, 1, 2, 3},
-};
+extern const uint8_t CMDR_DMG_MAP[PLAYER_COUNT][PLAYER_COUNT];
 
 #endif /* !defined(INC_CONFIG_H) */

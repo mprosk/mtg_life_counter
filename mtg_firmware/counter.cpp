@@ -15,24 +15,20 @@
  *=====================================================================*/
 #include "counter.h"
 
-
 /*=====================================================================*
     Interface Header Files
  *=====================================================================*/
 /* None */
-
 
 /*=====================================================================*
     System-wide Header Files
  *=====================================================================*/
 /* None */
 
-
 /*=====================================================================*
     Private Defines
  *=====================================================================*/
 /* None */
-
 
 /*=====================================================================*
     Private Data Types
@@ -40,49 +36,51 @@
 
 /*---------------------------------------------------------------------*
  *  NAME
- *      display_mode_t       
+ *      display_mode_t
  *
  *  DESCRIPTION
  *      Enum listing the different display modes the counter can be in
  *---------------------------------------------------------------------*/
-typedef enum display_mode_t
-{
+typedef enum display_mode_t {
     CMDR_1,
     CMDR_2,
     CMDR_3,
     POISON,
     SELF,
-    NUM_DISPLAY_MODES,   // Invalid enum value. Used to indicate number of modes
+    NUM_DISPLAY_MODES, // Invalid enum value. Used to indicate number of modes
 } display_mode_t;
 
 /*---------------------------------------------------------------------*
  *  NAME
- *      life_counter_t       
+ *      life_counter_t
  *
  *  DESCRIPTION
  *      Container struct for a single life counter and associated data
  *---------------------------------------------------------------------*/
-typedef struct life_counter_t
-{
+typedef struct life_counter_t {
     // Counters
     int16_t life[NUM_DISPLAY_MODES];
-    int16_t partner_dmg[PLAYER_COUNT - 1];  // Secondary counters for partner damage only
+    int16_t partner_dmg[PLAYER_COUNT -
+                        1]; // Secondary counters for partner damage only
     // State
-    display_mode_t  mode;       // Current display mode of the counter
-    bool partner_enabled[PLAYER_COUNT -1];  // Flag if the player at this index has a partner
-    bool partner_selected;      // Flag if the partner damage of the current commander is selected
-    int16_t delta;              // The change in life that the user has entered
-    uint32_t last_changed;      // The millis timestamp that the counter was last adjusted
-    bool button;                // Current state of the button
-    bool button_last;           // Previous state of the button
+    display_mode_t mode; // Current display mode of the counter
+    bool partner_enabled[PLAYER_COUNT -
+                         1]; // Flag if the player at this index has a partner
+    bool
+        partner_selected; // Flag if the partner damage of the current commander
+                          // is selected
+    int16_t delta;        // The change in life that the user has entered
+    uint32_t
+        last_changed; // The millis timestamp that the counter was last adjusted
+    bool button;      // Current state of the button
+    bool button_last; // Previous state of the button
 } life_counter_t;
-
 
 /*=====================================================================*
     Private Function Prototypes
  *=====================================================================*/
 void update_display(uint8_t player_id);
-
+static display_mode_t cycle_display_mode(display_mode_t mode, int8_t delta);
 
 /*=====================================================================*
     Private Constants
@@ -116,7 +114,6 @@ static const int16_t COUNTER_MODE_MAX_VALUE[NUM_DISPLAY_MODES] = {
  *---------------------------------------------------------------------*/
 static life_counter_t counters[PLAYER_COUNT];
 
-
 /*=====================================================================*
     Public Function Implementations
  *=====================================================================*/
@@ -131,21 +128,18 @@ static life_counter_t counters[PLAYER_COUNT];
  *  RETURNS
  *      None
  *---------------------------------------------------------------------*/
-void counter_reset(uint8_t player_id, int16_t starting_life)
-{
-    for (uint8_t i = 0; i < NUM_DISPLAY_MODES; i++)
-    {
+void counter_reset(uint8_t player_id, int16_t starting_life) {
+    for (uint8_t i = 0; i < NUM_DISPLAY_MODES; i++) {
         counters[player_id].life[i] = 0;
     }
 
-    for (uint8_t i = 0; i < PLAYER_COUNT - 1; i++)
-    {
+    for (uint8_t i = 0; i < PLAYER_COUNT - 1; i++) {
         counters[player_id].partner_dmg[i] = 0;
         counters[player_id].partner_enabled[i] = false;
     }
 
     counters[player_id].life[SELF] = starting_life;
-    
+
     counters[player_id].mode = SELF;
     counters[player_id].partner_selected = false;
     counters[player_id].delta = 0;
@@ -163,10 +157,8 @@ void counter_reset(uint8_t player_id, int16_t starting_life)
  *  RETURNS
  *      None
  *---------------------------------------------------------------------*/
-void counter_reset_all(int16_t starting_life)
-{
-    for (uint8_t player_id = 0; player_id < PLAYER_COUNT; player_id++)
-    {
+void counter_reset_all(int16_t starting_life) {
+    for (uint8_t player_id = 0; player_id < PLAYER_COUNT; player_id++) {
         counter_reset(player_id, starting_life);
     }
 }
@@ -180,15 +172,12 @@ void counter_reset_all(int16_t starting_life)
  *      Returns the number of counters that were reset.
  *      Zero if no counters were changed
  *---------------------------------------------------------------------*/
-uint8_t counter_reset_on_button(int16_t starting_life)
-{
+uint8_t counter_reset_on_button(int16_t starting_life) {
     uint8_t ret = 0;
-    for (uint8_t player_id = 0; player_id < PLAYER_COUNT; player_id++)
-    {
-        if (counters[player_id].button)
-        {
+    for (uint8_t player_id = 0; player_id < PLAYER_COUNT; player_id++) {
+        if (counters[player_id].button) {
             counter_reset(player_id, starting_life);
-            ret ++;
+            ret++;
         }
     }
     return ret;
@@ -202,11 +191,9 @@ uint8_t counter_reset_on_button(int16_t starting_life)
  *      Updates all the counters based on the new encoder state
  *      Writes the changes to the display
  *---------------------------------------------------------------------*/
-void counter_update_all(encoder_state_t *encoders)
-{
-    for (uint8_t i = 0; i < PLAYER_COUNT; i++)
-    {
-        life_counter_t * c = &counters[i];
+void counter_update_all(encoder_state_t* encoders) {
+    for (uint8_t i = 0; i < PLAYER_COUNT; i++) {
+        life_counter_t* c = &counters[i];
 
         bool update = false;
 
@@ -217,29 +204,24 @@ void counter_update_all(encoder_state_t *encoders)
 
         // Process rotary encoder changes
         int8_t enc = encoders->encoder[i];
-        if (enc != 0)
-        {
-            if (c->button)
-            {
+        if (enc != 0) {
+            if (c->button) {
                 // Button is held - change display mode
-                c->mode = (uint8_t)((int8_t)c->mode + enc) % NUM_DISPLAY_MODES;
+                c->mode = cycle_display_mode(c->mode, enc);
                 c->delta = 0;
                 update = true;
-            }
-            else
-            {
+            } else {
                 // Button not held - change counter value
 
                 // Determine where the change will put us
                 int16_t target = c->life[c->mode] + (int16_t)enc;
 
                 // Check that the change is within the upper bounds for this mode
-                if (target <= COUNTER_MODE_MAX_VALUE[c->mode])
-                {
+                if (target <= COUNTER_MODE_MAX_VALUE[c->mode]) {
                     // Check that the change is within the lower bounds
                     // Normal life total min = display min, others = 0
-                    if (((c->mode == SELF) && (target >= DISPLAY_MIN)) || (target >= 0))
-                    {
+                    if (((c->mode == SELF) && (target >= DISPLAY_MIN)) ||
+                        (target >= 0)) {
                         // Increment the counter
                         c->delta += (int16_t)enc;
                         c->life[c->mode] = target;
@@ -252,18 +234,15 @@ void counter_update_all(encoder_state_t *encoders)
         }
 
         // Clear the delta display if the delay has expired
-        if (c->delta != 0)
-        {
-            if ((millis() - c->last_changed) > LIFE_CHANGE_DURATION_MS)
-            {
+        if (c->delta != 0) {
+            if ((millis() - c->last_changed) > LIFE_CHANGE_DURATION_MS) {
                 c->delta = 0;
                 update = true;
             }
         }
 
         // Write changes to the screen
-        if (update)
-        {
+        if (update) {
             update_display(i);
         }
     }
@@ -276,10 +255,8 @@ void counter_update_all(encoder_state_t *encoders)
  *  DESCRIPTION
  *      Rewrites all counters to the display
  *---------------------------------------------------------------------*/
-void counter_redraw_all(void)
-{
-    for (uint8_t player_id = 0; player_id < PLAYER_COUNT; player_id++)
-    {
+void counter_redraw_all(void) {
+    for (uint8_t player_id = 0; player_id < PLAYER_COUNT; player_id++) {
         update_display(player_id);
     }
 }
@@ -288,6 +265,17 @@ void counter_redraw_all(void)
     Private Function Implementations
  *=====================================================================*/
 
+static display_mode_t cycle_display_mode(display_mode_t mode, int8_t delta) {
+    int16_t next = (int16_t)mode + (int16_t)delta;
+
+    next %= NUM_DISPLAY_MODES;
+    if (next < 0) {
+        next += NUM_DISPLAY_MODES;
+    }
+
+    return (display_mode_t)next;
+}
+
 /*---------------------------------------------------------------------*
  *  NAME
  *      update_display
@@ -295,16 +283,14 @@ void counter_redraw_all(void)
  *  DESCRIPTION
  *      Renders the given counter to the display
  *---------------------------------------------------------------------*/
-void update_display(uint8_t player_id)
-{
+void update_display(uint8_t player_id) {
     display_mode_t mode = counters[player_id].mode;
 
     // Get the value to display based on the current mode
     int16_t value = counters[player_id].life[mode];
 
     // If there is a current delta, display that instead
-    if (counters[player_id].delta != 0)
-    {
+    if (counters[player_id].delta != 0) {
         value = counters[player_id].delta;
     }
 
@@ -312,11 +298,9 @@ void update_display(uint8_t player_id)
     display_set_int(player_id, value);
 
     // Write any additional symbols to the screen based on mode
-    switch (mode)
-    {
+    switch (mode) {
         case SELF:
-            if (counters[player_id].button)
-            {
+            if (counters[player_id].button) {
                 display_set_direction(player_id, PLAYER_COUNT - 1);
             }
             break;

@@ -12,28 +12,21 @@
 #if !defined(INC_COUNTER_H)
 #define INC_COUNTER_H
 
-
 /*=====================================================================*
     Required Header Files
  *=====================================================================*/
-#include <Arduino.h>
 #include "config.h"
-#include "encoders.h"
 #include "display.h"
-
+#include "encoders.h"
+#include <Arduino.h>
 
 /*=====================================================================*
     Public Defines
  *=====================================================================*/
 
-
-
 /*=====================================================================*
     Public Data Types
  *=====================================================================*/
-
-
-
 
 /*=====================================================================*
     Public Functions
@@ -76,7 +69,7 @@ uint8_t counter_reset_on_button(int16_t starting_life);
  *      Updates all the counters based on the new encoder state
  *      and writes the changes to the display
  *---------------------------------------------------------------------*/
-void counter_update_all(encoder_state_t *encoders);
+void counter_update_all(encoder_state_t* encoders);
 
 /*---------------------------------------------------------------------*
  *  NAME
