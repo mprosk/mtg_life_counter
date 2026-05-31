@@ -228,23 +228,6 @@ void display_set_char(uint8_t player_id, uint8_t pos, uint8_t chr) {
 
 /*---------------------------------------------------------------------*
  *  NAME
- *      display_set_direction
- *
- *  DESCRIPTION
- *      Sets the direction indicated for the given player to the
- *      given commander. Uses config.h/CMDR_DMG_MAP to determine
- *      which glyph to display from sevenseg.h/DIRECTION
- *
- *  RETURNS
- *      None
- *---------------------------------------------------------------------*/
-void display_set_direction(uint8_t player_id, uint8_t commander) {
-    uint8_t glyph = DIRECTION[CMDR_DMG_MAP[player_id][commander]];
-    display_buffer[player_id][0] = glyph;
-}
-
-/*---------------------------------------------------------------------*
- *  NAME
  *      display_fill_pattern
  *
  *  DESCRIPTION

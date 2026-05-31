@@ -14,6 +14,7 @@
     Local Header Files
  *=====================================================================*/
 #include "counter.h"
+#include "sevenseg.h"
 
 /*=====================================================================*
     Interface Header Files
@@ -60,16 +61,9 @@ typedef enum display_mode_t {
 typedef struct life_counter_t {
     // Counters
     int16_t life[NUM_DISPLAY_MODES];
-    int16_t partner_dmg[PLAYER_COUNT -
-                        1]; // Secondary counters for partner damage only
     // State
     display_mode_t mode; // Current display mode of the counter
-    bool partner_enabled[PLAYER_COUNT -
-                         1]; // Flag if the player at this index has a partner
-    bool
-        partner_selected; // Flag if the partner damage of the current commander
-                          // is selected
-    int16_t delta;        // The change in life that the user has entered
+    int16_t delta;       // The change in life that the user has entered
     uint32_t
         last_changed; // The millis timestamp that the counter was last adjusted
     bool button;      // Current state of the button
@@ -81,6 +75,8 @@ typedef struct life_counter_t {
  *=====================================================================*/
 void update_display(uint8_t player_id);
 static display_mode_t cycle_display_mode(display_mode_t mode, int8_t delta);
+static uint8_t commander_direction_glyph(uint8_t player_id,
+                                         uint8_t commander_index);
 
 /*=====================================================================*
     Private Constants
@@ -133,15 +129,9 @@ void counter_reset(uint8_t player_id, int16_t starting_life) {
         counters[player_id].life[i] = 0;
     }
 
-    for (uint8_t i = 0; i < PLAYER_COUNT - 1; i++) {
-        counters[player_id].partner_dmg[i] = 0;
-        counters[player_id].partner_enabled[i] = false;
-    }
-
     counters[player_id].life[SELF] = starting_life;
 
     counters[player_id].mode = SELF;
-    counters[player_id].partner_selected = false;
     counters[player_id].delta = 0;
 
     update_display(player_id);
@@ -265,6 +255,16 @@ void counter_redraw_all(void) {
     Private Function Implementations
  *=====================================================================*/
 
+/*---------------------------------------------------------------------*
+ *  NAME
+ *      cycle_display_mode
+ *
+ *  DESCRIPTION
+ *      Steps the display mode forward or backward, wrapping at the ends
+ *
+ *  RETURNS
+ *      The new display mode
+ *---------------------------------------------------------------------*/
 static display_mode_t cycle_display_mode(display_mode_t mode, int8_t delta) {
     int16_t next = (int16_t)mode + (int16_t)delta;
 
@@ -274,6 +274,23 @@ static display_mode_t cycle_display_mode(display_mode_t mode, int8_t delta) {
     }
 
     return (display_mode_t)next;
+}
+
+/*---------------------------------------------------------------------*
+ *  NAME
+ *      commander_direction_glyph
+ *
+ *  DESCRIPTION
+ *      Returns the seven-segment pattern for the direction arrow pointing
+ *      from the given player toward the given commander damage slot.
+ *      Uses config.h/CMDR_DMG_MAP and sevenseg.h/DIRECTION.
+ *
+ *  RETURNS
+ *      Segment pattern for digit 0 of the player's display
+ *---------------------------------------------------------------------*/
+static uint8_t commander_direction_glyph(uint8_t player_id,
+                                         uint8_t commander_index) {
+    return DIRECTION[CMDR_DMG_MAP[player_id][commander_index]];
 }
 
 /*---------------------------------------------------------------------*
@@ -301,7 +318,11 @@ void update_display(uint8_t player_id) {
     switch (mode) {
         case SELF:
             if (counters[player_id].button) {
-                display_set_direction(player_id, PLAYER_COUNT - 1);
+                // Show mode-select arrow on digit 0 while button is held
+                display_set_digit(
+                    player_id,
+                    0,
+                    commander_direction_glyph(player_id, PLAYER_COUNT - 1));
             }
             break;
 
@@ -312,8 +333,9 @@ void update_display(uint8_t player_id) {
         case CMDR_1:
         case CMDR_2:
         case CMDR_3:
-            // uint8_t commander_index = ((uint8_t)mode - 1) >> 1;
-            display_set_direction(player_id, mode);
+            // Show commander damage direction arrow on digit 0
+            display_set_digit(
+                player_id, 0, commander_direction_glyph(player_id, mode));
             break;
 
         default:

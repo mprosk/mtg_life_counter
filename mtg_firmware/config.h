@@ -29,15 +29,6 @@
 
 /*---------------------------------------------------------------------*
  *  NAME
- *      OPPONENT_COMMANDER_COUNT
- *
- *  DESCRIPTION
- *      Number of opponent commander slots tracked per player
- *---------------------------------------------------------------------*/
-#define OPPONENT_COMMANDER_COUNT ((PLAYER_COUNT - 1) * 2)
-
-/*---------------------------------------------------------------------*
- *  NAME
  *      COMMANDER_DAMAGE
  *
  *  DESCRIPTION

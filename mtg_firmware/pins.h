@@ -9,13 +9,13 @@
 #define INC_PINS_H
 
 /* Debug */
-#define PIN_DEBUG_1        (4)
-#define PIN_DEBUG_2        (6)
+#define PIN_DEBUG_1 (4)
+#define PIN_DEBUG_2 (6)
 
 /* System controls */
-#define PIN_MODE_SWITCH    (9)
-#define PIN_RESET_BTN      (8)
-#define PIN_ROLL_BTN       (7)
+#define PIN_MODE_SWITCH (9)
+#define PIN_RESET_BTN   (8)
+#define PIN_ROLL_BTN    (7)
 
 /* Rotary encoders (shift register + per-player buttons) */
 #define ENCODERS_LATCH_PIN (3)
@@ -25,9 +25,9 @@
 #define ENCODERS_BTN_4     (2)
 
 /* Display (SPI shift registers) */
-#define DISPLAY_DATA_PIN   (11)
-#define DISPLAY_MISO_PIN   (12)
-#define DISPLAY_CLOCK_PIN  (13)
-#define DISPLAY_LATCH_PIN  (10)
+#define DISPLAY_DATA_PIN  (11)
+#define DISPLAY_MISO_PIN  (12)
+#define DISPLAY_CLOCK_PIN (13)
+#define DISPLAY_LATCH_PIN (10)
 
 #endif /* !defined(INC_PINS_H) */
